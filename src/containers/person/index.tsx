@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
 
 import './index.sass';
 import { getAll, remove, search } from "../../actions/personActions";
@@ -44,17 +45,27 @@ const columns: PersonColumn[] = [
     align: "right",
     component: (value: any) => <span>{value.value}</span>,
   },
+  {
+    id: "relationship",
+    label: "Parentesto",
+    minWidth: 170,
+    align: "right",
+    component: (value: any) => <span>{value.value ? value.value.relation_type.description : 'TITULAR' }</span>,
+  },
 ];
 
-export default function Bank() {
+export default function Person() {
   const dispatch = useDispatch();
-  const { persons, loading, pagination } = useSelector((state: any) => state.personReducer);
+  const { persons, loading } = useSelector((state: any) => state.personReducer);
+  const { user } = useSelector((state: any) => state.loginReducer);
+
   useEffect(() => {
     async function fetchData() {
-      dispatch(getAll());
+      if(!_.isEmpty(user))
+      dispatch(getAll(user.username));
     }
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   const handleEdit = (id: number) => {
     dispatch(
@@ -67,63 +78,17 @@ export default function Bank() {
       })
     );
   };
-
-  const handleCreate = () => {
-    dispatch(
-      updateModal({
-        payload: {
-          status: true,
-          element: <PersonForm />,
-          customSize: 'large'
-        }
-      })
-    );
-  }
-
-  const handleDelete = (id: number) => {
-    dispatch(remove(id));
-  };
-
-  const handleSearch = (event: any) => {
-    if (event.value.trim() === '') {
-      dispatch(getAll())
-    } else {
-      dispatch(search(event.value))
-    }
-  }
-
-  const handleChangePage = (newPage: number) => {
-    const page = pagination.currentPage === 1 ? 2 : newPage;
-    dispatch(getAll(page, pagination.perPage))
-  };
-
-  const handlePerPage = (page: number, perPage: number) => {
-    dispatch(getAll(page, perPage))
-  }
-
+  //replace(/[0-9]/g, "X")
+  // var str = "1234123412341234";
+  // var res = `${str.substring(0, 12).replace(/[0-9]/g, "x")}${str.substring(12, 16)}`;
   return (
     <div className="person-container">
-      <div className="person-container__header">
-        <div className="person-container__title">Socio</div>
-        <div className="person-container__button" onClick={() => handleCreate()}>
-          <Fab size="small" color="primary" aria-label="add">
-            <AddIcon />
-          </Fab>
-        </div>
-      </div>
-      <div className="person-container__search">
-        <CustomSearch handleSearch={handleSearch} />
-      </div>
       <div>
         <DataTable4
           rows={persons}
-          pagination={pagination}
           columns={columns}
           loading={loading}
           handleEdit={handleEdit}
-          handleDelete={handleDelete}
-          onChangePage={handleChangePage}
-          onChangePerPage={handlePerPage}
         />
       </div>
     </div>

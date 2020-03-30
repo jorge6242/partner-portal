@@ -13,6 +13,12 @@ const Person = {
       headers: headers()
     });
   },
+  getFamilyByPartner(share: string) {
+    return AXIOS.get(`${Prefix.api}/person-families-partner`, {
+      params: { share },
+      headers: headers()
+    });
+  },
   create(data: any) {
     return AXIOS.post(
       `${Prefix.api}/person`,
@@ -151,6 +157,16 @@ const Person = {
   },
   getPersonsBirthdayStatistics() {
     return AXIOS.get(`${Prefix.api}/person-statistics-birthday`, {
+      headers: headers()
+    });
+  },
+  getPartners(data: number, perPage: number) {
+    const page = data ? data : 1;
+    return AXIOS.get(`${Prefix.api}/person-partners`, {
+      params: {
+        page,
+        perPage
+      },
       headers: headers()
     });
   },

@@ -7,6 +7,7 @@ import './index.sass';
 type CustomSelectProps = {
   field: string;
   required?: boolean;
+  disabled?: boolean;
   register: Function;
   errorsMessageField: any;
   selectionMessage?: string;
@@ -25,6 +26,7 @@ const CustomSelect: FunctionComponent<CustomSelectProps> = ({
   label,
   loading = false,
   onChange,
+  disabled = false,
 }) => loading ? (<CircularProgress color="primary" size={40} />) :
     (
       <div className="custom-select-container">
@@ -35,6 +37,7 @@ const CustomSelect: FunctionComponent<CustomSelectProps> = ({
           })}
           name={field}
           onChange={onChange ? onChange : () => {}}
+          disabled={disabled}
         >
           <option value="">{selectionMessage}</option>
           {children}

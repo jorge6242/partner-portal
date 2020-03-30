@@ -3,6 +3,7 @@ import { ACTIONS, ActionTypes } from "../interfaces/actionTypes/personTypes";
 type InitialState = {
   persons: Array<string | number>;
   partnersToAssign: Array<string | number>;
+  partnersList: Array<string | number>;
   familiesPartnerByCard: Array<string | number>;
   familyByPerson: Array<string | number>;
   titularToAssign: Array<string | number>;
@@ -33,6 +34,7 @@ type InitialState = {
   personsStatisticsLoading: boolean;
   personsExceptionStatisticsLoading: boolean;
   personsBirthdayStatisticsLoading: boolean;
+  getPartnersLoading: boolean;
   paginationPersonsToAssign: any;
   pagination: any;
   selectedPerson: any;
@@ -85,7 +87,9 @@ const initialState: InitialState = {
   guestStatisticsLoading: false,
   personsStatisticsLoading: false,
   personsExceptionStatisticsLoading: false,
-  personsBirthdayStatisticsLoading: false
+  personsBirthdayStatisticsLoading: false,
+  partnersList: [],
+  getPartnersLoading: false
 };
 
 const personReducer = (state = initialState, action: ActionTypes) => {
@@ -94,6 +98,11 @@ const personReducer = (state = initialState, action: ActionTypes) => {
       return {
         ...state,
         persons: action.payload
+      };
+    case ACTIONS.GET_PARTNERS:
+      return {
+        ...state,
+        partnersList: action.payload
       };
     case ACTIONS.GET_PARTNER_STATISTICS:
       return {
@@ -191,6 +200,11 @@ const personReducer = (state = initialState, action: ActionTypes) => {
       return {
         ...state,
         secondLoading: action.payload
+      };
+    case ACTIONS.GET_PARTNERS_LOADING:
+      return {
+        ...state,
+        getPartnersLoading: action.payload
       };
     case ACTIONS.SET_PERSONS_BIRTHDAY_STATISTICS_LOADING:
       return {

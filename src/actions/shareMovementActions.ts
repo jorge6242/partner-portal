@@ -294,3 +294,42 @@ export const getList = () => async (dispatch: Function) => {
   }
 };
 
+
+export const getLastMovement = (share: number) => async (dispatch: Function) => {
+  dispatch({
+    type: ACTIONS.SET_LAST_MOVEMENT_LOADING,
+    payload: true
+  });
+  try {
+    const { data: { data }, status } = await API.getLastMovement(share);
+    let response = [];
+    if (status === 200) {
+
+      response = data;
+      dispatch({
+        type: ACTIONS.GET_LAST_MOVEMENT,
+        payload: response
+      });
+      dispatch({
+        type: ACTIONS.SET_LAST_MOVEMENT_LOADING,
+        payload: false
+      });
+    }
+    return response;
+  } catch (error) {
+    snackBarUpdate({
+      payload: {
+        message: error.message,
+        status: true,
+        type: "error"
+      }
+    })(dispatch);
+    dispatch({
+      type: ACTIONS.SET_LAST_MOVEMENT_LOADING,
+      payload: false
+    });
+    return error;
+  }
+};
+
+

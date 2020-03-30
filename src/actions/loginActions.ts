@@ -3,6 +3,7 @@ import AXIOS from '../config/Axios'
 import SecureStorage from '../config/SecureStorage'
 import snackBarUpdate from '../actions/snackBarActions';
 import { ACTIONS } from '../interfaces/actionTypes/loginTypes';
+import _ from 'lodash';
 // import history from '../config/History';
 
 export const login = (body: object) => async (dispatch: Function) => {
@@ -18,9 +19,11 @@ export const login = (body: object) => async (dispatch: Function) => {
                 data,
                 status
             };
-            const { token } = data;
+            const { token, user } = data;
+            const role = _.first(user.roles);
             SecureStorage.setItem('token', token);
             dispatch({ type: ACTIONS.SET_LOADING, payload: false })
+            dispatch({ type: ACTIONS.SET_USER, payload: {...user, role} })
         }
         return authResponse;
     } catch (error) {
@@ -54,7 +57,8 @@ export const checkLogin = () => async (dispatch: Function) => {
         let checkLoginResponse = [];
         if (status === 200) {
             checkLoginResponse = data;
-            dispatch({ type: ACTIONS.SET_USER, payload: data })
+            const role = _.first(data.roles);
+            dispatch({ type: ACTIONS.SET_USER, payload: { ...data, role } })
         }
         return checkLoginResponse;
     } catch (error) {

@@ -130,7 +130,7 @@ const DataTable3: FunctionComponent<DataTableProps> = ({
                         </IconButton>
                       </TableCell>
                     )}
-                    {isDelete && (
+                    {handleDelete && (
                       <TableCell style={{ minWidth: 5, fontSize }}>
                         <IconButton
                           aria-label="delete"

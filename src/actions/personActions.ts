@@ -8,7 +8,7 @@ import headers from "../helpers/headers";
 
 import Prefix from "../config/ApiPrefix";
 
-export const getAll = (page: number = 1, perPage: number = 8) => async (
+export const getAll = (share: string) => async (
   dispatch: Function
 ) => {
   dispatch({
@@ -19,23 +19,14 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (
     const {
       data: { data },
       status
-    } = await Person.getAll(page, perPage);
+    } = await Person.getFamilyByPartner(share);
     let response = [];
     if (status === 200) {
-      const pagination = {
-        total: data.total,
-        perPage: data.per_page,
-        prevPageUrl: data.prev_page_url,
-        currentPage: data.current_page
-      };
-      response = data.data;
+      response = data;
+      console.log('data ', data);
       dispatch({
         type: ACTIONS.GET_ALL,
         payload: response
-      });
-      dispatch({
-        type: ACTIONS.SET_PAGINATION,
-        payload: pagination
       });
       dispatch({
         type: ACTIONS.SET_LOADING,
@@ -175,7 +166,6 @@ export const create = (body: object) => async (dispatch: Function) => {
           status: true
         }
       })(dispatch);
-      dispatch(getAll());
       dispatch({
         type: ACTIONS.SET_LOADING,
         payload: false
@@ -228,7 +218,6 @@ export const createGuest = (body: any, refresh: Function) => async (
           status: true
         }
       })(dispatch);
-      await dispatch(getAll());
       refresh(body.rif_ci);
       dispatch(
         updateSecondModal({
@@ -335,7 +324,6 @@ export const update = (body: object) => async (dispatch: Function) => {
           status: true
         }
       })(dispatch);
-      dispatch(getAll());
       dispatch({
         type: ACTIONS.SET_LOADING,
         payload: false
@@ -374,7 +362,6 @@ export const remove = (id: number) => async (dispatch: Function) => {
           status: true
         }
       })(dispatch);
-      dispatch(getAll());
     }
     return response;
   } catch (error) {
@@ -1199,6 +1186,52 @@ export const getPersonsBirthdayStatistics = () => async (dispatch: Function) => 
         type: "error"
       }
     })(dispatch);
+    return error;
+  }
+};
+
+export const getPartners = (page: number = 1, perPage: number = 8) => async (dispatch: Function) => {
+  dispatch({
+    type: ACTIONS.GET_PARTNERS_LOADING,
+    payload: true
+  });
+  try {
+    const { data: { data }, status } = await Person.getPartners(page, perPage);
+    let response = [];
+    if (status === 200) {
+      const pagination = {
+        total: data.total,
+        perPage: data.per_page,
+        prevPageUrl: data.prev_page_url,
+        currentPage: data.current_page,
+      }
+      response = data.data;
+      dispatch({
+        type: ACTIONS.GET_PARTNERS,
+        payload: response
+      });
+      dispatch({
+        type: ACTIONS.SET_PAGINATION,
+        payload: pagination
+      });
+      dispatch({
+        type: ACTIONS.GET_PARTNERS_LOADING,
+        payload: false
+      });
+    }
+    return response;
+  } catch (error) {
+    snackBarUpdate({
+      payload: {
+        message: error.message,
+        status: true,
+        type: "error"
+      }
+    })(dispatch);
+    dispatch({
+      type: ACTIONS.SET_LOADING,
+      payload: false
+    });
     return error;
   }
 };

@@ -49,6 +49,7 @@ import SharesReport from "../containers/reports/SharesReport";
 import AccessControlReport from "../containers/reports/AccessControlReport";
 import Parameter from "../containers/parameter";
 import Locker from "../containers/locker";
+import Partners from "../containers/partner";
 
 export default function Routes() {
   const dispatch = useDispatch();
@@ -111,6 +112,7 @@ export default function Routes() {
                         component={Profession}
                       />
                       <Route path="/dashboard/socio" component={Person} />
+                      <Route path="/dashboard/partner" component={Partners} />
                       <Route
                         path="/dashboard/estado-civil"
                         component={MaritalStatus}

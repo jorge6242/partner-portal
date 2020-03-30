@@ -41,9 +41,9 @@ export default function ExpirationCard() {
     (state: any) => state.personReducer
   );
 
-  useEffect(() => {
-    dispatch(getAll());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getAll());
+  // }, [dispatch]);
 
   const handleReport = () => {
     dispatch(geReports());

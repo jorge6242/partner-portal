@@ -8,14 +8,14 @@ import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import SportsBaseballIcon from '@material-ui/icons/SportsBaseball';
-import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import LockIcon from '@material-ui/icons/Lock';
-import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
-import PeopleIcon from '@material-ui/icons/People';
-import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
-import BuildIcon from '@material-ui/icons/Build';
+// import SportsBaseballIcon from '@material-ui/icons/SportsBaseball';
+// import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+// import ListAltIcon from '@material-ui/icons/ListAlt';
+// import LockIcon from '@material-ui/icons/Lock';
+// import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
+// import PeopleIcon from '@material-ui/icons/People';
+// import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
+// import BuildIcon from '@material-ui/icons/Build';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -30,13 +30,14 @@ import {
   createStyles
 } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import IconExpandLess from '@material-ui/icons/ExpandLess'
-import IconExpandMore from '@material-ui/icons/ExpandMore'
-import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
-import Collapse from '@material-ui/core/Collapse'
+// import IconExpandLess from '@material-ui/icons/ExpandLess'
+// import IconExpandMore from '@material-ui/icons/ExpandMore'
+// import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
+// import Collapse from '@material-ui/core/Collapse'
+import _ from 'lodash';
 
 import { logout } from "../../actions/loginActions";
 import AccessControlForm from "../../components/AccessControlForm";
@@ -51,6 +52,7 @@ import { getList as getTransactionTypes } from "../../actions/transactionTypeAct
 import { getList as getCurrencies } from "../../actions/currencyActions";
 import { getAll as getSports } from "../../actions/sportActions";
 import { getList as getLockerLocationList } from "../../actions/lockerLocationsActions";
+import Loader from "../../components/common/Loader";
 
 const drawerWidth = 240;
 
@@ -92,6 +94,9 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     menuContainer: {
       fontSize: '10px',
+    },
+    profileButton: {
+      background: 'white'
     }
   })
 );
@@ -107,6 +112,7 @@ interface ResponsiveDrawerProps {
 
 export default function Dashboard(props: ResponsiveDrawerProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [role, setARole] = React.useState<null | HTMLElement>(null);
   const { container, children } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const classes = useStyles();
@@ -114,6 +120,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
+  const { user, loading } = useSelector((state: any) => state.loginReducer);
 
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
@@ -173,7 +180,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
 
   const handleLogout = () => dispatch(logout());
 
-  const handleMenu = (event: any) => {
+  const handleMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -225,125 +232,40 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     </ListItem>
   )
 
-  const drawer = (
-    <div>
-      <div className={classes.toolbar} />
-      <Divider />
-      <Menu
-        id="report-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-      >
-        {renderFirstMenu(ListAltIcon, "Reporte General", "/dashboard/general-report")}
-      </Menu>
+  const getRole = (role: string) => !_.isEmpty(user) && user.roles.find((e: any) => e.slug === role);
 
-      <List dense >
-        {renderFirstMenu(DashboardIcon, "Inicio", "/dashboard/main")}
-        {renderFirstMenu(AccountCircleIcon, "Socios", "/dashboard/socio")}
-        {renderFirstMenu(DoubleArrowIcon, "Acciones", "/dashboard/share")}
-        {renderFirstMenu(DoubleArrowIcon, "Movimientos de Acciones", "/dashboard/share-movement")}
-
-        <ListItem button onClick={() => handleClick(1)}>
-          <ListItemIcon >
-            <BuildIcon />
-          </ListItemIcon>
-          <ListItemText primary="Mantenimientos" />
-          {open1 ? <IconExpandLess /> : <IconExpandMore />}
-        </ListItem>
-
-        <Collapse in={open1} timeout="auto" unmountOnExit>
-          <List dense>
-            {renderSecondMenu(AccountBalanceIcon, "Banco", "/dashboard/banco")}
-            {renderSecondMenu(DoubleArrowIcon, "Pais", "/dashboard/pais")}
-            {renderSecondMenu(SportsBaseballIcon, "Deporte", "/dashboard/deporte")}
-            {renderSecondMenu(DoubleArrowIcon, "Profesion", "/dashboard/profesion")}
-            {renderSecondMenu(DoubleArrowIcon, "Estado Civil", "/dashboard/estado-civil")}
-            {renderSecondMenu(DoubleArrowIcon, "Estatus", "/dashboard/status-persona")}
-            {renderSecondMenu(DoubleArrowIcon, "Sexo", "/dashboard/sexo")}
-            {renderSecondMenu(DoubleArrowIcon, "Tipo Relacion", "/dashboard/relation-type")}
-            {renderSecondMenu(DoubleArrowIcon, "Metodo de Pago", "/dashboard/payment-method")}
-            {renderSecondMenu(DoubleArrowIcon, "Tipo de Tarjeta", "/dashboard/card-type")}
-            {renderSecondMenu(DoubleArrowIcon, "Tipo de Accion", "/dashboard/share-type")}
-            {renderSecondMenu(DoubleArrowIcon, "Parametros", "/dashboard/parameter")}
-            {renderSecondMenu(DoubleArrowIcon, "Locker", "/dashboard/locker")}
-            {renderSecondMenu(DoubleArrowIcon, "Tipos de transacion", "/dashboard/transaction-type")}
-          </List>
-        </Collapse>
-
-        <ListItem button onClick={() => handleClick(2)}>
-          <ListItemIcon >
-            <IconLibraryBooks />
-          </ListItemIcon>
-          <ListItemText primary="Reportes" />
-          {open2 ? <IconExpandLess /> : <IconExpandMore />}
-        </ListItem>
-
-        <Collapse in={open2} timeout="auto" unmountOnExit>
-          <List dense>
-            {renderSecondMenu(IconLibraryBooks, "General", "/dashboard/report-general")}
-            {renderSecondMenu(IconLibraryBooks, "Acciones", "/dashboard/share-report")}
-          </List>
-        </Collapse>
-
-
-        <ListItem button onClick={() => handleClick(3)}>
-          <ListItemIcon >
-            <LockIcon />
-          </ListItemIcon>
-          <ListItemText primary="Seguridad" />
-          {open3 ? <IconExpandLess /> : <IconExpandMore />}
-        </ListItem>
-
-        <Collapse in={open3} timeout="auto" unmountOnExit>
-          <List dense>
-            {renderSecondMenu(PeopleIcon, "Roles", "/dashboard/role")}
-            {renderSecondMenu(LockIcon, "Permisos", "/dashboard/permission")}
-          </List>
-        </Collapse>
-
-
-        <ListItem button onClick={() => handleClick(4)}>
-          <ListItemIcon >
-            <DoubleArrowIcon />
-          </ListItemIcon>
-          <ListItemText primary="Acceso" />
-          {open4 ? <IconExpandLess /> : <IconExpandMore />}
-        </ListItem>
-
-        <Collapse in={open4} timeout="auto" unmountOnExit>
-          <List dense>
-            <ListItem button>
-              <ListItemIcon>
-                <CenterFocusWeakIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={"Control de Acceso"}
-                onClick={() => handleAccessControl()}
-              />
-            </ListItem>
-            {renderSecondMenu(DoubleArrowIcon, "Ubicaciones", "/dashboard/location")}
-            {renderSecondMenu(DoubleArrowIcon, "Invitados", "/dashboard/guest")}
-            <ListItem button onClick={() => handleClick(5)}>
-              <ListItemIcon >
-                <IconLibraryBooks />
-              </ListItemIcon>
-              <ListItemText primary="Reportes" />
-              {open5 ? <IconExpandLess /> : <IconExpandMore />}
-            </ListItem>
-
-            <Collapse in={open5} timeout="auto" unmountOnExit>
-              <List dense>
-              {renderSecondMenu(IconLibraryBooks, "Control de Acceso", "/dashboard/access-control-report")}
-              {renderSecondMenu(IconLibraryBooks, "Invitados", "/dashboard/guest")}
-              </List>
-            </Collapse>
-          </List>
-        </Collapse>
-      </List>
-    </div>
-  );
+  const drawer = () => {
+    if (loading) {
+      return <Loader />;
+    }
+    return (
+      <div>
+        <div className={classes.toolbar} />
+        <Divider />
+        <List dense >
+          {
+            getRole('socio') && (
+              <React.Fragment>
+                {renderFirstMenu(DashboardIcon, "Inicio", "/dashboard/main")}
+                {renderFirstMenu(DashboardIcon, "Notas", "")}
+                {renderFirstMenu(AccountCircleIcon, "Actualizacion de datos", "/dashboard/socio")}
+              </React.Fragment>
+            )
+          }
+          {
+            getRole('promotor') && (
+              <React.Fragment>
+                {renderFirstMenu(DashboardIcon, "Inicio", "/dashboard/main")}
+                {renderFirstMenu(AccountCircleIcon, "Socios", "/dashboard/partner")}
+                {renderFirstMenu(AccountCircleIcon, "Actualizacion de Contacto", "/dashboard/socio")}
+              </React.Fragment>
+            )
+          }
+        </List>
+      </div>
+    )
+  };
+  const nameRole: any = !_.isEmpty(user) ? _.first(user.roles) : '';
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -360,12 +282,31 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
           </IconButton>
           <div className={classes.header}>
             <Typography variant="h6" noWrap>
-              Suite Gestion Clubes
+              Portal de Socio
             </Typography>
             <Typography variant="h6" noWrap>
-              <Button variant="contained" onClick={() => handleLogout()}>
-                Logout
+              <div>
+                <Button
+                  startIcon={<AccountCircleIcon />}
+                  aria-controls="simple-menu"
+                  aria-haspopup="true"
+                  onClick={handleMenu}
+                  className={classes.profileButton}
+                  >
+                  Usuario: {!loading && user.username}
               </Button>
+                <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+                >
+                  <MenuItem>Usuario: {!loading && user.username}</MenuItem>
+                  <MenuItem>Role: {!loading && nameRole.name}</MenuItem>
+                  <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+                </Menu>
+              </div>
             </Typography>
           </div>
         </Toolbar>
@@ -386,7 +327,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
               keepMounted: true // Better open performance on mobile.
             }}
           >
-            {drawer}
+            {drawer()}
           </Drawer>
         </Hidden>
         <Hidden xsDown implementation="css">
@@ -397,7 +338,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
             variant="permanent"
             open
           >
-            {drawer}
+            {drawer()}
           </Drawer>
         </Hidden>
       </nav>

@@ -28,7 +28,8 @@ export default interface PersonColumn {
     | "status_person"
     | "relationship"
     | "shares"
-    | "card_number";
+    | "card_number"
+    | "relationship";
   label: string;
   minWidth?: number;
   align?: "right";

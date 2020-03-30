@@ -50,7 +50,13 @@ const ShareMovement = {
       },
       headers: headers()
     });
-  }
+  },
+  getLastMovement(share : number) {
+    return AXIOS.get(`${Prefix.api}/share-movement-last`, {
+      params: { share },
+      headers: headers()
+    });
+  },
 };
 
 export default ShareMovement;

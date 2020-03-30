@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 type FormData = {
-  email: string;
+  username: string;
   password: string;
 }
 
@@ -61,7 +61,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
           <SupervisorAccountIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Control de Socios
+          Portal de Socios
         </Typography>
         <form
           className={classes.form}
@@ -73,27 +73,23 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
             margin="normal"
             fullWidth
             id="email"
-            label="Email Address"
-            name="email"
-            autoComplete="email"
+            label="Usuario"
+            name="username"
+            autoComplete="username"
             autoFocus
             inputRef={register({
               required: "Required",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                message: "invalid email address"
-              }
             })}
-            required={errors.email ? true : false}
-            error={errors.email ? true : false}
-            helperText={errors.email && errors.email.message}
+            required={errors.username ? true : false}
+            error={errors.username ? true : false}
+            helperText={errors.username && errors.username.message}
           />
           <TextField
             variant="outlined"
             margin="normal"
             fullWidth
             name="password"
-            label="Password"
+            label="Clave"
             type="password"
             id="password"
             autoComplete="current-password"

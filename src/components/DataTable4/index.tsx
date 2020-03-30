@@ -45,8 +45,8 @@ interface DataTableProps {
   handleView?: Function;
   handleDelete?: any;
   loading?: boolean;
-  onChangePage: any;
-  onChangePerPage: any;
+  onChangePage?: any;
+  onChangePerPage?: any;
   fontSize?: string;
   handleSubRowComponent?: Function;
   renderSubRow?: any;
@@ -82,7 +82,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
 
   const handleSelect = (id: number) => {
     if (id === selectedRow) {
-      setSelectedRow(0); 
+      setSelectedRow(0);
     } else {
       setSelectedRow(id);
     }
@@ -120,9 +120,9 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                 rows.map((row: any) => {
                   return (
                     <React.Fragment>
-                      <TableRow 
-                        hover 
-                        role="checkbox" 
+                      <TableRow
+                        hover
+                        role="checkbox"
                         tabIndex={-1} key={row.id}
                         onClick={() => handleSelect(row.share_movements && row.share_movements.length ? row.id : 0)}
                       >
@@ -190,16 +190,20 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <TablePagination
-        labelRowsPerPage="Filas"
-        rowsPerPageOptions={[5, 10, 20, 30, 40]}
-        component="div"
-        count={pagination.total}
-        rowsPerPage={pagination.perPage}
-        page={pagination.prevPageUrl === null ? 0 : pagination.currentPage}
-        onChangePage={handlePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
-      />
+      {
+        pagination && (
+          <TablePagination
+            labelRowsPerPage="Filas"
+            rowsPerPageOptions={[5, 10, 20, 30, 40]}
+            component="div"
+            count={pagination.total}
+            rowsPerPage={pagination.perPage}
+            page={pagination.prevPageUrl === null ? 0 : pagination.currentPage}
+            onChangePage={handlePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+          />
+        )
+      }
     </Paper>
   );
 };
