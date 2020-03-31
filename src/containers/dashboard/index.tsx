@@ -257,7 +257,6 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
               <React.Fragment>
                 {renderFirstMenu(DashboardIcon, "Inicio", "/dashboard/main")}
                 {renderFirstMenu(AccountCircleIcon, "Socios", "/dashboard/partner")}
-                {renderFirstMenu(AccountCircleIcon, "Actualizacion de Contacto", "/dashboard/socio")}
               </React.Fragment>
             )
           }
