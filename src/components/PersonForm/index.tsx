@@ -82,7 +82,7 @@ import {
 import {
   getNotesByPerson,
 } from "../../actions/noteActions";
-import { getLastMovement } from "../../actions/shareMovementActions";
+import { getLastMovement, updateLastMovement } from "../../actions/shareMovementActions";
 
 const ExpansionPanelSummary = withStyles({
   root: {
@@ -612,9 +612,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         dispatch(getLockersByPartner(id));
         dispatch(getRecordsByPerson({ id }));
         // dispatch(getNotesByPerson({ id }));
-        if (!_.isEmpty(user) && user.role.slug === 'socio') {
-          dispatch(getLastMovement(user.username));
-        }
         const {
           name,
           last_name,
@@ -711,6 +708,14 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     fetch();
   }, [id, dispatch, setValue, user]);
 
+
+  useEffect(() => {
+    if (!_.isEmpty(sharesByPartner)) {
+      const share: any = _.first(sharesByPartner);
+      dispatch(getLastMovement(share.share_number));
+    }
+  }, [dispatch, sharesByPartner]);
+
   useEffect(() => {
     return () => {
       reset();
@@ -780,6 +785,12 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
 
   const handleShareSelect = (event: any) => {
     dispatch(getShare(event.target.value));
+    const share: any = sharesByPartner.find((e: any) => e.id === event.target.value);
+    if(share){
+      dispatch(getLastMovement(share.share_number));
+    } else {
+      dispatch(updateLastMovement());
+    }
   };
 
   const handleRecordChangePage = (newPage: number) => {
@@ -1279,18 +1290,23 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
       return (
         <Grid item xs={12} className={classes.profileMovement}>
           <Grid item xs={12} className={classes.profileShareTitle}>Accion N° {user.username}</Grid>
-          {!_.isEmpty(lastMovement) &&
-            (
-              <Grid container spacing={0}>
-                <Grid item xs={12} className={classes.profileMovement}>{lastMovement.created}</Grid>
-                <Grid item xs={12} className={classes.profileMovement}>{lastMovement.description}</Grid>
-                <Grid item xs={12} className={classes.profileMovement}>{lastMovement.transaction.description}</Grid>
-              </Grid>
-            )
-          }
         </Grid>
       )
     }
+  }
+
+  const renderLastMovement = () => {
+    if(lastMovementLoading) {
+      return <Loader />
+    }
+    return !_.isEmpty(lastMovement) &&
+      (
+        <Grid container spacing={0}>
+          <Grid item xs={12} className={classes.profileMovement}>{lastMovement.created}</Grid>
+          <Grid item xs={12} className={classes.profileMovement}>{lastMovement.description}</Grid>
+          <Grid item xs={12} className={classes.profileMovement}>{lastMovement.transaction.description}</Grid>
+        </Grid>
+      )
   }
 
   let imagePreview = picture;
@@ -1336,6 +1352,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                   {isFamily ? 'Familiar' : 'Socio'}
                 </Grid>
                 {renderShareProfile()}
+                {renderLastMovement()}
               </Grid>
             </Grid>
 
@@ -1438,7 +1455,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
                             <Grid container spacing={3}>
-                              <Grid item xs={12} justify="flex-start">
+                              <Grid item xs={12}>
                                 {professionList.length > 0 && selectedProff && (
                                   <TransferList
                                     data={professionList}

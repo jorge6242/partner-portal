@@ -1,8 +1,7 @@
 import React, { FunctionComponent } from "react";
 import CircularProgress from "@material-ui/core/CircularProgress";
 
-
-import './index.sass';
+import "./index.sass";
 
 type CustomSelectProps = {
   field: string;
@@ -13,7 +12,7 @@ type CustomSelectProps = {
   selectionMessage?: string;
   label?: string;
   loading?: boolean;
-  onChange?: any
+  onChange?: any;
 };
 
 const CustomSelect: FunctionComponent<CustomSelectProps> = ({
@@ -22,29 +21,40 @@ const CustomSelect: FunctionComponent<CustomSelectProps> = ({
   register,
   errorsMessageField,
   children,
-  selectionMessage = 'Seleccione',
+  selectionMessage = "Seleccione",
   label,
   loading = false,
   onChange,
-  disabled = false,
-}) => loading ? (<CircularProgress color="primary" size={40} />) :
-    (
-      <div className="custom-select-container">
-        {label && (<div className="custom-select-container__label">{label}</div>)}
-        <select
-          ref={register({
-            required: required ? "Required" : false
-          })}
-          name={field}
-          onChange={onChange ? onChange : () => {}}
-          disabled={disabled}
+  disabled = false
+}) =>
+  loading ? (
+    <CircularProgress color="primary" size={40} />
+  ) : (
+    <div className="custom-select-container">
+      {label && (
+        <div
+          className={`custom-select-container__label custom-select-container__label--${
+            disabled ? "disabled" : ""
+          }`}
         >
-          <option value="">{selectionMessage}</option>
-          {children}
-        </select>
-        <div className="custom-select-container__message">{errorsMessageField}</div>
+          {label}
+        </div>
+      )}
+      <select
+        ref={register({
+          required: required ? "Required" : false
+        })}
+        name={field}
+        onChange={onChange ? onChange : () => {}}
+        disabled={disabled}
+      >
+        <option value="">{selectionMessage}</option>
+        {children}
+      </select>
+      <div className="custom-select-container__message">
+        {errorsMessageField}
       </div>
-    );
+    </div>
+  );
 
 export default CustomSelect;
-

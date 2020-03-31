@@ -294,6 +294,10 @@ export const getList = () => async (dispatch: Function) => {
   }
 };
 
+export const updateLastMovement = () => ({
+  type: ACTIONS.GET_LAST_MOVEMENT,
+  payload: []
+});
 
 export const getLastMovement = (share: number) => async (dispatch: Function) => {
   dispatch({
