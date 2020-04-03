@@ -10,6 +10,8 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PaymentIcon from '@material-ui/icons/Payment';
 import SettingsIcon from '@material-ui/icons/Settings';
+import LockIcon from '@material-ui/icons/Lock';
+import PeopleIcon from '@material-ui/icons/People';
 // import SportsBaseballIcon from '@material-ui/icons/SportsBaseball';
 // import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
 // import ListAltIcon from '@material-ui/icons/ListAlt';
@@ -333,8 +335,22 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
         <Divider />
         <List dense >
           {!_.isEmpty(menuList) && buildMenu(menuList.items)}
-          {renderFirstMenu(DashboardIcon, "Widget", "/dashboard/widget")}
-          {renderFirstMenu(DashboardIcon, "Menu", "/dashboard/menu")}
+          <ListItem button onClick={() => handleClick(3)}>
+          <ListItemIcon >
+            <LockIcon />
+          </ListItemIcon>
+          <ListItemText primary="Seguridad" />
+          {open3 ? <IconExpandLess /> : <IconExpandMore />}
+        </ListItem>
+
+        <Collapse in={open3} timeout="auto" unmountOnExit>
+          <List dense>
+            {renderFirstMenu(PeopleIcon, "Roles", "/dashboard/role")}
+            {renderFirstMenu(LockIcon, "Permisos", "/dashboard/permission")}
+            {renderFirstMenu(DoubleArrowIcon, "Widget", "/dashboard/widget")}
+            {renderFirstMenu(DoubleArrowIcon, "Menu", "/dashboard/menu")}
+          </List>
+        </Collapse>
           {
             getRole('socio') && (
               <React.Fragment>
