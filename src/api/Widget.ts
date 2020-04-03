@@ -5,7 +5,7 @@ import Prefix from "../config/ApiPrefix";
 const API = {
   getAll(data: number, perPage: number) {
     const page = data ? data : 1;
-    return AXIOS.get(`${Prefix.api}/location`, {
+    return AXIOS.get(`${Prefix.api}/widget`, {
       params: {
         page,
         perPage
@@ -14,11 +14,11 @@ const API = {
     });
   },
   getList() {
-    return AXIOS.get(`${Prefix.api}/location-list`, { headers: headers() });
+    return AXIOS.get(`${Prefix.api}/widget-list`, { headers: headers() });
   },
   create(data: any) {
     return AXIOS.post(
-      `${Prefix.api}/reporte-pagos`,
+      `${Prefix.api}/widget`,
       {
         ...data
       },
@@ -26,11 +26,11 @@ const API = {
     );
   },
   get(id: number) {
-    return AXIOS.get(`${Prefix.api}/location/${id}`, { headers: headers() });
+    return AXIOS.get(`${Prefix.api}/widget/${id}`, { headers: headers() });
   },
   update(data: any) {
     return AXIOS.put(
-      `${Prefix.api}/location/${data.id}`,
+      `${Prefix.api}/widget/${data.id}`,
       {
         ...data
       },
@@ -38,10 +38,10 @@ const API = {
     );
   },
   remove(id: number) {
-    return AXIOS.delete(`${Prefix.api}/location/${id}`, { headers: headers() });
+    return AXIOS.delete(`${Prefix.api}/widget/${id}`, { headers: headers() });
   },
   search(term: string, perPage: number) {
-    return AXIOS.get(`${Prefix.api}/location-search`, {
+    return AXIOS.get(`${Prefix.api}/widget-search`, {
       params: {
         term,
         perPage

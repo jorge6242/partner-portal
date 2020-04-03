@@ -1236,3 +1236,44 @@ export const getPartners = (page: number = 1, perPage: number = 8) => async (dis
   }
 };
 
+export const getClient = (login: string = "") => async (
+  dispatch: Function
+) => {
+  dispatch({
+    type: ACTIONS.SET_CLIENT_LOADING,
+    payload: true
+  });
+  try {
+    const {
+      data: { data },
+      status
+    } = await Person.getClient(login);
+    let response = [];
+    if (status === 200) {
+      response = data;
+      dispatch({
+        type: ACTIONS.GET_CLIENT,
+        payload: response
+      });
+      dispatch({
+        type: ACTIONS.SET_CLIENT_LOADING,
+        payload: false
+      });
+    }
+    return response;
+  } catch (error) {
+    dispatch({
+      type: ACTIONS.SET_CLIENT_LOADING,
+      payload: false
+    });
+    snackBarUpdate({
+      payload: {
+        message: error.message,
+        status: true,
+        type: "error"
+      }
+    })(dispatch);
+    return error;
+  }
+};
+

@@ -170,6 +170,12 @@ const Person = {
       headers: headers()
     });
   },
+  getClient(login: string = "") {
+    return AXIOS.get(`${Prefix.api}/get-client`, {
+      params: { login },
+      headers: headers()
+    });
+  },
 };
 
 export default Person;

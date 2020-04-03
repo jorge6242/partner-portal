@@ -1,16 +1,13 @@
 import React, { useEffect } from "react";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 
 import './index.sass';
-import { getAll, remove, search } from "../../actions/personActions";
+import { getAll } from "../../actions/personActions";
 import { updateModal } from "../../actions/modalActions";
 import PersonForm from "../../components/PersonForm";
 import DataTable4 from '../../components/DataTable4';
 import PersonColumn from '../../interfaces/PersonColumn';
-import CustomSearch from '../../components/FormElements/CustomSearch';
 
 const columns: PersonColumn[] = [
   { id: "id", 

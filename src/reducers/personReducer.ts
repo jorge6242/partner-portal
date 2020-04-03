@@ -2,6 +2,7 @@ import { ACTIONS, ActionTypes } from "../interfaces/actionTypes/personTypes";
 
 type InitialState = {
   persons: Array<string | number>;
+  client: Array<string | number>;
   partnersToAssign: Array<string | number>;
   partnersList: Array<string | number>;
   familiesPartnerByCard: Array<string | number>;
@@ -35,6 +36,7 @@ type InitialState = {
   personsExceptionStatisticsLoading: boolean;
   personsBirthdayStatisticsLoading: boolean;
   getPartnersLoading: boolean;
+  setClientLoading: boolean;
   paginationPersonsToAssign: any;
   pagination: any;
   selectedPerson: any;
@@ -89,7 +91,9 @@ const initialState: InitialState = {
   personsExceptionStatisticsLoading: false,
   personsBirthdayStatisticsLoading: false,
   partnersList: [],
-  getPartnersLoading: false
+  getPartnersLoading: false,
+  client: [],
+  setClientLoading: false
 };
 
 const personReducer = (state = initialState, action: ActionTypes) => {
@@ -98,6 +102,11 @@ const personReducer = (state = initialState, action: ActionTypes) => {
       return {
         ...state,
         persons: action.payload
+      };
+    case ACTIONS.GET_CLIENT:
+      return {
+        ...state,
+        client: action.payload
       };
     case ACTIONS.GET_PARTNERS:
       return {
@@ -190,6 +199,11 @@ const personReducer = (state = initialState, action: ActionTypes) => {
       return {
         ...state,
         personLockersLoading: action.payload
+      };
+    case ACTIONS.SET_CLIENT_LOADING:
+      return {
+        ...state,
+        setClientLoading: action.payload
       };
     case ACTIONS.SET_PERSON_LOCKERS_BY_LOCATION_LOADING:
       return {

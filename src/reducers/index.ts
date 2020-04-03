@@ -37,6 +37,13 @@ import recordReducer from './recordReducer';
 import recordTypeReducer from './recordTypeReducer';
 import departmentReducer from './departmentReducer';
 import noteReducer from './noteReducer';
+import bancoEmisorReducer from './bancoEmisorReducer';
+import bancoReceptorReducer from './bancoReceptorReducer';
+import reportePagosReducer from './reportePagosReducer';
+import webServiceReducer from './webServiceReducer';
+import menuReducer from './menuReducer';
+import widgetReducer from './widgetReducer';
+import menuItemReducer from './menuItemReducer';
 
 const rootReducer = combineReducers({
   modalReducer,
@@ -73,7 +80,14 @@ const rootReducer = combineReducers({
   recordReducer,
   recordTypeReducer,
   departmentReducer,
-  noteReducer
+  noteReducer,
+  bancoEmisorReducer,
+  bancoReceptorReducer,
+  reportePagosReducer,
+  webServiceReducer,
+  menuReducer,
+  widgetReducer,
+  menuItemReducer
 });
 
 export default rootReducer;

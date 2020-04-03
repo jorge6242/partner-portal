@@ -50,6 +50,8 @@ interface DataTableProps {
   fontSize?: string;
   handleSubRowComponent?: Function;
   renderSubRow?: any;
+  aditionalColumn?: string;
+  aditionalColumnLabel?: string;
 }
 
 const DataTable4: FunctionComponent<DataTableProps> = ({
@@ -66,6 +68,8 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   handleSubRowComponent,
   renderSubRow,
   fontSize = '12px',
+  aditionalColumn,
+  aditionalColumnLabel,
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -187,6 +191,21 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   );
                 })
               )}
+            {aditionalColumn && (
+              <TableRow>
+                <TableCell
+                  className={classes.tableCellHeader}
+                  align="right"
+                  style={{
+                    minWidth: fontSize
+                  }}
+                  colSpan={columns.length}
+                >
+                {aditionalColumnLabel}: {aditionalColumn}
+                </TableCell>
+              </TableRow>
+            )
+            }
           </TableBody>
         </Table>
       </TableContainer>

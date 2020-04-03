@@ -1,0 +1,94 @@
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
+
+import './index.sass';
+import { getAll, getClient } from "../../actions/personActions";
+import { updateModal } from "../../actions/modalActions";
+import PersonForm from "../../components/PersonForm";
+import DataTable4 from '../../components/DataTable4';
+import Columns from '../../interfaces/StatusAccountColumns';
+import { getStatusAccount } from "../../actions/webServiceActions";
+import { Grid } from "@material-ui/core";
+
+const columns: Columns[] = [
+  {
+    id: "fact_num",
+    label: "Nro", minWidth: 20,
+    component: (value: any) => <span>{value.value}</span>,
+  },
+  {
+    id: "fec_emis",
+    label: "Emision", minWidth: 20,
+    component: (value: any) => <span>{value.value}</span>,
+  },
+  {
+    id: "descrip",
+    label: "Description", minWidth: 20,
+    component: (value: any) => <span>{value.value}</span>,
+  },
+  {
+    id: "tipo",
+    label: "Tipo", minWidth: 20,
+    component: (value: any) => <span>{value.value}</span>,
+  },
+  {
+    id: "total_fac",
+    label: "Debe", minWidth: 20,
+    component: (value: any) => <span>{value.value}</span>,
+  },
+  {
+    id: "saldo",
+    label: "Haber", minWidth: 20,
+    component: (value: any) => <span>{value.value}</span>,
+  },
+  {
+    id: "acumulado",
+    label: "Acumulado", minWidth: 20,
+    component: (value: any) => <span>{value.value}</span>,
+  },
+];
+
+export default function StatusAccount() {
+  const dispatch = useDispatch();
+  const { statusAccountList, setStatusAccountLoading } = useSelector((state: any) => state.webServiceReducer);
+  const { client } = useSelector((state: any) => state.personReducer);
+  const { user } = useSelector((state: any) => state.loginReducer);
+
+  useEffect(() => {
+    async function fetchData() {
+      if (!_.isEmpty(user))
+        dispatch(getStatusAccount());
+      dispatch(getClient(user.username));
+    }
+    fetchData();
+  }, [dispatch, user]);
+
+  //replace(/[0-9]/g, "X")
+  // var str = "1234123412341234";
+  // var res = `${str.substring(0, 12).replace(/[0-9]/g, "x")}${str.substring(12, 16)}`;
+  console.log('client ', client);
+  return (
+    <Grid container spacing={3}>
+      <Grid item xs={12}>Estado de Cuenta</Grid>
+      <Grid item xs={12}>
+        {
+          !_.isEmpty(client) && (
+            <div>
+              <div>{client.cli_des}</div>
+              <div>{client.co_cli}</div>
+            </div>
+          )
+        }
+      </Grid>
+      <Grid item xs={12}>
+        <DataTable4
+          rows={statusAccountList.data}
+          columns={columns}
+          loading={setStatusAccountLoading}
+          aditionalColumn={statusAccountList.total}
+          aditionalColumnLabel="Total"
+        /></Grid>
+    </Grid>
+  );
+}
