@@ -2,6 +2,7 @@ import API from "../api/User";
 import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from '../interfaces/actionTypes/userTypes';
+import { mainStatusLoading } from '../actions/loadingMainActions';
 
 export const getAll = () => async (dispatch: Function) => {
   dispatch({

@@ -44,6 +44,7 @@ import webServiceReducer from './webServiceReducer';
 import menuReducer from './menuReducer';
 import widgetReducer from './widgetReducer';
 import menuItemReducer from './menuItemReducer';
+import mainLoadingReducer from './mainLoadingReducer';
 
 const rootReducer = combineReducers({
   modalReducer,
@@ -87,7 +88,8 @@ const rootReducer = combineReducers({
   webServiceReducer,
   menuReducer,
   widgetReducer,
-  menuItemReducer
+  menuItemReducer,
+  mainLoadingReducer
 });
 
 export default rootReducer;

@@ -32,7 +32,7 @@ const API = {
   },
   search(term: string) {
     return AXIOS.get(`${Prefix.api}/user-search?term=${term}`, { headers: headers() });
-  }
+  },
 };
 
 export default API;

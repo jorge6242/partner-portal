@@ -21,9 +21,10 @@ export const login = (body: object) => async (dispatch: Function) => {
             };
             const { token, user } = data;
             const role = _.first(user.roles);
+            const roles = user.roles;
             SecureStorage.setItem('token', token);
             dispatch({ type: ACTIONS.SET_LOADING, payload: false })
-            dispatch({ type: ACTIONS.SET_USER, payload: {...user, role} })
+            dispatch({ type: ACTIONS.SET_USER, payload: {...user, role, roles} })
         }
         return authResponse;
     } catch (error) {
@@ -57,8 +58,9 @@ export const checkLogin = () => async (dispatch: Function) => {
         let checkLoginResponse = [];
         if (status === 200) {
             checkLoginResponse = data;
-            const role = _.first(data.roles);
-            dispatch({ type: ACTIONS.SET_USER, payload: { ...data, role } })
+            const role = _.first(data.user.roles);
+            const roles = data.user.roles;
+            dispatch({ type: ACTIONS.SET_USER, payload: { ...data, role, roles } })
         }
         return checkLoginResponse;
     } catch (error) {
@@ -81,4 +83,33 @@ export function setupInterceptors() {
         },
       );
   }
+
+
+  export const setForcedLogin = (socio: any, token:any) => async (dispatch: Function) => {
+    dispatch({ type: ACTIONS.SET_LOADING, payload: true })
+  try {
+    const { data, status } = await Auth.forcedLogin(socio, token);
+    let response = [];
+    if (status === 200) {
+      response = data;
+      SecureStorage.setItem('token', data.token);
+      const role = _.first(data.user.roles);
+      const roles = data.user.roles;
+      dispatch({ type: ACTIONS.SET_USER, payload: { ...data, role, roles } })
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false })
+    }
+    return response;
+  } catch (error) {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false })
+    snackBarUpdate({
+      payload: {
+        message: error.message,
+        type: "error",
+        status: true
+      }
+    })(dispatch);
+   
+    return error;
+  }
+};
   

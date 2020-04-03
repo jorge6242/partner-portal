@@ -8,7 +8,7 @@ import headers from "../helpers/headers";
 
 import Prefix from "../config/ApiPrefix";
 
-export const getAll = (share: string) => async (
+export const getAll = (share: any) => async (
   dispatch: Function
 ) => {
   dispatch({

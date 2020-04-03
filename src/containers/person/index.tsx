@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
+import { useLocation } from "react-router-dom";
+import queryString from 'query-string';
 
 import './index.sass';
 import { getAll } from "../../actions/personActions";
@@ -8,6 +10,7 @@ import { updateModal } from "../../actions/modalActions";
 import PersonForm from "../../components/PersonForm";
 import DataTable4 from '../../components/DataTable4';
 import PersonColumn from '../../interfaces/PersonColumn';
+import { setForcedLogin } from "../../actions/loginActions";
 
 const columns: PersonColumn[] = [
   { id: "id", 
@@ -55,14 +58,22 @@ export default function Person() {
   const dispatch = useDispatch();
   const { persons, loading } = useSelector((state: any) => state.personReducer);
   const { user } = useSelector((state: any) => state.loginReducer);
+  const location = useLocation();
 
   useEffect(() => {
     async function fetchData() {
-      if(!_.isEmpty(user))
-      dispatch(getAll(user.username));
-    }
+      const values = queryString.parse(location.search);
+      if (!_.isEmpty(values) && values.socio && values.token) {
+        await dispatch(setForcedLogin(values.socio, values.token));
+        dispatch(getAll(values.socio));
+      } else {
+        if(!_.isEmpty(user))
+        dispatch(getAll(user.username));
+      }
+      }
+      
     fetchData();
-  }, [dispatch, user]);
+  }, [dispatch]);
 
   const handleEdit = (id: number) => {
     dispatch(

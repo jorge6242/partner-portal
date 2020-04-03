@@ -10,6 +10,15 @@ const Auth = {
   },
   checkLogin() {
     return AXIOS.get(`${Prefix.api}/check-login`, { headers: headers() });
+  },
+  forcedLogin(socio:any, token: any) {
+    return AXIOS.get('/forced-login', {
+      params: {
+        socio,
+        token
+      },
+      headers: headers() 
+    });
   }
 };
 

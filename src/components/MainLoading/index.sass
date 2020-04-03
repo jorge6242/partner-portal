@@ -1,0 +1,42 @@
+.main-loading-container
+  background-color: white
+  width: 100vw
+  height: 100vh
+  position: fixed
+  left: 0
+  top: 0
+  z-index: 1200
+  pointer-events: unset
+  opacity: 0.5
+  .main-loading-container__backdrop
+    position: absolute
+    top: 0
+    bottom: 0
+    left: 0
+    right: 0
+    height: auto
+    margin: 250px
+    .loading
+      text-align: center
+      background-color: white
+      pointer-events: auto
+      cursor: auto
+      position: absolute
+      top: 0
+      bottom: 0
+      left: 0
+      right: 0
+      height: auto
+      margin: auto
+      flex-direction: column
+      overflow: hidden
+      z-index: 1500
+      .title
+        font-family: "GothamSSm-Bold"
+        font-size: 16px
+        text-align: center
+        text-transform: inherit
+.main-loading-container.main-loading-container--enable
+  display: block
+.main-loading-container.main-loading-container--disable
+  display: none

@@ -251,16 +251,16 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   }
 
   useEffect(() => {
-    dispatch(getMenuList());
-    dispatch(getStatusPersonAll());
-    dispatch(getMaritalStatusAll());
-    dispatch(getGenderAll());
-    dispatch(getCountries());
-    dispatch(getRelationTypes());
-    dispatch(getPaymentMethods());
-    dispatch(getSports());
-    dispatch(getLockerLocationList());
-    dispatch(getLockerLocationList());
+    // dispatch(getMenuList());
+    // dispatch(getStatusPersonAll());
+    // dispatch(getMaritalStatusAll());
+    // dispatch(getGenderAll());
+    // dispatch(getCountries());
+    // dispatch(getRelationTypes());
+    // dispatch(getPaymentMethods());
+    // dispatch(getSports());
+    // dispatch(getLockerLocationList());
+    // dispatch(getLockerLocationList());
   }, [dispatch])
 
   useEffect(() => {
@@ -322,8 +322,8 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       />
     </MenuItem>
   )
-
-  const getRole = (role: string) => !_.isEmpty(user) && user.roles.find((e: any) => e.slug === role);
+  console.log('user ', user);
+  const getRole = (role: string) => !_.isEmpty(user) ? user.roles.find((e: any) => e.slug === role) : '';
 
   const drawer = () => {
     if (loading) {
@@ -351,12 +351,11 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
             {renderFirstMenu(DoubleArrowIcon, "Menu", "/dashboard/menu")}
           </List>
         </Collapse>
-          {
-            getRole('socio') && (
+        {!_.isEmpty(user) && getRole('socio') && (
               <React.Fragment>
                 {renderFirstMenu(DashboardIcon, "Inicio", "/dashboard/main")}
                 {renderFirstMenu(CommentIcon, "Notas", "")}
-                {renderFirstMenu(AccountCircleIcon, "Actualizacion de datos", "/dashboard/socio")}
+                {renderFirstMenu(AccountCircleIcon, "Actualizacion de datos", "/dashboard/actualizacion-datos")}
                 {renderFirstMenu(PaymentIcon, "Reporte de Pagos", "/dashboard/reporte-pagos")}
                 {renderFirstMenu(PaymentIcon, "Estado de Cuenta", "/dashboard/status-account")}
                 {renderFirstMenu(AssignmentLateIcon, "Facturas por Pagar", "/dashboard/facturas-por-pagar")}
@@ -364,7 +363,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
             )
           }
           {
-            getRole('promotor') && (
+            !_.isEmpty(user) && getRole('promotor') && (
               <React.Fragment>
                 {renderFirstMenu(DashboardIcon, "Inicio", "/dashboard/main")}
                 {renderFirstMenu(AccountCircleIcon, "Socios", "/dashboard/partner")}
@@ -376,6 +375,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     )
   };
   const nameRole: any = !_.isEmpty(user) ? _.first(user.roles) : '';
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -412,9 +412,9 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem>Usuario: {!loading && user.username}</MenuItem>
+                 <MenuItem>Usuario: {!loading && user.username}</MenuItem>
                   <MenuItem>Role: {!loading && nameRole.name}</MenuItem>
-                  <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+                  <MenuItem onClick={() => handleLogout()}>Logout</MenuItem> 
                 </Menu>
               </div>
             </Typography>

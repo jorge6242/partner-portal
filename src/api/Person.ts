@@ -13,7 +13,7 @@ const Person = {
       headers: headers()
     });
   },
-  getFamilyByPartner(share: string) {
+  getFamilyByPartner(share: any) {
     return AXIOS.get(`${Prefix.api}/person-families-partner`, {
       params: { share },
       headers: headers()

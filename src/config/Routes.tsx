@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
-import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+import { HashRouter, Route, Switch, Redirect, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import queryString from 'query-string'
+import _ from 'lodash';
 
 import Dashboard from "../containers/dashboard";
 import Product from "../containers/product";
@@ -54,34 +56,10 @@ import ReportePagos from "../containers/reportePagos";
 import StatusAccount from "../containers/StatusAccount";
 import Widget from "../containers/widget";
 import Menu from "../containers/menu";
+import Permission from "../containers/permission";
+import Role from "../containers/role";
 
-export default function Routes() {
-  const dispatch = useDispatch();
-  const token = SecureStorage.getItem("token");
-
-  useEffect(() => {
-    if(window.location.pathname !== '/') {
-      dispatch(getStatusPersonAll());
-      dispatch(getMaritalStatusAll());
-      dispatch(getGenderAll());
-      dispatch(getCountries());
-      dispatch(getRelationTypes());
-      dispatch(getPaymentMethods());
-      dispatch(getTransactionTypes());
-      dispatch(getCurrencies());
-      dispatch(getSports());
-      dispatch(getLockerLocationList());
-    }
-  },[dispatch, token])
-
-  useEffect(() => {
-    dispatch(checkLogin());
-  }, [dispatch, token]);
-
-  useEffect(() => {
-    setupInterceptors();
-  }, [token]);
-
+export default function Routes() { 
   return (
     <HashRouter>
       <MainLayout>
@@ -92,14 +70,18 @@ export default function Routes() {
             path="/dashboard"
             exact={false}
             component={() => {
-              if (SecureStorage.getItem("token")) {
                 return (
                   <Switch>
                     <Dashboard>
                       <Route path="/dashboard/main" component={Home} />
+                      <Route path="/dashboard/role" component={Role} />
+                      <Route
+                        path="/dashboard/permission"
+                        component={Permission}
+                      />
                       <Route path="/dashboard/reports" component={Reports} />
                       <Route path="/dashboard/user" component={User} />
-                      <Route path="/dashboard/socio" component={Person} />
+                      <Route path="/dashboard/actualizacion-datos" component={Person} />
                       <Route path="/dashboard/partner" component={Partners} />
                       <Route path="/dashboard/reporte-pagos" component={ReportePagos} />
                       <Route path="/dashboard/status-account" component={StatusAccount} />
@@ -108,8 +90,6 @@ export default function Routes() {
                     </Dashboard>
                   </Switch>
                 );
-              }
-              return <Redirect to="/login" />;
             }}
           />
         </Switch>

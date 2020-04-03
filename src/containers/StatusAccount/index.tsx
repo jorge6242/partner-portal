@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
+import { useLocation } from "react-router-dom";
+import queryString from 'query-string';
 
 import './index.sass';
 import { getAll, getClient } from "../../actions/personActions";
@@ -10,6 +12,7 @@ import DataTable4 from '../../components/DataTable4';
 import Columns from '../../interfaces/StatusAccountColumns';
 import { getStatusAccount } from "../../actions/webServiceActions";
 import { Grid } from "@material-ui/core";
+import { setForcedLogin } from "../../actions/loginActions";
 
 const columns: Columns[] = [
   {
@@ -54,15 +57,20 @@ export default function StatusAccount() {
   const { statusAccountList, setStatusAccountLoading } = useSelector((state: any) => state.webServiceReducer);
   const { client } = useSelector((state: any) => state.personReducer);
   const { user } = useSelector((state: any) => state.loginReducer);
+  const location = useLocation();
 
   useEffect(() => {
     async function fetchData() {
-      if (!_.isEmpty(user))
+      const values = queryString.parse(location.search);
+      if (!_.isEmpty(values) && values.socio && values.token) {
+        await dispatch(setForcedLogin(values.socio, values.token));
         dispatch(getStatusAccount());
-      dispatch(getClient(user.username));
+      } else {
+        dispatch(getStatusAccount());
+      }
     }
     fetchData();
-  }, [dispatch, user]);
+  }, [dispatch]);
 
   //replace(/[0-9]/g, "X")
   // var str = "1234123412341234";

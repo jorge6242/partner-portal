@@ -148,7 +148,6 @@ export default function ReportePagos() {
     useEffect(() => {
         async function fetchData() {
             if (!_.isEmpty(user)) {
-                dispatch(getClient(user.username));
                 dispatch(getUnpaidInvoices());
                 dispatch(getReportedPayments());
             }
