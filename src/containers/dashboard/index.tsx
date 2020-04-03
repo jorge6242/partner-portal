@@ -189,7 +189,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
     return (
       <React.Fragment>
-        <ListItem button onClick={() => findChildrens.length > 0 ? setSecondSubMenu(item.id) : {}}>
+        <ListItem button onClick={() => findChildrens.length > 0 ? setSecondSubMenu(item.id) : handeClick(item.route ? item.route : '')}>
           <ListItemIcon >
             <SettingsIcon />
           </ListItemIcon>
@@ -219,7 +219,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
         const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
         return (
           <React.Fragment>
-            <ListItem button onClick={() => findChildrens.length > 0 ? setSubMenu(item.id) : {}}>
+            <ListItem button onClick={() => findChildrens.length > 0 ? setSubMenu(item.id) : handeClick(item.route ? item.route : '')}>
               <ListItemIcon >
                 <SettingsIcon />
               </ListItemIcon>
