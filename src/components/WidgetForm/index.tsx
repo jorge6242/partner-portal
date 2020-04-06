@@ -146,11 +146,10 @@ const WidgetForm: FunctionComponent<ComponentProps> = ({
                         setSelectedRoles(selectedRoles);
                     });
                 }
-                console.log('selectedRoles ', selectedRoles);
             }
         }
         fetch();
-    }, [id, dispatch, setValue]);
+    }, [id, dispatch, setValue, selectedRoles]);
 
     useEffect(() => {
         return () => {

@@ -61,12 +61,7 @@ export default function Home() {
     }
   } = useSelector((state: any) => state);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getBalance());
-    dispatch(getWidgetList());
-  }, [dispatch]);
-
+  
   const validateWidget = (value: string) => {
     const isValid = widgetList.find((e: any) => e.slug === value);
     if(isValid) {

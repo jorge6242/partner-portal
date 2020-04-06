@@ -14,8 +14,13 @@ function removeItem (name: string) {
     return ls.remove(name)
 }
 
+function clear () {
+    return ls.clear()
+}
+
 export default {
     setItem,
     getItem,
-    removeItem
+    removeItem,
+    clear
 }

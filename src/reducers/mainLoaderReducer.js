@@ -4,7 +4,7 @@ const initialState = {
   isLoading: false,
 };
 
-const mainLoadingReducer = (state = initialState, action) => {
+const mainLoaderReducer = (state = initialState, action) => {
   switch (action.type) {
     case ACTIONS.STATUS:
       return { ...state, isLoading: action.payload };
@@ -14,4 +14,4 @@ const mainLoadingReducer = (state = initialState, action) => {
   }
 };
 
-export default mainLoadingReducer;
+export default mainLoaderReducer;

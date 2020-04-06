@@ -148,7 +148,7 @@ const MenuForm: FunctionComponent<ComponentProps> = ({
             }
         }
         fetch();
-    }, [id, dispatch, setValue]);
+    }, [id, dispatch, setValue, selectedItems]);
 
     useEffect(() => {
         return () => {

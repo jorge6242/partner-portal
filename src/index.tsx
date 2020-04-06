@@ -9,7 +9,6 @@ import Routes from './config/Routes';
 import { setupInterceptors } from './actions/loginActions';
 
 const store = CreateStore();
-setupInterceptors();
 
 ReactDOM.render(<Provider store={store}><Routes /></Provider>, document.getElementById('root'));
 

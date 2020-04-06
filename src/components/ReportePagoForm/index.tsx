@@ -121,7 +121,6 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
         reset();
     };
 //substring(12, 16)
-console.log('bancoReceptorList ', bancoReceptorList);
     return (
         <Container component="main">
             <div className={classes.paper}>

@@ -118,7 +118,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
           <TableBody>
             {loading ? (
               <TableRow className={classes.progress}>
-                <CircularProgress color="primary" />
+                <TableCell colSpan={columns.length}><CircularProgress color="primary" /></TableCell>
               </TableRow>
             ) : (
                 rows.map((row: any) => {
@@ -201,7 +201,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   }}
                   colSpan={columns.length}
                 >
-                {aditionalColumnLabel}: {aditionalColumn}
+                  {aditionalColumnLabel}: {aditionalColumn}
                 </TableCell>
               </TableRow>
             )

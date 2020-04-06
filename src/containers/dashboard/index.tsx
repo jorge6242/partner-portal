@@ -46,8 +46,9 @@ import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 // import Collapse from '@material-ui/core/Collapse'
 import _ from 'lodash';
 import CommentIcon from '@material-ui/icons/Comment';
+import queryString from "query-string";
 
-import { logout } from "../../actions/loginActions";
+import { logout, setForcedLogin, checkLogin, setupInterceptors } from "../../actions/loginActions";
 import AccessControlForm from "../../components/AccessControlForm";
 import { updateModal } from "../../actions/modalActions";
 import { getAll as getStatusPersonAll } from "../../actions/statusPersonActions";
@@ -60,8 +61,10 @@ import { getList as getTransactionTypes } from "../../actions/transactionTypeAct
 import { getList as getCurrencies } from "../../actions/currencyActions";
 import { getAll as getSports } from "../../actions/sportActions";
 import { getList as getLockerLocationList } from "../../actions/lockerLocationsActions";
-import { getList as getMenuList } from "../../actions/menuActions";
+import { getList as getMenuList, getWidgetList } from "../../actions/menuActions";
 import Loader from "../../components/common/Loader";
+import { getClient } from "../../actions/personActions";
+import { getBalance } from "../../actions/webServiceActions";
 
 const drawerWidth = 240;
 
@@ -139,6 +142,52 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const [open3, setOpen3] = React.useState(false);
   const [open4, setOpen4] = React.useState(false);
   const [open5, setOpen5] = React.useState(false);
+
+
+
+
+  useEffect(() => {
+    async function run() {
+      const values = queryString.parse(location.search);
+      if (!_.isEmpty(values) && values.socio && values.token) {
+        if (
+          location.pathname === "/dashboard/status-account" ||
+          location.pathname === "/dashboard/actualizacion-datos"
+        )
+        await dispatch(setForcedLogin(values.socio, values.token));
+      }
+      await dispatch(checkLogin());
+      if(location.pathname !== '/') {
+        dispatch(setupInterceptors());
+      }
+      dispatch(getMenuList());
+      dispatch(getClient(user.username));
+      dispatch(getBalance());
+      dispatch(getWidgetList());
+      dispatch(getStatusPersonAll());
+      dispatch(getMaritalStatusAll());
+      dispatch(getGenderAll());
+      dispatch(getCountries());
+      dispatch(getRelationTypes());
+      dispatch(getPaymentMethods());
+      dispatch(getSports());
+      dispatch(getLockerLocationList());
+    }
+    run();
+  }, [dispatch])
+
+
+
+  useEffect(() => {
+    if (location.pathname === '/dashboard') {
+      history.push('/dashboard/main');
+    }
+  }, [history, location]);
+
+
+
+
+
 
   function handleClick(value: number) {
     switch (value) {
@@ -250,25 +299,6 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     return build(menu);
   }
 
-  useEffect(() => {
-    // dispatch(getMenuList());
-    // dispatch(getStatusPersonAll());
-    // dispatch(getMaritalStatusAll());
-    // dispatch(getGenderAll());
-    // dispatch(getCountries());
-    // dispatch(getRelationTypes());
-    // dispatch(getPaymentMethods());
-    // dispatch(getSports());
-    // dispatch(getLockerLocationList());
-    // dispatch(getLockerLocationList());
-  }, [dispatch])
-
-  useEffect(() => {
-    if (location.pathname === '/dashboard') {
-      history.push('/dashboard/main');
-    }
-  }, [history, location]);
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -322,7 +352,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       />
     </MenuItem>
   )
-  console.log('user ', user);
+
   const getRole = (role: string) => !_.isEmpty(user) ? user.roles.find((e: any) => e.slug === role) : '';
 
   const drawer = () => {
@@ -349,6 +379,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
             {renderFirstMenu(LockIcon, "Permisos", "/dashboard/permission")}
             {renderFirstMenu(DoubleArrowIcon, "Widget", "/dashboard/widget")}
             {renderFirstMenu(DoubleArrowIcon, "Menu", "/dashboard/menu")}
+            {renderFirstMenu(DoubleArrowIcon, "Menu Item", "/dashboard/menu-item")}
           </List>
         </Collapse>
         {!_.isEmpty(user) && getRole('socio') && (

@@ -75,7 +75,6 @@ export default function StatusAccount() {
   //replace(/[0-9]/g, "X")
   // var str = "1234123412341234";
   // var res = `${str.substring(0, 12).replace(/[0-9]/g, "x")}${str.substring(12, 16)}`;
-  console.log('client ', client);
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>Estado de Cuenta</Grid>

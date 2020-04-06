@@ -58,6 +58,8 @@ import Widget from "../containers/widget";
 import Menu from "../containers/menu";
 import Permission from "../containers/permission";
 import Role from "../containers/role";
+import MainLoader from "../components/MainLoading";
+import MenuItem from "../containers/MenuItem";
 
 export default function Routes() { 
   return (
@@ -87,6 +89,7 @@ export default function Routes() {
                       <Route path="/dashboard/status-account" component={StatusAccount} />
                       <Route path="/dashboard/widget" exact component={Widget} />
                       <Route path="/dashboard/menu" exact component={Menu} />
+                      <Route path="/dashboard/menu-item" exact component={MenuItem} />
                     </Dashboard>
                   </Switch>
                 );
@@ -96,6 +99,7 @@ export default function Routes() {
         <Modal />
         <SecondModal />
         <SnackBar />
+        <MainLoader />
       </MainLayout>
     </HashRouter>
   );

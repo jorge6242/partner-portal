@@ -146,14 +146,9 @@ export default function ReportePagos() {
     const { user } = useSelector((state: any) => state.loginReducer);
 
     useEffect(() => {
-        async function fetchData() {
-            if (!_.isEmpty(user)) {
-                dispatch(getUnpaidInvoices());
-                dispatch(getReportedPayments());
-            }
-        }
-        fetchData();
-    }, [dispatch, user]);
+        dispatch(getUnpaidInvoices());
+        dispatch(getReportedPayments());
+    }, [dispatch]);
     
 
     const handleExpandedPanel = (panel: string) => (

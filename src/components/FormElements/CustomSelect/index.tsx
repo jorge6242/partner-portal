@@ -13,6 +13,7 @@ type CustomSelectProps = {
   label?: string;
   loading?: boolean;
   onChange?: any;
+  optionValueSelected?: any;
 };
 
 const CustomSelect: FunctionComponent<CustomSelectProps> = ({
@@ -25,7 +26,8 @@ const CustomSelect: FunctionComponent<CustomSelectProps> = ({
   label,
   loading = false,
   onChange,
-  disabled = false
+  disabled = false,
+  optionValueSelected = ""
 }) =>
   loading ? (
     <CircularProgress color="primary" size={40} />
@@ -48,7 +50,7 @@ const CustomSelect: FunctionComponent<CustomSelectProps> = ({
         onChange={onChange ? onChange : () => {}}
         disabled={disabled}
       >
-        <option value="">{selectionMessage}</option>
+        <option value={optionValueSelected}>{selectionMessage}</option>
         {children}
       </select>
       <div className="custom-select-container__message">

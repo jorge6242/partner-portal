@@ -48,7 +48,10 @@ const API = {
       },
       headers: headers()
     });
-  }
+  },
+  getParents() {
+    return AXIOS.get(`${Prefix.api}/menu-item-parents`, { headers: headers() });
+  },
 };
 
 export default API;

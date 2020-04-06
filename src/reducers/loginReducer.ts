@@ -22,8 +22,6 @@ const userReducer = (state = initialState, action: ActionTypes) => {
         status: true
       };
     case ACTIONS.LOGOUT:
-      SecureStorage.removeItem("token");
-      window.location.href = '/';
       return {
         ...state,
         ...initialState
