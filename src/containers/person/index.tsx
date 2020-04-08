@@ -67,13 +67,15 @@ export default function Person() {
         await dispatch(setForcedLogin(values.socio, values.token));
         dispatch(getAll(values.socio));
       } else {
-        if(!_.isEmpty(user))
-        dispatch(getAll(user.username));
+        if(!_.isEmpty(user)) {
+          dispatch(getAll(user.username));
+        }
+       
       }
       }
       
     fetchData();
-  }, [dispatch]);
+  }, [dispatch, user]);
 
   const handleEdit = (id: number) => {
     dispatch(

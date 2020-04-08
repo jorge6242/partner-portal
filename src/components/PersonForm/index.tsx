@@ -329,6 +329,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper
   },
+  personContent : {
+    backgroundColor: theme.palette.background.paper,
+    width: '100%',
+  },
   paper: {
     display: "flex",
     flexDirection: "column",
@@ -1358,7 +1362,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
 
             <Grid item xs={10}>
               <Grid container spacing={2}>
-                <div className={classes.root}>
+                <div className={classes.personContent}>
                   <AppBar position="static" color="default">
                     <Tabs
                       value={tabValue}
