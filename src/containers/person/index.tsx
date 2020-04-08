@@ -75,7 +75,7 @@ export default function Person() {
       }
       
     fetchData();
-  }, [dispatch, user]);
+  }, [dispatch]);
 
   const handleEdit = (id: number) => {
     dispatch(
