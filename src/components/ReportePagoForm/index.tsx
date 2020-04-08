@@ -52,6 +52,7 @@ const useStyles = makeStyles(theme => ({
 type FormData = {
     nMonto: string,
     NroReferencia: string,
+    NroReferencia2: string,
     sDescripition: string,
     EstadoCuenta: string,
     status: string,
@@ -60,7 +61,6 @@ type FormData = {
     Archivos: string,
     codBancoOrigen: string,
     codCuentaDestino: string,
-    NroReferencia2: string,
     dFechaRegistro: string,
     dFechaPago: string;
 };
@@ -108,19 +108,20 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     // EstadoCuenta no recuerdo que era lo que se guardaba aqui
 
     const handleForm = async (form: object) => {
-        const { codCuentaDestino } = getValues();
+        const { NroReferencia } = getValues();
         const body = {
             ...form,
-            dFechaProceso: moment().format('YYYY-MM-DD'),
-            DFechaRegistro: moment().format('YYYY-MM-DD'),
+            dFechaProceso: null,
+            dFechaRegistro: moment().format('YYYY-MM-DD'),
             EstadoCuenta: '',
-            sDescripcion: 'Prueba',
-            Login: '',
+            status: 0,
+            Login: user.username,
+            NroReferencia2: NroReferencia
         }
         await dispatch(create(body));
         reset();
     };
-//substring(12, 16)
+    //substring(12, 16)
     return (
         <Container component="main">
             <div className={classes.paper}>
@@ -201,6 +202,17 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                         }
                         inputType="number"
                     />
+                    <CustomTextField
+                        placeholder="Descripcion"
+                        field="sDescripition"
+                        required
+                        register={register}
+                        errorsField={errors.sDescripition}
+                        errorsMessageField={
+                            errors.sDescripition && errors.sDescripition.message
+                        }
+                    />
+
                     <div>Comprobante de Pago</div>
                     <Button
                         startIcon={<CloudUploadIcon />}

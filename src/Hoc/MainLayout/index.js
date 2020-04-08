@@ -23,9 +23,7 @@ import MainLoader from "../../components/MainLoading";
 
 export default function MainLayout(props) {
   const dispatch = useDispatch();
-  const token = SecureStorage.getItem("token");
   const location = useLocation();
-  const { isLoading } = useSelector(state => state.mainLoaderReducer);
   useEffect(() => {
     async function run() {
       await dispatch(checkLogin());
@@ -35,6 +33,5 @@ export default function MainLayout(props) {
     }
     run();
   }, [dispatch]);
-  console.log('isLoading ', isLoading);
   return <div> {props.children} </div>;
 }

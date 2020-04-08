@@ -18,6 +18,20 @@ const columns: PersonColumn[] = [
   component: (value: any) => <span>{value.value}</span>,
   },
   {
+    id: "rif_ci",
+    label: "RIF/CI",
+    minWidth: 170,
+    align: "right",
+    component: (value: any) => <span>{value.value}</span>,
+  },
+  {
+    id: "relationship",
+    label: "Parentesto",
+    minWidth: 170,
+    align: "right",
+    component: (value: any) => <span>{value.value ? value.value.relation_type.description : 'TITULAR' }</span>,
+  },
+  {
     id: "name",
     label: "Nombre",
     minWidth: 170,
@@ -37,20 +51,6 @@ const columns: PersonColumn[] = [
     minWidth: 170,
     align: "right",
     component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "rif_ci",
-    label: "RIF/CI",
-    minWidth: 170,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "relationship",
-    label: "Parentesto",
-    minWidth: 170,
-    align: "right",
-    component: (value: any) => <span>{value.value ? value.value.relation_type.description : 'TITULAR' }</span>,
   },
 ];
 
