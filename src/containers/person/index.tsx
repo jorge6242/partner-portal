@@ -6,11 +6,12 @@ import queryString from 'query-string';
 
 import './index.sass';
 import { getAll } from "../../actions/personActions";
-import { updateModal } from "../../actions/modalActions";
+import { updateModal } from "../../actions/customModalActions";
 import PersonForm from "../../components/PersonForm";
 import DataTable4 from '../../components/DataTable4';
 import PersonColumn from '../../interfaces/PersonColumn';
 import { setForcedLogin } from "../../actions/loginActions";
+import { Chip } from "@material-ui/core";
 
 const columns: PersonColumn[] = [
   { id: "id", 
@@ -25,11 +26,24 @@ const columns: PersonColumn[] = [
     component: (value: any) => <span>{value.value}</span>,
   },
   {
-    id: "relationship",
-    label: "Parentesto",
+    id: "isPartner",
+    label: "parentesto",
     minWidth: 170,
     align: "right",
-    component: (value: any) => <span>{value.value ? value.value.relation_type.description : 'TITULAR' }</span>,
+    component: (value: any) => {
+      return (
+        <Chip
+          label={value.value === "1" ? "Socio" : "Familiar"}
+          style={{
+            backgroundColor: value.value === "1" ? "#2ecc71" : "#f1c40f",
+            color: "white",
+            fontWeight: "bold",
+            fontSize: "10px"
+          }}
+          size="small"
+        />
+      )
+    }
   },
   {
     id: "name",
@@ -67,10 +81,7 @@ export default function Person() {
         await dispatch(setForcedLogin(values.socio, values.token));
         dispatch(getAll(values.socio));
       } else {
-        if(!_.isEmpty(user)) {
           dispatch(getAll(user.username));
-        }
-       
       }
       }
       
@@ -83,7 +94,7 @@ export default function Person() {
         payload: {
           status: true,
           element: <PersonForm id={id} />,
-          customSize: 'large'
+          customSize: 'lg'
         }
       })
     );

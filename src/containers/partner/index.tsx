@@ -4,8 +4,8 @@ import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from 'react-redux';
 
 import './index.sass';
-import { getPartners, search } from "../../actions/personActions";
-import { updateModal } from "../../actions/modalActions";
+import { getPartners, search, searchByPartners } from "../../actions/personActions";
+import { updateModal } from "../../actions/customModalActions";
 import PersonForm from "../../components/PersonForm";
 import DataTable4 from '../../components/DataTable4'
 import CustomSearch from '../../components/FormElements/CustomSearch';
@@ -76,7 +76,7 @@ export default function Partners() {
         payload: {
           status: true,
           element: <PersonForm />,
-          customSize: 'large'
+          customSize: 'lg'
         }
       })
     );
@@ -86,7 +86,7 @@ export default function Partners() {
     if (event.value.trim() === '') {
       dispatch(getPartners())
     } else {
-      dispatch(search(event.value))
+      dispatch(searchByPartners(event.value))
     }
   }
 
@@ -96,7 +96,7 @@ export default function Partners() {
         payload: {
           status: true,
           element: <PersonForm id={id} />,
-          customSize: 'large'
+          customSize: 'lg'
         }
       })
     );

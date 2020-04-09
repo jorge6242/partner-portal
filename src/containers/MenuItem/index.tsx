@@ -5,18 +5,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 
 import { getAll, remove, search } from "../../actions/menuItemActions";
-import { updateModal } from "../../actions/modalActions";
+import { updateModal } from "../../actions/customModalActions";
 import MenuItemForm from "../../components/MenuItemForm";
 import DataTable4 from '../../components/DataTable4'
 import Columns from '../../interfaces/MenuItemColumns';
 import CustomSearch from '../../components/FormElements/CustomSearch';
 
 const columns: Columns[] = [
-  { 
+    { 
     id: "id", 
     label: "Id", 
     minWidth: 10,
     component: (value: any) => <span>{value.value}</span>
+  },
+  {
+    id: "father",
+    label: "Menu",
+    minWidth: 30,
+    align: "right",
+    component: (value: any) => <span>{value.value ? value.value.description : '-'}</span>
+  },
+  {
+    id: "main",
+    label: "Padre",
+    minWidth: 30,
+    align: "right",
+    component: (value: any) => <span>{value.value ? value.value.description : '-'}</span>
   },
   {
     id: "description",
@@ -35,6 +49,13 @@ const columns: Columns[] = [
   {
     id: "route",
     label: "Ruta",
+    minWidth: 30,
+    align: "right",
+    component: (value: any) => <span>{value.value}</span>
+  },
+  {
+    id: "order",
+    label: "Orden",
     minWidth: 30,
     align: "right",
     component: (value: any) => <span>{value.value}</span>

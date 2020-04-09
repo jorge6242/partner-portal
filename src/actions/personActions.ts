@@ -1,6 +1,6 @@
 import Person from "../api/Person";
 import snackBarUpdate from "../actions/snackBarActions";
-import { updateModal } from "../actions/modalActions";
+import { updateModal } from "../actions/customModalActions";
 import { updateModal as updateSecondModal } from "../actions/secondModalActions";
 import { ACTIONS } from "../interfaces/actionTypes/personTypes";
 import Axios from "../config/Axios";
@@ -66,6 +66,55 @@ export const search = (term: string) => async (dispatch: Function) => {
       dispatch({
         type: ACTIONS.GET_ALL,
         payload: response
+      });
+    }
+    dispatch({
+      type: ACTIONS.SET_LOADING,
+      payload: false
+    });
+    return response;
+  } catch (error) {
+    snackBarUpdate({
+      payload: {
+        message: error.message,
+        status: true,
+        type: "error"
+      }
+    })(dispatch);
+    dispatch({
+      type: ACTIONS.SET_LOADING,
+      payload: false
+    });
+    return error;
+  }
+};
+
+export const searchByPartners = (term: string) => async (dispatch: Function) => {
+  dispatch({
+    type: ACTIONS.SET_LOADING,
+    payload: true
+  });
+  try {
+    const {
+      data: { data },
+      status
+    } = await Person.searchByPartners(term);
+    let response = [];
+    if (status === 200) {
+      const pagination = {
+        total: data.total,
+        perPage: data.per_page,
+        prevPageUrl: data.prev_page_url,
+        currentPage: data.current_page,
+      }
+      response = data.data;
+      dispatch({
+        type: ACTIONS.GET_PARTNERS,
+        payload: response
+      });
+      dispatch({
+        type: ACTIONS.SET_PAGINATION,
+        payload: pagination
       });
     }
     dispatch({

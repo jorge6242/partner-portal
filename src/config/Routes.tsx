@@ -60,8 +60,13 @@ import Permission from "../containers/permission";
 import Role from "../containers/role";
 import MainLoader from "../components/MainLoading";
 import MenuItem from "../containers/MenuItem";
+import CustomModal from "../components/CustomModal";
 
-export default function Routes() { 
+export default function Routes() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(checkLogin());
+  },[dispatch])
   return (
     <HashRouter>
       <MainLayout>
@@ -98,6 +103,7 @@ export default function Routes() {
         </Switch>
         <Modal />
         <SecondModal />
+        <CustomModal />
         <SnackBar />
         <MainLoader />
       </MainLayout>

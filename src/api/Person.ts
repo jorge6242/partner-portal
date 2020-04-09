@@ -48,6 +48,12 @@ const Person = {
       headers: headers()
     });
   },
+  searchByPartners(term: string) {
+    return AXIOS.get(`${Prefix.api}/person-search-partners`, {
+      params: { term },
+      headers: headers()
+    });
+  },
   report() {
     return AXIOS.get(`${Prefix.api}/person-report`, { headers: headers() });
   },

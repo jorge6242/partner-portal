@@ -5,7 +5,7 @@ import Prefix from "../config/ApiPrefix";
 const API = {
   getAll(data: number, perPage: number) {
     const page = data ? data : 1;
-    return AXIOS.get(`${Prefix.api}/menu`, {
+    return AXIOS.get(`${Prefix.api}/menu-item-icon`, {
       params: {
         page,
         perPage
@@ -14,17 +14,11 @@ const API = {
     });
   },
   getList() {
-    return AXIOS.get(`${Prefix.api}/menu-list`, { headers: headers() });
-  },
-  getMenuList() {
-    return AXIOS.get(`${Prefix.api}/get-menu-list`, { headers: headers() });
-  },
-  getWidgetList() {
-    return AXIOS.get(`${Prefix.api}/widget-list`, { headers: headers() });
+    return AXIOS.get(`${Prefix.api}/menu-item-icon-list`, { headers: headers() });
   },
   create(data: any) {
     return AXIOS.post(
-      `${Prefix.api}/menu`,
+      `${Prefix.api}/menu-item-icon`,
       {
         ...data
       },
@@ -32,11 +26,11 @@ const API = {
     );
   },
   get(id: number) {
-    return AXIOS.get(`${Prefix.api}/menu/${id}`, { headers: headers() });
+    return AXIOS.get(`${Prefix.api}/menu-item-icon/${id}`, { headers: headers() });
   },
   update(data: any) {
     return AXIOS.put(
-      `${Prefix.api}/menu/${data.id}`,
+      `${Prefix.api}/menu-item-icon/${data.id}`,
       {
         ...data
       },
@@ -44,10 +38,10 @@ const API = {
     );
   },
   remove(id: number) {
-    return AXIOS.delete(`${Prefix.api}/menu/${id}`, { headers: headers() });
+    return AXIOS.delete(`${Prefix.api}/menu-item-icon/${id}`, { headers: headers() });
   },
   search(term: string, perPage: number) {
-    return AXIOS.get(`${Prefix.api}/menu-search`, {
+    return AXIOS.get(`${Prefix.api}/menu-item-icon-search`, {
       params: {
         term,
         perPage

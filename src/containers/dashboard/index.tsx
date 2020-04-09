@@ -65,6 +65,7 @@ import { getList as getMenuList, getWidgetList } from "../../actions/menuActions
 import Loader from "../../components/common/Loader";
 import { getClient } from "../../actions/personActions";
 import { getBalance } from "../../actions/webServiceActions";
+import icons from "../../helpers/collectionIcons";
 
 const drawerWidth = 240;
 
@@ -236,13 +237,20 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     </ListItem>
   )
 
-  const renderSecondMenu = (Icon: React.ReactType, title: string, route: string, menu: any, item: any) => {
+  const renderSecondMenu = (CustomIcon: React.ReactType, title: string, route: string, menu: any, item: any) => {
     const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
+    let Icon = SettingsIcon;
+    if(item.icons) {
+      let currenMenutIcon = icons.find((e: any) => e.slug === item.icons.slug);
+      if(currenMenutIcon) {
+        Icon = currenMenutIcon.name;
+      }
+    }
     return (
       <React.Fragment>
         <ListItem button onClick={() => findChildrens.length > 0 ? setSecondSubMenu(item.id) : handeClick(item.route ? item.route : '')}>
           <ListItemIcon >
-            <SettingsIcon />
+            <Icon />
           </ListItemIcon>
           <ListItemText primary={item.name} />
           {findChildrens.length > 0 && (
@@ -268,11 +276,18 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     return menu.map((item: any, i: number) => {
       if (item.parent === "0") {
         const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
+        let Icon = SettingsIcon;
+        if(item.icons) {
+          let currenMenutIcon = icons.find((e: any) => e.slug === item.icons.slug);
+          if(currenMenutIcon) {
+            Icon = currenMenutIcon.name;
+          }
+        }
         return (
           <React.Fragment>
             <ListItem button onClick={() => findChildrens.length > 0 ? setSubMenu(item.id) : handeClick(item.route ? item.route : '')}>
               <ListItemIcon >
-                <SettingsIcon />
+                <Icon />
               </ListItemIcon>
               <ListItemText primary={item.name} />
               {findChildrens.length > 0 && (

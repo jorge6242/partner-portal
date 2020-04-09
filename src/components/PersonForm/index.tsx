@@ -393,7 +393,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     fontWeight: theme.typography.fontWeightRegular
   },
   swipeableViewsContainer: {
-    height: "350px"
   },
   reportButtonContainer: {
     textAlign: "right"
@@ -968,19 +967,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
               </option>
             ))}
           </CustomSelect>
-        </Grid>
-        <Grid item xs={3}>
-          <CustomTextField
-            placeholder="Representante"
-            field="representante"
-            required
-            register={register}
-            errorsField={errors.representante}
-            errorsMessageField={
-              errors.representante && errors.representante.message
-            }
-            disable
-          />
         </Grid>
       </Grid>
     );

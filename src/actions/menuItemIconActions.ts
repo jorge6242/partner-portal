@@ -1,7 +1,7 @@
-import API from "../api/Menu";
+import API from "../api/MenuItemIcon";
 import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
-import { ACTIONS } from '../interfaces/actionTypes/menuTypes';
+import { ACTIONS } from '../interfaces/actionTypes/menuItemIconTypes';
 
 export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch: Function) => {
   dispatch({
@@ -47,7 +47,7 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch
     });
     return error;
   }
-}
+};
 
 export const getList = () => async (dispatch: Function) => {
   dispatch(updateModal({
@@ -77,90 +77,6 @@ export const getList = () => async (dispatch: Function) => {
         isLoader: false,
       }
     }));
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error"
-      }
-    })(dispatch);
-    return error;
-  }
-};
-
-export const getMenuList = () => async (dispatch: Function) => {
-  dispatch(
-    updateModal({
-      payload: {
-        isLoader: true,
-      },
-    })
-  );
-  try {
-    const {
-      data: { data },
-      status,
-    } = await API.getMenuList();
-    let response = [];
-    if (status === 200) {
-      response = data;
-      dispatch({
-        type: ACTIONS.GET_MENU_LIST,
-        payload: response,
-      });
-      dispatch(
-        updateModal({
-          payload: {
-            isLoader: false,
-          },
-        })
-      );
-    }
-    return response;
-  } catch (error) {
-    dispatch(
-      updateModal({
-        payload: {
-          isLoader: false,
-        },
-      })
-    );
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error",
-      },
-    })(dispatch);
-    return error;
-  }
-};
-
-export const getWidgetList = () => async (dispatch: Function) => {
-  dispatch({
-    type: ACTIONS.SET_WIDGET_LOADING,
-    payload: true
-  });
-  try {
-    const { data: { data }, status } = await API.getWidgetList();
-    let response = [];
-    if (status === 200) {
-      response = data;
-      dispatch({
-        type: ACTIONS.GET_WIDGET_LIST,
-        payload: response
-      });
-      dispatch({
-        type: ACTIONS.SET_WIDGET_LOADING,
-        payload: false
-      });
-    }
-    return response;
-  } catch (error) {
-    dispatch({
-      type: ACTIONS.SET_WIDGET_LOADING,
-      payload: false
-    });
     snackBarUpdate({
       payload: {
         message: error.message,
@@ -232,7 +148,7 @@ export const create = (body: object) => async (dispatch: Function) => {
       createresponse = response;
       snackBarUpdate({
         payload: {
-          message: "Transaction Created!",
+          message: "Menu Item Icon Created!",
           type: "success",
           status: true
         }
@@ -308,7 +224,7 @@ export const update = (body: object) => async (dispatch: Function) => {
       };
       snackBarUpdate({
         payload: {
-          message: "Transaction Updated!",
+          message: "Menu Item Icon Updated!",
           type: "success",
           status: true
         }
@@ -360,7 +276,7 @@ export const remove = (id: number) => async (dispatch: Function) => {
       };
       snackBarUpdate({
         payload: {
-          message: "Transaction Removed!",
+          message: "Menu Item Icon Removed!",
           type: "success",
           status: true
         }
