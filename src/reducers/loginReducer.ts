@@ -3,12 +3,14 @@ import SecureStorage from "../config/SecureStorage";
 
 type LoginInitialState = {
   user: any;
+  userRoles: Array<string | number>
   status: boolean;
   loading: boolean;
 }
 
 const initialState: LoginInitialState = {
   user: {},
+  userRoles: [],
   status: false,
   loading: false
 };
@@ -21,6 +23,11 @@ const userReducer = (state = initialState, action: ActionTypes) => {
         user: action.payload,
         status: true
       };
+      case ACTIONS.SET_ROLES:
+        return {
+          ...state,
+          userRoles: action.payload,
+        };
     case ACTIONS.LOGOUT:
       return {
         ...state,

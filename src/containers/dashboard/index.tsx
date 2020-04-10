@@ -127,7 +127,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { user, loading } = useSelector((state: any) => state.loginReducer);
+  const { user, loading, userRoles } = useSelector((state: any) => state.loginReducer);
 
   const { listData: menuList } = useSelector((state: any) => state.menuReducer);
 
@@ -444,7 +444,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                   onClose={handleClose}
                 >
                  <MenuItem>Usuario: {!loading && user.username}</MenuItem>
-                 <MenuItem>Role: *</MenuItem>
+                 <MenuItem>Role: {userRoles.length > 0 && userRoles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
                   <MenuItem onClick={() => handleLogout()}>Logout</MenuItem> 
                 </Menu>
               </div>
