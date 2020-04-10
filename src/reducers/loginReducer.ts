@@ -8,7 +8,7 @@ type LoginInitialState = {
 }
 
 const initialState: LoginInitialState = {
-  user: {},
+  user: null,
   status: false,
   loading: false
 };
