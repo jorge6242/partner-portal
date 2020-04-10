@@ -53,7 +53,7 @@ type FormData = {
     nMonto: string,
     NroReferencia: string,
     NroReferencia2: string,
-    sDescripition: string,
+    sDescripcion: string,
     EstadoCuenta: string,
     status: string,
     dFechaProceso: string,
@@ -204,12 +204,12 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                     />
                     <CustomTextField
                         placeholder="Descripcion"
-                        field="sDescripition"
+                        field="sDescripcion"
                         required
                         register={register}
-                        errorsField={errors.sDescripition}
+                        errorsField={errors.sDescripcion}
                         errorsMessageField={
-                            errors.sDescripition && errors.sDescripition.message
+                            errors.sDescripcion && errors.sDescripcion.message
                         }
                     />
 

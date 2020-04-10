@@ -62,7 +62,7 @@ export const create = (body: object) => async (dispatch: Function) => {
       createresponse = response;
       snackBarUpdate({
         payload: {
-          message: "Reporte Creado",
+          message: "Su pago ha sido reportado exitosamente",
           type: "success",
           status: true
         }

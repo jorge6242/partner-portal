@@ -10,7 +10,7 @@ export default interface Columns {
       | "acumulado";
     label: string;
     minWidth?: number;
-    align?: "right";
+    align?: "right" | "left" | "center";
     component?: any;
   }
   

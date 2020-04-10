@@ -104,7 +104,9 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   align={column.align}
                   className={classes.tableCellHeader}
                   style={{
-                    minWidth: column.minWidth, fontSize
+                    minWidth: column.minWidth, 
+                    fontSize,
+                    fontWeight: 'bold',
                   }}
                 >
                   {column.label}
@@ -115,7 +117,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               {handleDelete && <TableCell style={{ minWidth: 5 }}></TableCell>}
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody style={{ overflow: 'hidden' }}>
             {loading ? (
               <TableRow className={classes.progress}>
                 <TableCell colSpan={columns.length}><CircularProgress color="primary" /></TableCell>

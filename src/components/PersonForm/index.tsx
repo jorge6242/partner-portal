@@ -182,6 +182,30 @@ const FamilysColumns: FamilyPersonColumns[] = [
     component: (value: any) => <span>{value.value}</span>
   },
   {
+    id: "rif_ci",
+    label: "RIF/CI",
+    minWidth: 30,
+    align: "right",
+    component: (value: any) => <span>{value.value}</span>
+  },
+  {
+    id: "relationType",
+    label: "Parentesco",
+    minWidth: 30,
+    align: "right",
+    component: (value: any) => (<Chip
+      label={value.value.description}
+      style={{
+        backgroundColor: "#f1c40f",
+        color: "white",
+        fontWeight: "bold",
+        fontSize: "10px"
+      }}
+      size="small"
+    />
+    )
+  },
+  {
     id: "name",
     label: "Nombre",
     minWidth: 30,
@@ -194,17 +218,6 @@ const FamilysColumns: FamilyPersonColumns[] = [
     minWidth: 30,
     align: "right",
     component: (value: any) => <span>{value.value}</span>
-  },
-  {
-    id: "relationType",
-    label: "Parentesco",
-    minWidth: 30,
-    align: "right",
-    component: (value: any) => (
-      <span>
-        <strong>{value.value.description}</strong>
-      </span>
-    )
   },
   {
     id: "status",

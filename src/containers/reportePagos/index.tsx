@@ -34,13 +34,14 @@ const columns: reportePagosColumns[] = [
     {
         id: "dFechaPago",
         label: "Fecha",
-        minWidth: 10,
+        minWidth: 30,
         component: (value: any) => <span>{moment(value.value).format("DD-MM-YYYY")}</span>
     },
     {
         id: "NroReferencia",
         label: "Referencia",
-        minWidth: 10,
+        minWidth: 20,
+        align: "center",
         component: (value: any) => <span>{value.value}</span>
     },
     {
@@ -66,7 +67,7 @@ const columns: reportePagosColumns[] = [
         id: "status",
         label: "Status",
         minWidth: 30,
-        align: "right",
+        align: "center",
         component: (value: any) => <span>Pendiente</span>
     },
 ];
@@ -100,12 +101,14 @@ const unpaidInvoicesColumns: UnpaidInvoicesColumns[] = [
         id: "saldo",
         label: "Saldo",
         minWidth: 10,
+        align: "right",
         component: (value: any) => <span>{value.value}</span>
     },
     {
         id: "acumulado",
         label: "Acumulado",
         minWidth: 10,
+        align: "right",
         component: (value: any) => <span>{value.value}</span>
     },
 ];

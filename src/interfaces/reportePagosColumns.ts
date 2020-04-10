@@ -14,7 +14,7 @@ export default interface Columns {
     | "status";
   label: string;
   minWidth?: number;
-  align?: "left" | "right";
+  align?: "left" | "right" | "center";
   component?: any;
 }
 // "nMonto": "112.21",

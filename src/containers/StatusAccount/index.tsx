@@ -13,17 +13,21 @@ import Columns from '../../interfaces/StatusAccountColumns';
 import { getStatusAccount } from "../../actions/webServiceActions";
 import { Grid } from "@material-ui/core";
 import { setForcedLogin } from "../../actions/loginActions";
+import moment from "moment";
 
 const columns: Columns[] = [
   {
     id: "fact_num",
-    label: "Nro", minWidth: 20,
+    label: "Nro", 
+    minWidth: 20,
+    align: "center",
     component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "fec_emis",
-    label: "Emision", minWidth: 20,
-    component: (value: any) => <span>{value.value}</span>,
+    label: "Emision", 
+    minWidth: 20,
+    component: (value: any) => <span>{moment(value.value).format("DD/MM/YYYY")}</span>,
   },
   {
     id: "descrip",
@@ -32,22 +36,30 @@ const columns: Columns[] = [
   },
   {
     id: "tipo",
-    label: "Tipo", minWidth: 20,
+    label: "Tipo", 
+    minWidth: 20,
+    align: "center",
     component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "total_fac",
-    label: "Debe", minWidth: 20,
+    label: "Debe", 
+    minWidth: 20,
+    align: "right",
     component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "saldo",
-    label: "Haber", minWidth: 20,
+    label: "Haber", 
+    minWidth: 20,
+    align: "right",
     component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "acumulado",
-    label: "Acumulado", minWidth: 20,
+    label: "Acumulado", 
+    minWidth: 20,
+    align: "right",
     component: (value: any) => <span>{value.value}</span>,
   },
 ];
