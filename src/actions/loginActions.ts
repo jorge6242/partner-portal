@@ -65,14 +65,13 @@ export const checkLogin = () => async (dispatch: Function) => {
     if (status === 200) {
       checkLoginResponse = data;
       const { user } = data;
-      const role = _.first(user.roles);
-      const roles = user.roles;
-      await dispatch({ type: ACTIONS.SET_USER, payload: { ...user, role, roles } });
+      await dispatch({ type: ACTIONS.SET_USER, payload: { ...user } });
       dispatch(mainStatusLoading(false));
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
     return checkLoginResponse;
   } catch (error) {
+    dispatch({ type: ACTIONS.SET_LOADING, payload: false });
      dispatch(mainStatusLoading(false));
     return error;
   }
