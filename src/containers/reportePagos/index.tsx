@@ -30,6 +30,23 @@ const ExpansionPanelSummary = withStyles({
     }
 })(MuiExpansionPanelSummary);
 
+function formatNumber(num: any) {
+    num = "" + Math.floor(num * 100.0 + 0.5) / 100.0;
+
+    var i = num.indexOf(".");
+
+    if (i < 0) num += ",00";
+    else {
+        num = num.substring(0, i) + "," + num.substring(i + 1);
+        var nDec = (num.length - i) - 1;
+        if (nDec == 0) num += "00";
+        else if (nDec == 1) num += "0";
+        else if (nDec > 2) num = num.substring(0, i + 3);
+    }
+
+    return num;
+}
+
 const columns: reportePagosColumns[] = [
     {
         id: "dFechaPago",
@@ -61,7 +78,7 @@ const columns: reportePagosColumns[] = [
         label: "Monto",
         minWidth: 30,
         align: "right",
-        component: (value: any) => <span>{value.value}</span>
+        component: (value: any) => <span>{formatNumber(value.value)}</span>
     },
     {
         id: "status",
@@ -102,14 +119,14 @@ const unpaidInvoicesColumns: UnpaidInvoicesColumns[] = [
         label: "Saldo",
         minWidth: 10,
         align: "right",
-        component: (value: any) => <span>{value.value}</span>
+        component: (value: any) => <span>{formatNumber(value.value)}</span>
     },
     {
         id: "acumulado",
         label: "Acumulado",
         minWidth: 10,
         align: "right",
-        component: (value: any) => <span>{value.value}</span>
+        component: (value: any) => <span>{formatNumber(value.value)}</span>
     },
 ];
 
@@ -152,7 +169,7 @@ export default function ReportePagos() {
         dispatch(getUnpaidInvoices());
         dispatch(getReportedPayments());
     }, [dispatch]);
-    
+
 
     const handleExpandedPanel = (panel: string) => (
         event: React.ChangeEvent<{}>,
@@ -180,7 +197,7 @@ export default function ReportePagos() {
                     rows={unpaidInvoices.data}
                     columns={unpaidInvoicesColumns}
                     loading={setUnpaidInvoicestLoading}
-                    aditionalColumn={unpaidInvoices.total}
+                    aditionalColumn={formatNumber(unpaidInvoices.total)}
                     aditionalColumnLabel="Total"
                 />
             </Grid>

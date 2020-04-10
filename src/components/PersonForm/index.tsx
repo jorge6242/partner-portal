@@ -461,6 +461,10 @@ const useStyles = makeStyles((theme: Theme) => ({
   },
   personRecordTitle: {
     textAlign: "right"
+  },
+  transferListContainer: {
+    textAlign: 'center',
+    justifyContent: 'center !important'
   }
 }));
 
@@ -1507,8 +1511,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                             </Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
-                            <Grid container spacing={3}>
-                              <Grid item xs={12}>
+                            <Grid container spacing={3} className={classes.transferListContainer}>
+                              <Grid item xs={12}  >
                                 {professionList.length > 0 && selectedProff && (
                                   <TransferList
                                     data={professionList}
