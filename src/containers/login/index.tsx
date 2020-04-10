@@ -25,8 +25,8 @@ export default function Login() {
     <div className="login-container">
       <div className="login-container__form">
         <LoginForm loading={loading} handleForm={handleForm} />
-        <div><a href="http://portal.dev.com/#/dashboard/status-account?socio=A-1713&token=LUCA123456">LINK Estado cuenta</a></div>
-        <div><a href="http://portal.dev.com/#/dashboard/actualizacion-datos?socio=A-1713&token=LUCA123456">LINK Actualizacion datos</a></div>
+        {/* <div><a href="http://portal.dev.com/#/dashboard/status-account?socio=A-1713&token=LUCA123456">LINK Estado cuenta</a></div>
+        <div><a href="http://portal.dev.com/#/dashboard/actualizacion-datos?socio=A-1713&token=LUCA123456">LINK Actualizacion datos</a></div> */}
       </div>
     </div>
   );

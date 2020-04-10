@@ -575,7 +575,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     (state: any) => state.paymentMethodReducer
   );
 
-  const { user } = useSelector(
+  const { user, userRoles } = useSelector(
     (state: any) => state.loginReducer
   );
 
@@ -823,8 +823,9 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   };
 
   const renderMainData = () => {
+    const promotor = userRoles.length > 0 && userRoles.find((e:any) => e.slug === 'promotor');
     let disableField = false;
-    if (!_.isEmpty(user) && user.role.slug === 'promotor') {
+    if (!_.isEmpty(promotor)) {
       disableField = true;
     }
     return (
@@ -1276,7 +1277,9 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   const getNacionalityLabel = (row: any) => row.citizenship;
 
   const renderShareProfile = () => {
-    if (!_.isEmpty(user) && user.role.slug === 'promotor') {
+    const promotor = userRoles.length > 0 && userRoles.find((e:any) => e.slug === 'promotor');
+    const socio = userRoles.length > 0 && userRoles.find((e:any) => e.slug === 'socio');
+    if (!_.isEmpty(promotor)) {
       return (
         <Grid item xs={12}>
           <Grid item xs={12} className={classes.profileShareTitle}>Acciones</Grid>
@@ -1294,7 +1297,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         </Grid>
       )
     }
-    if (!_.isEmpty(user) && user.role.slug === 'socio') {
+    if (!_.isEmpty(socio)) {
       return (
         <Grid item xs={12} className={classes.profileMovement}>
           <Grid item xs={12} className={classes.profileShareTitle}>Accion N° {user.username}</Grid>
