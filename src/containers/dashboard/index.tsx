@@ -444,7 +444,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                   onClose={handleClose}
                 >
                  <MenuItem>Usuario: {user && user.username}</MenuItem>
-                 <MenuItem>Role: {user && !_.isEmpty(user) && user.roles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
+                 <MenuItem>Role: *</MenuItem>
                   <MenuItem onClick={() => handleLogout()}>Logout</MenuItem> 
                 </Menu>
               </div>
