@@ -364,7 +364,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
         <Divider />
         <List dense >
           {!_.isEmpty(menuList) && buildMenu(menuList.items)}
-          <ListItem button onClick={() => handleClick(3)}>
+          {/* <ListItem button onClick={() => handleClick(3)}>
           <ListItemIcon >
             <LockIcon />
           </ListItemIcon>
@@ -399,7 +399,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                 {renderFirstMenu(AccountCircleIcon, "Socios", "/dashboard/partner")}
               </React.Fragment>
             )
-          }
+          } */}
         </List>
       </div>
     )
