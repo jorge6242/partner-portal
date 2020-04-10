@@ -406,7 +406,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     )
   };
   // const nameRole: any = !_.isEmpty(user) ? user.role.name : '';
-
+  console.log('user ', user);
   return (
     <div className={classes.root}>
       <CssBaseline />
