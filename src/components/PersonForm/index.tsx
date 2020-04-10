@@ -83,6 +83,7 @@ import {
   getNotesByPerson,
 } from "../../actions/noteActions";
 import { getLastMovement, updateLastMovement } from "../../actions/shareMovementActions";
+import SearchAutoComplete from "../SearchAutoComplete";
 
 const ExpansionPanelSummary = withStyles({
   root: {
@@ -274,12 +275,12 @@ function getParsePerson(data: any, classes: any) {
       </Grid>
       <Grid item xs={3}>
         <Paper className={classes.parsedPersonContainerDetail}>
-          <strong>Nombre:</strong> {name} {last_name}
+          <strong>Cedula:</strong> {rif_ci}
         </Paper>
       </Grid>
       <Grid item xs={3}>
         <Paper className={classes.parsedPersonContainerDetail}>
-          <strong>Cedula:</strong> {rif_ci}
+          <strong>Nombre:</strong> {name} {last_name}
         </Paper>
       </Grid>
       <Grid item xs={3}>
@@ -329,7 +330,7 @@ const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper
   },
-  personContent : {
+  personContent: {
     backgroundColor: theme.palette.background.paper,
     width: '100%',
   },
@@ -789,7 +790,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   const handleShareSelect = (event: any) => {
     dispatch(getShare(event.target.value));
     const share: any = sharesByPartner.find((e: any) => e.id === event.target.value);
-    if(share){
+    if (share) {
       dispatch(getLastMovement(share.share_number));
     } else {
       dispatch(updateLastMovement());
@@ -976,15 +977,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     return (
       <Grid container spacing={2}>
         <Grid item xs={3}>
-          <CustomTextField
-            placeholder="Direccion"
-            field="address"
-            register={register}
-            errorsField={errors.address}
-            errorsMessageField={errors.address && errors.address.message}
-          />
-        </Grid>
-        <Grid item xs={3}>
           <CustomSelect
             label="Pais"
             selectionMessage="Seleccione Pais"
@@ -1028,6 +1020,16 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             errorsMessageField={
               errors.postal_code && errors.postal_code.message
             }
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <CustomTextField
+            placeholder="Direccion"
+            field="address"
+            register={register}
+            errorsField={errors.address}
+            errorsMessageField={errors.address && errors.address.message}
+            multiline
           />
         </Grid>
       </Grid>
@@ -1286,7 +1288,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   }
 
   const renderLastMovement = () => {
-    if(lastMovementLoading) {
+    if (lastMovementLoading) {
       return <Loader />
     }
     return !_.isEmpty(lastMovement) &&
@@ -1297,6 +1299,34 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           <Grid item xs={12} className={classes.profileMovement}>{lastMovement.transaction.description}</Grid>
         </Grid>
       )
+  }
+
+  const rendeWork = () => {
+    return (
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          {/* <SearchAutoComplete
+            label="Accion"
+            options={shareToAssignList}
+            loading={shareToAssignLoading}
+            handleSearch={handleSearchShares}
+            handleSelect={handleSelectShare}
+            errorsField={errors.share_id}
+            getOptionLabel={getOptionLabelShare}
+            errorsMessageField={
+              errors.share_id && errors.share_id.message
+            }
+          />
+          <input
+            style={{ display: "none" }}
+            name="share_id"
+            ref={register({
+              required: true
+            })}
+          /> */}
+        </Grid>
+      </Grid>
+    )
   }
 
   let imagePreview = picture;
@@ -1363,6 +1393,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                       <Tab label="Pagos" disabled={isFamily} />
                       <Tab label="Expedientes" disabled={isFamily} />
                       <Tab label="Lockers" disabled={isFamily} />
+                      <Tab label="Trabajo" disabled={isFamily} />
                     </Tabs>
                   </AppBar>
                   <SwipeableViews
@@ -1440,7 +1471,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                             id="panel1a-header"
                           >
                             <Typography className={classes.heading}>
-                              Trabajo
+                              Profesiones
                             </Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
@@ -1475,7 +1506,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                             id="panel1a-header"
                           >
                             <Typography className={classes.heading}>
-                              Otros
+                              Nacionalidades y Deportes
                             </Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
@@ -1721,6 +1752,9 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                           </Grid>
                         </Grid>
                       </div>
+                    </TabPanel>
+                    <TabPanel value={tabValue} index={4} dir={theme.direction}>
+                      Trabajo content
                     </TabPanel>
                   </SwipeableViews>
                 </div>

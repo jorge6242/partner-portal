@@ -114,6 +114,14 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
       </div>
 
+      <Typography component="h3">
+          Usuarios:
+        </Typography>
+        <Typography component="h4">
+          <strong>Socio:</strong> usuario: A-1713 - clave: 123456 <br />
+          <strong>Promotor:</strong> usuario: promotor - clave: 123456 
+        </Typography>
+
         </form>
       </div>
     </Container>
