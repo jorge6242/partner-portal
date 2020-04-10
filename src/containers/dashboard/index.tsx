@@ -434,7 +434,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                   onClick={handleMenu}
                   className={classes.profileButton}
                 >
-                  Usuario: {user && user.username}
+                  Usuario: {!loading && user.username}
                 </Button>
                 <Menu
                   id="simple-menu"
@@ -443,7 +443,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                 <MenuItem>Usuario: {user && user.username}</MenuItem>
+                 <MenuItem>Usuario: {!loading && user.username}</MenuItem>
                  <MenuItem>Role: *</MenuItem>
                   <MenuItem onClick={() => handleLogout()}>Logout</MenuItem> 
                 </Menu>
