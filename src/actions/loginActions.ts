@@ -109,8 +109,8 @@ export const setForcedLogin = (socio: any, token: any) => async (
       const { token, user } = data;
       dispatch({ type: ACTIONS.SET_USER, payload: { ...user } });
       SecureStorage.setItem("token", token);
+      await dispatch(mainStatusLoading(false));
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-      dispatch(mainStatusLoading(false));
     }
     return response;
   } catch (error) {
