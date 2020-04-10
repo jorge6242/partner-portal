@@ -70,7 +70,7 @@ export const checkLogin = () => async (dispatch: Function) => {
       const roles = user.roles;
       await dispatch({ type: ACTIONS.SET_USER, payload: { ...user, role, roles } });
       dispatch(mainStatusLoading(false));
-      dispatch({ type: ACTIONS.SET_LOADING, payload: true });
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
     return checkLoginResponse;
   } catch (error) {
