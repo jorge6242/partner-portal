@@ -58,6 +58,7 @@ export const logout = () => (dispatch: Function) => {
 
 export const checkLogin = () => async (dispatch: Function) => {
   dispatch(mainStatusLoading(true));
+  dispatch({ type: ACTIONS.SET_LOADING, payload: true });
   try {
     const { data, status } = await Auth.checkLogin();
     let checkLoginResponse = [];
@@ -68,6 +69,7 @@ export const checkLogin = () => async (dispatch: Function) => {
       const roles = user.roles;
       await dispatch({ type: ACTIONS.SET_USER, payload: { ...user, role, roles } });
       dispatch(mainStatusLoading(false));
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
     return checkLoginResponse;
   } catch (error) {
