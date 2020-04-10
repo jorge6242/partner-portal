@@ -65,7 +65,6 @@ export const checkLogin = () => async (dispatch: Function) => {
       checkLoginResponse = data;
       const { user } = data;
       const role = _.first(user.roles);
-      console.log('role ', role);
       const roles = user.roles;
       await dispatch({ type: ACTIONS.SET_USER, payload: { ...user, role, roles } });
       dispatch(mainStatusLoading(false));

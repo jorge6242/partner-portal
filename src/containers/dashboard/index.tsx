@@ -58,6 +58,7 @@ import Loader from "../../components/common/Loader";
 import { getClient } from "../../actions/personActions";
 import { getBalance } from "../../actions/webServiceActions";
 import icons from "../../helpers/collectionIcons";
+import { Chip } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -443,7 +444,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                   onClose={handleClose}
                 >
                  <MenuItem>Usuario: {!loading && user.username}</MenuItem>
-                 <MenuItem>Role: {!_.isEmpty(user) ? user.role.name : ''}</MenuItem>
+                 <MenuItem>Role: {!_.isEmpty(user) && user.roles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
                   <MenuItem onClick={() => handleLogout()}>Logout</MenuItem> 
                 </Menu>
               </div>
