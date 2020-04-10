@@ -19,8 +19,10 @@ export const login = (body: object) => async (dispatch: Function) => {
         status,
       };
       const { token, user } = data;
+      const role = _.first(user.roles);
+      const roles = user.roles;
       SecureStorage.setItem("token", token);
-      dispatch({ type: ACTIONS.SET_USER, payload: { ...user } });
+      dispatch({ type: ACTIONS.SET_USER, payload: { ...user, role, roles } });
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
     }
     return authResponse;
@@ -105,7 +107,9 @@ export const setForcedLogin = (socio: any, token: any) => async (
     if (status === 200) {
       response = data;
       const { token, user } = data;
-      dispatch({ type: ACTIONS.SET_USER, payload: { ...user } });
+      const role = _.first(user.roles);
+      const roles = user.roles;
+      dispatch({ type: ACTIONS.SET_USER, payload: { ...user, role, roles } });
       SecureStorage.setItem("token", token);
       dispatch({ type: ACTIONS.SET_LOADING, payload: false });
       dispatch(mainStatusLoading(false));
