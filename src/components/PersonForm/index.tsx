@@ -84,6 +84,14 @@ import {
 } from "../../actions/noteActions";
 import { getLastMovement, updateLastMovement } from "../../actions/shareMovementActions";
 import SearchAutoComplete from "../SearchAutoComplete";
+import { getAll as getGenderAll } from "../../actions/genderActions";
+import { getList as getLockerLocationList } from "../../actions/lockerLocationsActions";
+import { getAll as getStatusPersonAll } from "../../actions/statusPersonActions";
+import { getAll as getMaritalStatusAll } from "../../actions/maritalStatusActions";
+import { getAll as getCountries } from "../../actions/countryActions";
+import { getAll as getRelationTypes } from "../../actions/relationTypeActions";
+import { getAll as getPaymentMethods } from "../../actions/paymentMethodActions";
+import { getAll as getSports } from "../../actions/sportActions";
 
 const ExpansionPanelSummary = withStyles({
   root: {
@@ -606,6 +614,14 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
 
   useEffect(() => {
     setSelectedProff([]);
+    dispatch(getGenderAll());
+    dispatch(getLockerLocationList());
+    dispatch(getStatusPersonAll());
+    dispatch(getMaritalStatusAll());
+    dispatch(getCountries());
+    dispatch(getRelationTypes());
+    dispatch(getPaymentMethods());
+    dispatch(getSports());
     async function fetch() {
       if (id) {
         const response: any = await dispatch(get(id));
