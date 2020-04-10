@@ -443,7 +443,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                   onClose={handleClose}
                 >
                  <MenuItem>Usuario: {!loading && user.username}</MenuItem>
-                  <MenuItem>Role: </MenuItem>
+                 <MenuItem>Role: {!_.isEmpty(user) ? user.role.name : ''}</MenuItem>
                   <MenuItem onClick={() => handleLogout()}>Logout</MenuItem> 
                 </Menu>
               </div>
