@@ -2,7 +2,7 @@ import {  ACTIONS, ActionTypes } from '../interfaces/actionTypes/loginTypes';
 import SecureStorage from "../config/SecureStorage";
 
 type LoginInitialState = {
-  user: object;
+  user: any;
   status: boolean;
   loading: boolean;
 }
