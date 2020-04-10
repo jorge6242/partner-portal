@@ -404,7 +404,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       </div>
     )
   };
-  const nameRole: any = !_.isEmpty(user) ? user.role.name : '';
+  // const nameRole: any = !_.isEmpty(user) ? user.role.name : '';
 
   return (
     <div className={classes.root}>
@@ -443,7 +443,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                   onClose={handleClose}
                 >
                  <MenuItem>Usuario: {!loading && user.username}</MenuItem>
-                  <MenuItem>Role: {!loading && nameRole}</MenuItem>
+                  <MenuItem>Role: </MenuItem>
                   <MenuItem onClick={() => handleLogout()}>Logout</MenuItem> 
                 </Menu>
               </div>
