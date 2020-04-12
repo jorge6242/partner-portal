@@ -152,7 +152,7 @@ export const create = (body: object) => async (dispatch: Function) => {
       createresponse = response;
       snackBarUpdate({
         payload: {
-          message: "Locker Registrado!",
+          message: "Locker ha sido Registrado!",
           type: "success",
           status: true
         }

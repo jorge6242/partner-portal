@@ -153,7 +153,7 @@ export const create = (body: any) => async (dispatch: Function) => {
       createresponse = response;
       snackBarUpdate({
         payload: {
-          message: "Record Created!",
+          message: "Record ha sido Registrado!",
           type: "success",
           status: true
         }
@@ -229,7 +229,7 @@ export const update = (body: object) => async (dispatch: Function) => {
       };
       snackBarUpdate({
         payload: {
-          message: "Record Updated!",
+          message: "Record ha sido Actualizado!",
           type: "success",
           status: true
         }
@@ -281,7 +281,7 @@ export const remove = (id: number) => async (dispatch: Function) => {
       };
       snackBarUpdate({
         payload: {
-          message: "Record Removed!",
+          message: "Record ha sido Elmiminado!",
           type: "success",
           status: true
         }

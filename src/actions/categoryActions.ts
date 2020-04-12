@@ -43,7 +43,7 @@ export const create = (body: object) => async (dispatch: Function) => {
           createCategoryResponse = response;
           snackBarUpdate({
               payload: {
-                  message: 'Category Created!',
+                  message: 'Category ha sido Registrado!',
                   type: 'success',
                   status: true,
               },
@@ -118,7 +118,7 @@ export const update = (body: object) => async (dispatch: Function) => {
           };
           snackBarUpdate({
               payload: {
-                  message: 'Category Updated!',
+                  message: 'Category ha sido Actualizado!',
                   type: 'success',
                   status: true,
               },
@@ -160,7 +160,7 @@ export const remove = (id: number) => async (dispatch: Function) => {
           };
           snackBarUpdate({
               payload: {
-                  message: 'Category Removed!',
+                  message: 'Category ha sido Elmiminado!',
                   type: 'success',
                   status: true,
               },

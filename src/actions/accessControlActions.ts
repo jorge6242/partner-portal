@@ -162,7 +162,7 @@ export const create = (body: object) => async (dispatch: Function) => {
       createresponse = response;
       snackBarUpdate({
         payload: {
-          message: "Ingreso Registrado!",
+          message: "Ingreso ha sido Registrado!",
           type: "success",
           status: true
         }
@@ -242,7 +242,7 @@ export const update = (body: object) => async (dispatch: Function) => {
       };
       snackBarUpdate({
         payload: {
-          message: "Access control Updated!",
+          message: "Access control ha sido Actualizado!",
           type: "success",
           status: true
         }
@@ -296,7 +296,7 @@ export const remove = (id: number) => async (dispatch: Function) => {
       };
       snackBarUpdate({
         payload: {
-          message: "Access control Removed!",
+          message: "Access control ha sido eliminado!",
           type: "success",
           status: true
         }
