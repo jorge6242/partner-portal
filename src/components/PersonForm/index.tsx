@@ -542,6 +542,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   const [selectedSports, setSelectedSports] = useState<Array<string | number>>(
     []
   );
+  const [selectedCompany, setSelectedCompany] = useState<any>(null);
   /* Form */
 
   const {
@@ -680,7 +681,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           countries,
           sports,
           lockers,
-          isPartner
+          isPartner,
+          company,
         } = response;
         setValue("name", name);
         setValue("last_name", last_name);
@@ -708,6 +710,9 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         setValue("status_person_id", status_person_id);
         setValue("marital_statuses_id", marital_statuses_id);
         setValue("countries_id", countries_id);
+        if (company) {
+          setSelectedCompany(company);
+        }
         if (isPartner === 2) {
           setIsFamily(true);
         } else {
@@ -1291,6 +1296,34 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     );
   };
 
+  const renderWork = () => {
+    return (
+      <Grid container spacing={3}>
+        <Grid item xs={6}>
+          <CustomTextField
+            placeholder="Representante"
+            field="representante"
+            required
+            register={register}
+            errorsField={errors.representante}
+            errorsMessageField={
+              errors.representante && errors.representante.message
+            }
+            disable
+          />
+        </Grid>
+        {
+          selectedCompany && (
+            <React.Fragment>
+              <Grid item xs={12}>Actual Compania:</Grid>
+              <Grid item xs={12}>{getParsePerson(selectedCompany, classes)}</Grid>
+            </React.Fragment>
+          )
+        }
+      </Grid>
+    )
+  }
+
   const getNacionalityLabel = (row: any) => row.citizenship;
 
   const renderShareProfile = () => {
@@ -1429,7 +1462,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                       <Tab label="Pagos" disabled={isFamily} />
                       <Tab label="Expedientes" disabled={isFamily} />
                       <Tab label="Lockers" disabled={isFamily} />
-                      <Tab label="Trabajo" disabled={isFamily} />
                     </Tabs>
                   </AppBar>
                   <SwipeableViews
@@ -1542,7 +1574,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                             id="panel1a-header"
                           >
                             <Typography className={classes.heading}>
-                              Nacionalidades y Deportes
+                              Nacionalidades
                             </Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
@@ -1563,6 +1595,25 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                                   ref={register}
                                 />
                               </Grid>
+                            </Grid>
+                          </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel
+                          disabled={disableTabs}
+                          expanded={expanded === "panel6"}
+                          onChange={handleExpandedPanel("panel6")}
+                        >
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                          >
+                            <Typography className={classes.heading}>
+                              Deportes
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails>
+                            <Grid container spacing={3}>
                               <Grid item xs={12} justify="flex-start">
                                 {sportList.length > 0 && (
                                   <TransferList
@@ -1579,6 +1630,24 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                                 />
                               </Grid>
                             </Grid>
+                          </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                        <ExpansionPanel
+                          disabled={disableTabs}
+                          expanded={expanded === "panel7"}
+                          onChange={handleExpandedPanel("panel7")}
+                        >
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                            aria-controls="panel1a-content"
+                            id="panel1a-header"
+                          >
+                            <Typography className={classes.heading}>
+                              Trabajo
+                            </Typography>
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails>
+                                {renderWork()}
                           </ExpansionPanelDetails>
                         </ExpansionPanel>
                       </div>
@@ -1788,9 +1857,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                           </Grid>
                         </Grid>
                       </div>
-                    </TabPanel>
-                    <TabPanel value={tabValue} index={4} dir={theme.direction}>
-                      Trabajo content
                     </TabPanel>
                   </SwipeableViews>
                 </div>

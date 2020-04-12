@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     list: {
       height: 150,
-      width: 200,
+      width: 300,
       backgroundColor: theme.palette.background.paper,
       overflow: "auto"
     },

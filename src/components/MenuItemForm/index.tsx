@@ -30,7 +30,8 @@ const useStyles = makeStyles(theme => ({
     },
     wrapper: {
         margin: theme.spacing(1),
-        position: "relative"
+        position: "relative",
+        textAlign: 'center'
     },
     buttonProgress: {
         position: "absolute",
@@ -40,16 +41,9 @@ const useStyles = makeStyles(theme => ({
         marginLeft: -9
     },
     submit: {
-        margin: theme.spacing(3, 0, 2)
+        margin: theme.spacing(3, 0, 2),
+        width: '30%'
     },
-    select: {
-        padding: "10px 0px 10px 0px",
-        width: " 100%",
-        backgroundColor: "transparent",
-        border: 0,
-        borderBottom: "1px solid grey",
-        fontSize: "16px"
-    }
 }));
 
 type FormData = {
@@ -109,13 +103,14 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
         async function fetch() {
             if (id) {
                 const response: any = await dispatch(get(id));
-                const { name, slug, description, route, menu_id, parent , menu_item_icon_id, roles } = response;
+                const { name, slug, description, route, menu_id, parent , menu_item_icon_id, roles, order } = response;
                 setValue("name", name);
                 setValue("slug", slug);
                 setValue("description", description);
                 setValue("route", route);
                 setValue("parent", parent);
                 setValue("menu_id", menu_id);
+                setValue("order", order);
                 setValue("menu_item_icon_id", menu_item_icon_id);
                 if (roles && roles.length > 0) {
                     setSelectedData(roles);
@@ -275,7 +270,6 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
                             <CustomTextField
                                 placeholder="Ruta"
                                 field="route"
-                                required
                                 register={register}
                                 errorsField={errors.route}
                                 errorsMessageField={

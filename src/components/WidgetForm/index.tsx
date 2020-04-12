@@ -26,26 +26,20 @@ const useStyles = makeStyles(theme => ({
     },
     wrapper: {
         margin: theme.spacing(1),
-        position: "relative"
-    },
-    buttonProgress: {
+        position: "relative",
+        textAlign: 'center',
+      },
+      buttonProgress: {
         position: "absolute",
         top: "50%",
         left: "50%",
         marginTop: -9,
         marginLeft: -9
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2)
-    },
-    select: {
-        padding: "10px 0px 10px 0px",
-        width: " 100%",
-        backgroundColor: "transparent",
-        border: 0,
-        borderBottom: "1px solid grey",
-        fontSize: "16px"
-    }
+      },
+      submit: {
+        margin: theme.spacing(3, 0, 2),
+        width: '30%',
+      },
 }));
 
 type FormData = {
@@ -187,57 +181,51 @@ const WidgetForm: FunctionComponent<ComponentProps> = ({
                 >
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <CustomTextField
-                                        placeholder="Nombre"
-                                        field="name"
-                                        required
-                                        register={register}
-                                        errorsField={errors.name}
-                                        errorsMessageField={
-                                            errors.name && errors.name.message
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <CustomTextField
-                                        placeholder="Clave"
-                                        field="slug"
-                                        required
-                                        register={register}
-                                        errorsField={errors.slug}
-                                        errorsMessageField={
-                                            errors.slug && errors.slug.message
-                                        }
-                                    />
-
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <CustomTextField
-                                        placeholder="Descripcion"
-                                        field="description"
-                                        required
-                                        register={register}
-                                        errorsField={errors.description}
-                                        errorsMessageField={
-                                            errors.description && errors.description.message
-                                        }
-                                    />
-                                </Grid>
-                            </Grid>
+                            <CustomTextField
+                                placeholder="Nombre"
+                                field="name"
+                                required
+                                register={register}
+                                errorsField={errors.name}
+                                errorsMessageField={
+                                    errors.name && errors.name.message
+                                }
+                            />
                         </Grid>
-                        <Grid item xs={8}>
-                            <Grid item xs={12}>
-                                {list.length > 0 && (
-                                    <TransferList
-                                        data={list}
-                                        selectedData={selectedData}
-                                        leftTitle="Roles"
-                                        onSelectedList={onRolesChange}
-                                    />
-                                )}
-                            </Grid>
+                        <Grid item xs={4}>
+                            <CustomTextField
+                                placeholder="Clave"
+                                field="slug"
+                                required
+                                register={register}
+                                errorsField={errors.slug}
+                                errorsMessageField={
+                                    errors.slug && errors.slug.message
+                                }
+                            />
+
+                        </Grid>
+                        <Grid item xs={4}>
+                            <CustomTextField
+                                placeholder="Descripcion"
+                                field="description"
+                                required
+                                register={register}
+                                errorsField={errors.description}
+                                errorsMessageField={
+                                    errors.description && errors.description.message
+                                }
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            {list.length > 0 && (
+                                <TransferList
+                                    data={list}
+                                    selectedData={selectedData}
+                                    leftTitle="Roles"
+                                    onSelectedList={onRolesChange}
+                                />
+                            )}
                         </Grid>
                     </Grid>
 

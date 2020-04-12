@@ -77,9 +77,7 @@ const LockerForm: FunctionComponent<ComponentProps> = ({
             if (id) {
                 const response: any = await dispatch(get(id));
                 setValue("description", response.description);
-                setValue("parameter", response.parameter);
-                setValue("value", response.value);
-                setValue("eliminable", response.eliminable);
+                setValue("locker_location_id", response.locker_location_id);
             }
         }
         fetch();

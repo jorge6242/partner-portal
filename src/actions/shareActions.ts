@@ -20,7 +20,9 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch
         perPage: data.per_page,
         prevPageUrl: data.prev_page_url,
         currentPage: data.current_page,
-      }
+        from: data.from,
+        to: data.to,
+      };
       response = data.data;
       dispatch({
         type: ACTIONS.GET_ALL,
@@ -67,7 +69,9 @@ export const search = (term: string, perPage: number = 8) => async (dispatch: Fu
         perPage: data.per_page,
         prevPageUrl: data.prev_page_url,
         currentPage: data.current_page,
-      }
+        from: data.from,
+        to: data.to,
+      };
       response = data.data;
       dispatch({
         type: ACTIONS.GET_ALL,
@@ -371,7 +375,9 @@ export const filter = (form: object, page: number = 1, perPage: number = 8) => a
         perPage: data.per_page,
         prevPageUrl: data.prev_page_url,
         currentPage: data.current_page,
-      }
+        from: data.from,
+        to: data.to,
+      };
       response = data.data;
       dispatch({
         type: ACTIONS.GET_ALL,

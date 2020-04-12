@@ -6,7 +6,7 @@ import queryString from 'query-string';
 
 import './index.sass';
 import { getAll } from "../../actions/personActions";
-import { updateModal } from "../../actions/customModalActions";
+import { updateModal } from "../../actions/modalActions";
 import PersonForm from "../../components/PersonForm";
 import DataTable4 from '../../components/DataTable4';
 import PersonColumn from '../../interfaces/PersonColumn';
@@ -94,7 +94,7 @@ export default function Person() {
         payload: {
           status: true,
           element: <PersonForm id={id} />,
-          customSize: 'lg'
+          customSize: 'large'
         }
       })
     );

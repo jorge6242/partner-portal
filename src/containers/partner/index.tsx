@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import './index.sass';
 import { getPartners, search, searchByPartners } from "../../actions/personActions";
-import { updateModal } from "../../actions/customModalActions";
+import { updateModal } from "../../actions/modalActions";
 import PersonForm from "../../components/PersonForm";
 import DataTable4 from '../../components/DataTable4'
 import CustomSearch from '../../components/FormElements/CustomSearch';
@@ -76,7 +76,7 @@ export default function Partners() {
         payload: {
           status: true,
           element: <PersonForm />,
-          customSize: 'lg'
+          customSize: 'large'
         }
       })
     );
@@ -96,7 +96,7 @@ export default function Partners() {
         payload: {
           status: true,
           element: <PersonForm id={id} />,
-          customSize: 'lg'
+          customSize: 'large'
         }
       })
     );

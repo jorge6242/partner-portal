@@ -1,6 +1,6 @@
 import Person from "../api/Person";
 import snackBarUpdate from "../actions/snackBarActions";
-import { updateModal } from "../actions/customModalActions";
+import { updateModal } from "../actions/modalActions";
 import { updateModal as updateSecondModal } from "../actions/secondModalActions";
 import { ACTIONS } from "../interfaces/actionTypes/personTypes";
 import Axios from "../config/Axios";
@@ -106,7 +106,9 @@ export const searchByPartners = (term: string) => async (dispatch: Function) => 
         perPage: data.per_page,
         prevPageUrl: data.prev_page_url,
         currentPage: data.current_page,
-      }
+        from: data.from,
+        to: data.to,
+      };
       response = data.data;
       dispatch({
         type: ACTIONS.GET_PARTNERS,
@@ -1253,7 +1255,9 @@ export const getPartners = (page: number = 1, perPage: number = 8) => async (dis
         perPage: data.per_page,
         prevPageUrl: data.prev_page_url,
         currentPage: data.current_page,
-      }
+        from: data.from,
+        to: data.to,
+      };
       response = data.data;
       dispatch({
         type: ACTIONS.GET_PARTNERS,

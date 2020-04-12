@@ -49,7 +49,7 @@ import { getList as getLockerLocationList } from "../actions/lockerLocationsActi
 // import GeneralReport from "../containers/reports/GeneralReport";
 // import SharesReport from "../containers/reports/SharesReport";
 // import AccessControlReport from "../containers/reports/AccessControlReport";
-// import Parameter from "../containers/parameter";
+import Parameter from "../containers/parameter";
 // import Locker from "../containers/locker";
 import Partners from "../containers/partner";
 import ReportePagos from "../containers/reportePagos";
@@ -95,6 +95,7 @@ export default function Routes() {
                       <Route path="/dashboard/widget" exact component={Widget} />
                       <Route path="/dashboard/menu" exact component={Menu} />
                       <Route path="/dashboard/menu-item" exact component={MenuItem} />
+                      <Route path="/dashboard/parameter" exact component={Parameter} />
                     </Dashboard>
                   </Switch>
                 );

@@ -28,7 +28,8 @@ const useStyles = makeStyles(theme => ({
   },
   wrapper: {
     margin: theme.spacing(1),
-    position: "relative"
+    position: "relative",
+    textAlign: 'center',
   },
   buttonProgress: {
     position: "absolute",
@@ -38,16 +39,9 @@ const useStyles = makeStyles(theme => ({
     marginLeft: -9
   },
   submit: {
-    margin: theme.spacing(3, 0, 2)
+    margin: theme.spacing(3, 0, 2),
+    width: '30%',
   },
-  select: {
-    padding: "10px 0px 10px 0px",
-    width: " 100%",
-    backgroundColor: "transparent",
-    border: 0,
-    borderBottom: "1px solid grey",
-    fontSize: "16px"
-  }
 }));
 
 type FormData = {
@@ -98,9 +92,9 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
 
   const handleForm = (form: object) => {
     if (id) {
-    dispatch(update({ id, ...form }));
+      dispatch(update({ id, ...form }));
     } else {
-    dispatch(create({...form, password: '123456'}));
+      dispatch(create({ ...form, password: '123456' }));
     }
   };
 
@@ -120,41 +114,35 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
           noValidate
         >
           <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <CustomTextField
-                    placeholder="Nombre"
-                    field="name"
-                    required
-                    register={register}
-                    errorsField={errors.name}
-                    errorsMessageField={errors.name && errors.name.message}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <CustomTextField
-                    placeholder="Correo"
-                    field="email"
-                    required
-                    register={register}
-                    errorsField={errors.email}
-                    errorsMessageField={errors.email && errors.email.message}
-                  />
-                </Grid>
-              </Grid>
+            <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Nombre"
+                field="name"
+                required
+                register={register}
+                errorsField={errors.name}
+                errorsMessageField={errors.name && errors.name.message}
+              />
             </Grid>
-            <Grid item xs={8}>
-              <Grid item xs={12}>
-                {list.length > 0 && (
-                  <TransferList
-                    data={list}
-                    selectedData={selectedData}
-                    leftTitle="Roles"
-                    onSelectedList={onPermissionsChange}
-                  />
-                )}
-              </Grid>
+            <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Correo"
+                field="email"
+                required
+                register={register}
+                errorsField={errors.email}
+                errorsMessageField={errors.email && errors.email.message}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              {list.length > 0 && (
+                <TransferList
+                  data={list}
+                  selectedData={selectedData}
+                  leftTitle="Roles"
+                  onSelectedList={onPermissionsChange}
+                />
+              )}
               <input
                 style={{ display: "none" }}
                 name="roles"
