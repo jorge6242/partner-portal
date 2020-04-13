@@ -78,7 +78,7 @@ const columns: reportePagosColumns[] = [
         label: "Monto",
         minWidth: 30,
         align: "right",
-        component: (value: any) => <span>{formatNumber(value.value)}</span>
+        component: (value: any) => <span>{value.value}</span>
     },
     {
         id: "status",
@@ -119,14 +119,14 @@ const unpaidInvoicesColumns: UnpaidInvoicesColumns[] = [
         label: "Saldo",
         minWidth: 10,
         align: "right",
-        component: (value: any) => <span>{formatNumber(value.value)}</span>
+        component: (value: any) => <span>{value.value}</span>
     },
     {
         id: "acumulado",
         label: "Acumulado",
         minWidth: 10,
         align: "right",
-        component: (value: any) => <span>{formatNumber(value.value)}</span>
+        component: (value: any) => <span>{value.value}</span>
     },
 ];
 

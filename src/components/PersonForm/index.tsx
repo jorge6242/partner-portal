@@ -65,6 +65,7 @@ import {
   reset as resetShare
 } from "../../actions/shareActions";
 import { updateModal } from "../../actions/secondModalActions";
+import { getList as getParameterList } from "../../actions/parameterActions";
 import TransferList from "../TransferList";
 import CardPersonColumns from "../../interfaces/CardPersonColumns";
 import FamilyPersonColumns from "../../interfaces/FamilyPersonColumns";
@@ -93,6 +94,7 @@ import { getAll as getRelationTypes } from "../../actions/relationTypeActions";
 import { getAll as getPaymentMethods } from "../../actions/paymentMethodActions";
 import { getAll as getSports } from "../../actions/sportActions";
 import FamilyForm from "../FamilyForm";
+import Helper from '../../helpers/utilities';
 
 const ExpansionPanelSummary = withStyles({
   root: {
@@ -578,7 +580,10 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     (state: any) => state.countryReducer
   );
   const { list: genderList } = useSelector((state: any) => state.genderReducer);
+
   const { sports: sportList } = useSelector((state: any) => state.sportReducer);
+
+  const { listData: parameterList } = useSelector((state: any) => state.parameterReducer);
 
   const { professions: professionList } = useSelector(
     (state: any) => state.professionReducer
@@ -650,6 +655,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         dispatch(getCardPerson(id));
         dispatch(getLockersByPartner(id));
         dispatch(getRecordsByPerson({ id }));
+        dispatch(getParameterList());
         // dispatch(getNotesByPerson({ id }));
         const {
           name,
@@ -914,7 +920,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           <CustomTextField
             placeholder="Pasaporte"
             field="passport"
-            required
             register={register}
             errorsField={errors.passport}
             errorsMessageField={errors.passport && errors.passport.message}
@@ -926,7 +931,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           <CustomTextField
             placeholder="N° Carnet"
             field="card_number"
-            required
             register={register}
             errorsField={errors.card_number}
             errorsMessageField={
@@ -1003,6 +1007,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             ))}
           </CustomSelect>
         </Grid>
+        <Grid item xs={3}></Grid>
         <Grid item xs={3}>
           <CustomSelect
             label="Sexo"
@@ -1027,6 +1032,20 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   const renderAddressData = () => {
     return (
       <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Grid container spacing={1}>
+            <Grid item xs={5}>
+              <CustomTextField
+                placeholder="Direccion"
+                field="address"
+                register={register}
+                errorsField={errors.address}
+                errorsMessageField={errors.address && errors.address.message}
+                multiline
+              />
+            </Grid>
+          </Grid>
+        </Grid>
         <Grid item xs={3}>
           <CustomSelect
             label="Pais"
@@ -1073,16 +1092,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             }
           />
         </Grid>
-        <Grid item xs={4}>
-          <CustomTextField
-            placeholder="Direccion"
-            field="address"
-            register={register}
-            errorsField={errors.address}
-            errorsMessageField={errors.address && errors.address.message}
-            multiline
-          />
-        </Grid>
       </Grid>
     );
   };
@@ -1090,84 +1099,100 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   const renderContactsData = () => {
     return (
       <Grid container spacing={2}>
-        <Grid item xs={3}>
-          <CustomTextField
-            placeholder="Correo Primario"
-            field="primary_email"
-            register={register}
-            errorsField={errors.primary_email}
-            errorsMessageField={
-              errors.primary_email && errors.primary_email.message
-            }
-            inputType="email"
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <CustomTextField
-            placeholder="Correo Secundario"
-            field="secondary_email"
-            register={register}
-            errorsField={errors.secondary_email}
-            errorsMessageField={
-              errors.secondary_email && errors.secondary_email.message
-            }
-            inputType="email"
-          />
+        <Grid item xs={6}>
+          <Grid container spacing={3}>
+            <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Correo Primario"
+                field="primary_email"
+                register={register}
+                errorsField={errors.primary_email}
+                errorsMessageField={
+                  errors.primary_email && errors.primary_email.message
+                }
+                inputType="email"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Correo Secundario"
+                field="secondary_email"
+                register={register}
+                errorsField={errors.secondary_email}
+                errorsMessageField={
+                  errors.secondary_email && errors.secondary_email.message
+                }
+                inputType="email"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Telefono 1"
+                field="telephone1"
+                register={register}
+                errorsField={errors.telephone1}
+                errorsMessageField={errors.telephone1 && errors.telephone1.message}
+                inputType="number"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Telefono 2"
+                field="telephone2"
+                register={register}
+                errorsField={errors.telephone2}
+                errorsMessageField={errors.telephone2 && errors.telephone2.message}
+                inputType="number"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Celular 1"
+                field="phone_mobile1"
+                register={register}
+                errorsField={errors.phone_mobile1}
+                errorsMessageField={
+                  errors.phone_mobile1 && errors.phone_mobile1.message
+                }
+                inputType="number"
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Celular 2"
+                field="phone_mobile2"
+                register={register}
+                errorsField={errors.phone_mobile2}
+                errorsMessageField={
+                  errors.phone_mobile2 && errors.phone_mobile2.message
+                }
+                inputType="number"
+              />
+            </Grid>
+          </Grid>
         </Grid>
 
-        <Grid item xs={3}>
-          <CustomTextField
-            placeholder="Telefono 1"
-            field="telephone1"
-            register={register}
-            errorsField={errors.telephone1}
-            errorsMessageField={errors.telephone1 && errors.telephone1.message}
-            inputType="number"
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <CustomTextField
-            placeholder="Telefono 2"
-            field="telephone2"
-            register={register}
-            errorsField={errors.telephone2}
-            errorsMessageField={errors.telephone2 && errors.telephone2.message}
-            inputType="number"
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <CustomTextField
-            placeholder="Celular 1"
-            field="phone_mobile1"
-            register={register}
-            errorsField={errors.phone_mobile1}
-            errorsMessageField={
-              errors.phone_mobile1 && errors.phone_mobile1.message
-            }
-            inputType="number"
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <CustomTextField
-            placeholder="Celular 2"
-            field="phone_mobile2"
-            register={register}
-            errorsField={errors.phone_mobile2}
-            errorsMessageField={
-              errors.phone_mobile2 && errors.phone_mobile2.message
-            }
-            inputType="number"
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <CustomTextField
-            placeholder="Fax"
-            field="fax"
-            register={register}
-            errorsField={errors.fax}
-            errorsMessageField={errors.fax && errors.fax.message}
-            inputType="number"
-          />
+        <Grid item xs={6} style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}>
+          <Grid
+            container spacing={3}
+            direction="row"
+            justify="flex-start"
+            alignItems="center"
+          >
+            <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Fax"
+                field="fax"
+                register={register}
+                errorsField={errors.fax}
+                errorsMessageField={errors.fax && errors.fax.message}
+                inputType="number"
+              />
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     );
@@ -1675,19 +1700,23 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                               justify="space-around"
                               alignItems="center"
                             >
-                              <Grid item xs={6}>
+                              <Grid item xs={Helper.checkParameter(parameterList, "PARTNER_ALLOW_ADD") ? 6 : 12}>
                                 Familiares
                               </Grid>
-                              <Grid
-                                item
-                                xs={6}
-                                className={classes.personRecordTitle}
-                                onClick={() => handleFamilyCreate()}
-                              >
-                                <Fab size="small" color="primary" aria-label="add">
-                                  <AddIcon />
-                                </Fab>
-                              </Grid>
+                              {
+                                Helper.checkParameter(parameterList, "PARTNER_ALLOW_ADD") && (
+                                  <Grid
+                                    item
+                                    xs={6}
+                                    className={classes.personRecordTitle}
+                                    onClick={() => handleFamilyCreate()}
+                                  >
+                                    <Fab size="small" color="primary" aria-label="add">
+                                      <AddIcon />
+                                    </Fab>
+                                  </Grid>
+                                )
+                              }
                             </Grid>
                           </Grid>
                         </Grid>
@@ -1711,7 +1740,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                                   data={familyByPerson}
                                   columns={FamilysColumns}
                                   loading={relationLoading}
-                                  fontSize="10px"
+                                  fontSize="12px"
                                 />
                               </Grid>
                               <Grid

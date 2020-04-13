@@ -16,6 +16,7 @@ import CustomTextField from "../FormElements/CustomTextField";
 import { create, update , get, createFamily } from "../../actions/personActions";
 import { getList as getRelationTypeList } from "../../actions/relationTypeActions";
 import { getAll as getGenderList } from "../../actions/genderActions";
+import { getAll as getMaritalStatusList } from "../../actions/maritalStatusActions";
 import CustomSelect from "../FormElements/CustomSelect";
 
 const useStyles = makeStyles(theme => ({
@@ -68,6 +69,8 @@ type FormData = {
   rif_ci: string;
   isPartner: string;
   relation_type_id: number;
+  marital_statuses_id: number;
+  birth_date: string;
 };
 
 type ComponentProps = {
@@ -89,6 +92,7 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
   const {
     personReducer: { loading },
     genderReducer: { list: genderList },
+    maritalStatusReducer: { list: maritalStatusList },
     relationTypeReducer: { dataList: relationTypeList },
   } = useSelector((state: any) => state);
 
@@ -100,6 +104,7 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
     async function fetch() {
         dispatch(getRelationTypeList());
         dispatch(getGenderList());
+        dispatch(getMaritalStatusList());
         // if (id) {
         //     const response: any = await dispatch(get(id));
         //     const { name, last_name, rif_ci, primary_email, telephone1, picture, gender_id } = response;
@@ -142,6 +147,7 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
       locker_list: null,
       lockers: null,
       base_id: id,
+      type_person: 1,
     };
       dispatch(createFamily(body));
   }
@@ -251,6 +257,18 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <CustomTextField
+                    placeholder="Nacimiento"
+                    field="birth_date"
+                    register={register}
+                    errorsField={errors.birth_date}
+                    errorsMessageField={
+                      errors.birth_date && errors.birth_date.message
+                    }
+                    type="date"
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <CustomTextField
                     placeholder="Telefono"
                     field="telephone1"
                     register={register}
@@ -273,6 +291,24 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
                     selectionMessage="Seleccione Sexo"
                   >
                     {genderList.map((item: any) => (
+                      <option key={item.id} value={item.id}>
+                        {item.description}
+                      </option>
+                    ))}
+                  </CustomSelect>
+                </Grid>
+                <Grid item xs={6}>
+                  <CustomSelect
+                    label="Estado Civil"
+                    field="marital_statuses_id"
+                    required
+                    register={register}
+                    errorsMessageField={
+                      errors.marital_statuses_id && errors.marital_statuses_id.message
+                    }
+                    selectionMessage="Seleccione"
+                  >
+                    {maritalStatusList.map((item: any) => (
                       <option key={item.id} value={item.id}>
                         {item.description}
                       </option>

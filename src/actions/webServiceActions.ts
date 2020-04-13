@@ -121,7 +121,7 @@ export const getUnpaidInvoices = () => async (dispatch: Function) => {
       let response = [];
       if (status === 200) {
         if(data) {
-          response = data[0];
+          response = data[0] ;
         }
         dispatch({
           type: ACTIONS.GET_BALANCE,

@@ -77,7 +77,7 @@ const DataTable2: FunctionComponent<DataTableProps> = ({
                 <TableCell
                   key={column.id}
                   align={column.align}
-                  style={{ minWidth: column.minWidth, fontSize }}
+                  style={{ minWidth: column.minWidth, fontSize, fontWeight: 'bold', }}
                 >
                   {column.label}
                 </TableCell>

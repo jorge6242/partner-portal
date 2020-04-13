@@ -44,7 +44,7 @@ const columns: Columns[] = [
     label: "Eliminable",
     minWidth: 30,
     align: "right",
-    component: (value: any) => <span>{value.value === 1 ? 'SI' : 'NO'}</span>
+    component: (value: any) => <span>{value.value === "1" ? 'SI' : 'NO'}</span>
   },
 ];
 
