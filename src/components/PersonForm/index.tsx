@@ -1306,7 +1306,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             data={dataList}
             columns={cardPersonColumns}
             loading={cardPersonLoading}
-            fontSize="10px"
+            fontSize="12px"
           />
         </Grid>
       </Grid>

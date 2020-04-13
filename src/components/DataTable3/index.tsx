@@ -111,7 +111,7 @@ const DataTable3: FunctionComponent<DataTableProps> = ({
                       );
                     })}
                     {handleSwitch && (
-                      <TableCell style={{ minWidth: 5, fontSize }}>
+                      <TableCell style={{ minWidth: 5, fontSize, fontWeight: 'bold' }}>
                         <GreenSwitch
                           checked={row.status === "1" ?  true : false}
                           onChange={() => handleSwitch(row.id, row.status)}
