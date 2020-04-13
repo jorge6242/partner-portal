@@ -3,11 +3,13 @@ import {  ACTIONS, ActionTypes } from '../interfaces/actionTypes/relationTypeTyp
 type InitialState = {
     list: Array<string | number>;
     loading: boolean;
+    dataList: Array<string | number>;
 }
 
 const initialState: InitialState = {
     list: [],
-    loading: false
+    loading: false,
+    dataList: [],
 };
 
 const relationTypeReducer = (state = initialState, action: ActionTypes) => {
@@ -17,6 +19,11 @@ const relationTypeReducer = (state = initialState, action: ActionTypes) => {
                 ...state,
                 list: action.payload,
             };
+            case ACTIONS.GET_LIST:
+                return {
+                  ...state,
+                  dataList: action.payload,
+                };
             case ACTIONS.SET_LOADING:
             return {
                 ...state,

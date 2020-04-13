@@ -92,6 +92,7 @@ import { getAll as getCountries } from "../../actions/countryActions";
 import { getAll as getRelationTypes } from "../../actions/relationTypeActions";
 import { getAll as getPaymentMethods } from "../../actions/paymentMethodActions";
 import { getAll as getSports } from "../../actions/sportActions";
+import FamilyForm from "../FamilyForm";
 
 const ExpansionPanelSummary = withStyles({
   root: {
@@ -840,12 +841,23 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     // dispatch(getAll(page, recordPagination.perPage))
   };
 
+  const handleFamilyCreate = () => {
+    dispatch(
+      updateModal({
+        payload: {
+          status: true,
+          element: <FamilyForm id={id} />
+        }
+      })
+    );
+  };
+
   const handleRecordPerPage = (page: number, perPage: number) => {
     // dispatch(getAll(page, perPage))
   };
 
   const renderMainData = () => {
-    const promotor = userRoles.length > 0 && userRoles.find((e:any) => e.slug === 'promotor');
+    const promotor = userRoles.length > 0 && userRoles.find((e: any) => e.slug === 'promotor');
     let disableField = false;
     if (!_.isEmpty(promotor)) {
       disableField = true;
@@ -1327,8 +1339,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   const getNacionalityLabel = (row: any) => row.citizenship;
 
   const renderShareProfile = () => {
-    const promotor = userRoles.length > 0 && userRoles.find((e:any) => e.slug === 'promotor');
-    const socio = userRoles.length > 0 && userRoles.find((e:any) => e.slug === 'socio');
+    const promotor = userRoles.length > 0 && userRoles.find((e: any) => e.slug === 'promotor');
+    const socio = userRoles.length > 0 && userRoles.find((e: any) => e.slug === 'socio');
     if (!_.isEmpty(promotor)) {
       return (
         <Grid item xs={12}>
@@ -1647,7 +1659,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                             </Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
-                                {renderWork()}
+                            {renderWork()}
                           </ExpansionPanelDetails>
                         </ExpansionPanel>
                       </div>
@@ -1670,6 +1682,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                                 item
                                 xs={6}
                                 className={classes.personRecordTitle}
+                                onClick={() => handleFamilyCreate()}
                               >
                                 <Fab size="small" color="primary" aria-label="add">
                                   <AddIcon />

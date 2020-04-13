@@ -57,9 +57,7 @@ const checkAuthRoutes = (items: Array<string | number>, location: string) => {
   const route = location === '/dashboard' ? '/dashboard/main' : location;
   const isValid = items.find((e: any) => e.route === route);
   if(!isValid) {
-    SecureStorage.removeItem("token");
-    SecureStorage.clear();
-    window.location.href = "/";
+    window.location.href = "/#/dashboard/main";
   }
 }
 

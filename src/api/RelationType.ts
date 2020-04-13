@@ -18,6 +18,9 @@ const API = {
   get(id: number) {
     return AXIOS.get(`${Prefix.api}/relation-type/${id}`, { headers: headers() });
   },
+  getList() {
+    return AXIOS.get(`${Prefix.api}/relation-type-list`, { headers: headers() });
+  },
   update(data: any) {
     return AXIOS.put(
       `${Prefix.api}/relation-type/${data.id}`,

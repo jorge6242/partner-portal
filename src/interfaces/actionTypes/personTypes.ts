@@ -16,6 +16,7 @@ export const ACTIONS = {
   SET_LOADING: "person/set_loading",
   SET_SECOND_LOADING: "person/set_second_loading",
   SET_RELATION_LOADING: "person/set_relation_loading",
+  SET_FAMILY_LOADING: "person/set_family_loading",
   SET_ASSIGN_LOADING: "person/set_assign_loading",
   SET_REPORT_BY_PARTNER_LOADING: "person/set_report_by_partner_loading",
   SET_FAMILIES_PARTNER_CARD_LOADING: "person/set_families_partner_card_loading",
@@ -208,6 +209,11 @@ interface SetPersonsStatisticsLoading {
   payload: boolean;
 }
 
+interface SetFamilyLoading {
+  type: typeof ACTIONS.SET_PERSONS_STATISTICS_LOADING;
+  payload: boolean;
+}
+
 interface SetPersonsExceptionStatisticsLoading {
   type: typeof ACTIONS.SET_PERSONS_EXCEPTION_STATISTICS_LOADING;
   payload: boolean;
@@ -294,4 +300,5 @@ export type ActionTypes =
   | GetPersonsBirthdayStatistics
   | GetClient
   | SetClientLoading
-  | SetPersonsBirthdayStatisticsLoading;
+  | SetPersonsBirthdayStatisticsLoading
+  | SetFamilyLoading;

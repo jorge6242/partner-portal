@@ -143,9 +143,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     const route = location.pathname === '/dashboard' ? '/dashboard/main' : location.pathname;
     const isValid = items.find((e: any) => e.route === route);
     if(!isValid) {
-      SecureStorage.removeItem("token");
-      SecureStorage.clear();
-      window.location.href = "/";
+      window.location.href = "/#/dashboard/main";
     }
   }
 
@@ -155,7 +153,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
         const route = location.pathname === '/dashboard' ? '/dashboard/main' : location.pathname;
         const isValid = menuList.items.find((e: any) => e.route === route);
           if(!isValid) {
-            dispatch(logout());
+            window.location.href = "/#/dashboard/main";
           }
       }
     });
@@ -232,14 +230,23 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     }
   }
 
-  const renderThirdMenu = (Icon: React.ReactType, title: string, route: string) => (
-    <ListItem button onClick={() => handeClick(route)}>
-      <ListItemIcon>
-        <Icon />
-      </ListItemIcon>
-      <ListItemText primary={title} />
-    </ListItem>
-  )
+  const renderThirdMenu = (item: any) => {
+    let Icon = SettingsIcon;
+    if(item.icons) {
+      let currenMenutIcon = icons.find((e: any) => e.slug === item.icons.slug);
+      if(currenMenutIcon) {
+        Icon = currenMenutIcon.name;
+      }
+    }
+    return (
+      <ListItem button onClick={() => handeClick(item.route ? item.route : '')}>
+        <ListItemIcon>
+          <Icon />
+        </ListItemIcon>
+        <ListItemText primary={item.name} />
+      </ListItem>
+    )
+  }
 
   const renderSecondMenu = (CustomIcon: React.ReactType, title: string, route: string, menu: any, item: any) => {
     const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
@@ -265,7 +272,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
         {findChildrens.length > 0 && (
           <Collapse in={item.id === subMenuItem2 ? true : false} timeout="auto" unmountOnExit>
             <List dense>
-              {findChildrens.map((e: any) => renderThirdMenu(DoubleArrowIcon, e.name, ""))}
+              {findChildrens.map((e: any) => renderThirdMenu(item))}
             </List>
           </Collapse>
         )

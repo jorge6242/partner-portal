@@ -246,6 +246,66 @@ export const create = (body: object) => async (dispatch: Function) => {
   }
 };
 
+export const createFamily = (body: any) => async (dispatch: Function) => {
+  dispatch({
+    type: ACTIONS.SET_FAMILY_LOADING,
+    payload: true
+  });
+  try {
+    const response = await Person.create(body);
+    const {
+      status,
+      data: { data }
+    } = response;
+    let createresponse: any = [];
+    if (status === 200 || status === 201) {
+      createresponse = { ...data };
+      snackBarUpdate({
+        payload: {
+          message: "Familiar Regisrado!",
+          type: "success",
+          status: true
+        }
+      })(dispatch);
+      dispatch(searchFamilyByPerson(body.base_id));
+      // dispatch(getAll());
+      dispatch(
+        updateSecondModal({
+          payload: {
+            status: false,
+            element: null
+          }
+        })
+      );
+      dispatch({
+        type: ACTIONS.SET_FAMILY_LOADING,
+        payload: false
+      });
+    }
+    return createresponse;
+  } catch (error) {
+    let message = "Error en el Servidor";
+    if (error && error.response) {
+      const {
+        data: { message: msg }
+      } = error.response;
+      message = msg;
+    }
+    snackBarUpdate({
+      payload: {
+        message,
+        type: "error",
+        status: true
+      }
+    })(dispatch);
+    dispatch({
+      type: ACTIONS.SET_FAMILY_LOADING,
+      payload: false
+    });
+    return error;
+  }
+};
+
 export const createGuest = (body: any, refresh: Function) => async (
   dispatch: Function
 ) => {

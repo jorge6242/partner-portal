@@ -1,10 +1,16 @@
 export const ACTIONS = {
     GET_ALL: 'relation_type/get_all',
     GET: 'relation_type/get',
+    GET_LIST: 'relation_type/get_list',
     SET_LOADING: 'relation_type/set_loading'
 };
   
   interface Get {
+    type: typeof ACTIONS.GET
+    payload: Array<string|number>
+  }
+
+  interface GetList {
     type: typeof ACTIONS.GET
     payload: Array<string|number>
   }
@@ -20,4 +26,4 @@ export const ACTIONS = {
   }
   
   
-  export type ActionTypes = Get | GetAll | SetLoading
+  export type ActionTypes = Get | GetAll | SetLoading | GetList;
