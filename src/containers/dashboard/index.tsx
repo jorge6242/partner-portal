@@ -239,7 +239,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       }
     }
     return (
-      <ListItem button onClick={() => handeClick(item.route ? item.route : '')}>
+      <ListItem button onClick={() => handeClick(item.route ? item.route : '/dashboard/main')}>
         <ListItemIcon>
           <Icon />
         </ListItemIcon>
@@ -259,7 +259,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     }
     return (
       <React.Fragment key={item.id}>
-        <ListItem button onClick={() => findChildrens.length > 0 ? setSecondSubMenu(item.id) : handeClick(item.route ? item.route : '')}>
+        <ListItem button onClick={() => findChildrens.length > 0 ? setSecondSubMenu(item.id) : handeClick(item.route ? item.route : '/dashboard/main')}>
           <ListItemIcon >
             <Icon />
           </ListItemIcon>
@@ -272,7 +272,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
         {findChildrens.length > 0 && (
           <Collapse in={item.id === subMenuItem2 ? true : false} timeout="auto" unmountOnExit>
             <List dense>
-              {findChildrens.map((e: any) => renderThirdMenu(item))}
+              {findChildrens.map((e: any) => renderThirdMenu(e))}
             </List>
           </Collapse>
         )
@@ -296,7 +296,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
         }
         return (
           <React.Fragment key={i}>
-            <ListItem button onClick={() => findChildrens.length > 0 ? setSubMenu(item.id) : handeClick(item.route ? item.route : '')}>
+            <ListItem button onClick={() => findChildrens.length > 0 ? setSubMenu(item.id) : handeClick(item.route ? item.route : '/dashboard/main')}>
               <ListItemIcon >
                 <Icon />
               </ListItemIcon>
