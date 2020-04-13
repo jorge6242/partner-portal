@@ -59,6 +59,7 @@ import { getClient } from "../../actions/personActions";
 import { getBalance } from "../../actions/webServiceActions";
 import icons from "../../helpers/collectionIcons";
 import { Chip } from "@material-ui/core";
+import SecureStorage from "../../config/SecureStorage";
 
 const drawerWidth = 240;
 
@@ -138,7 +139,27 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const [open5, setOpen5] = React.useState(false);
 
 
+  const checkAuthRoutes = (items: Array<string | number>) => {
+    const route = location.pathname === '/dashboard' ? '/dashboard/main' : location.pathname;
+    const isValid = items.find((e: any) => e.route === route);
+    if(!isValid) {
+      SecureStorage.removeItem("token");
+      SecureStorage.clear();
+      window.location.href = "/";
+    }
+  }
 
+  useEffect(()=> {
+    history.listen((location, action) => {
+      if(!_.isEmpty(menuList) && menuList.items.length > 0) {
+        const route = location.pathname === '/dashboard' ? '/dashboard/main' : location.pathname;
+        const isValid = menuList.items.find((e: any) => e.route === route);
+          if(!isValid) {
+            dispatch(logout());
+          }
+      }
+    });
+  },[menuList])
 
   useEffect(() => {
     async function run() {
@@ -154,15 +175,13 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       if(location.pathname !== '/') {
         dispatch(setupInterceptors());
       }
-      dispatch(getMenuList());
+      dispatch(getMenuList(location.pathname));
       dispatch(getClient(user.username));
       dispatch(getBalance());
       dispatch(getWidgetList());
     }
     run();
   }, [dispatch])
-
-
 
   useEffect(() => {
     if (location.pathname === '/dashboard') {
@@ -232,7 +251,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       }
     }
     return (
-      <React.Fragment>
+      <React.Fragment key={item.id}>
         <ListItem button onClick={() => findChildrens.length > 0 ? setSecondSubMenu(item.id) : handeClick(item.route ? item.route : '')}>
           <ListItemIcon >
             <Icon />
@@ -269,7 +288,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
           }
         }
         return (
-          <React.Fragment>
+          <React.Fragment key={i}>
             <ListItem button onClick={() => findChildrens.length > 0 ? setSubMenu(item.id) : handeClick(item.route ? item.route : '')}>
               <ListItemIcon >
                 <Icon />
@@ -406,7 +425,6 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     )
   };
   // const nameRole: any = !_.isEmpty(user) ? user.role.name : '';
-  console.log('user ', user);
   return (
     <div className={classes.root}>
       <CssBaseline />

@@ -91,7 +91,7 @@ export default function CustomModal() {
             </DialogTitle>
             <DialogContent dividers>
                 <Grid container spacing={3} className="modal-main__content">
-                    <Grid xs={12}>
+                    <Grid item xs={12}>
                         <Grid
                             container
                             spacing={0}
@@ -100,7 +100,7 @@ export default function CustomModal() {
                             <CircularProgress className={classes.progress} color="primary" />
                         </Grid>
                     </Grid>
-                    <Grid xs={12}>{element}</Grid>
+                    <Grid item xs={12}>{element}</Grid>
                 </Grid>
             </DialogContent>
         </Dialog>

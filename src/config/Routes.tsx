@@ -61,6 +61,7 @@ import Role from "../containers/role";
 import MainLoader from "../components/MainLoading";
 import MenuItem from "../containers/MenuItem";
 import CustomModal from "../components/CustomModal";
+import NotFound from "../containers/notFound";
 
 export default function Routes() {
   const dispatch = useDispatch();
@@ -96,6 +97,7 @@ export default function Routes() {
                       <Route path="/dashboard/menu" exact component={Menu} />
                       <Route path="/dashboard/menu-item" exact component={MenuItem} />
                       <Route path="/dashboard/parameter" exact component={Parameter} />
+                      <Route path="/dashboard/not-found" exact component={NotFound} />
                     </Dashboard>
                   </Switch>
                 );

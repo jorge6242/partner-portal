@@ -2,6 +2,8 @@ import API from "../api/Menu";
 import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from '../interfaces/actionTypes/menuTypes';
+import { mainStatusLoading } from '../actions/loadingMainActions';
+import SecureStorage from "../config/SecureStorage";
 
 export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch: Function) => {
   dispatch({
@@ -51,7 +53,18 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch
   }
 }
 
-export const getList = () => async (dispatch: Function) => {
+const checkAuthRoutes = (items: Array<string | number>, location: string) => {
+  const route = location === '/dashboard' ? '/dashboard/main' : location;
+  const isValid = items.find((e: any) => e.route === route);
+  if(!isValid) {
+    SecureStorage.removeItem("token");
+    SecureStorage.clear();
+    window.location.href = "/";
+  }
+}
+
+export const getList = (location: string) => async (dispatch: Function) => {
+  dispatch(mainStatusLoading(true));
   dispatch(updateModal({
     payload: {
       isLoader: true,
@@ -62,6 +75,7 @@ export const getList = () => async (dispatch: Function) => {
     let response = [];
     if (status === 200) {
       response = data;
+      checkAuthRoutes(data.items, location);
       dispatch({
         type: ACTIONS.GET_LIST,
         payload: response
@@ -71,9 +85,11 @@ export const getList = () => async (dispatch: Function) => {
           isLoader: false,
         }
       }));
+      dispatch(mainStatusLoading(false));
     }
     return response;
   } catch (error) {
+    dispatch(mainStatusLoading(false));
     dispatch(updateModal({
       payload: {
         isLoader: false,
