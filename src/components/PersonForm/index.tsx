@@ -96,7 +96,7 @@ import { getAll as getSports } from "../../actions/sportActions";
 import FamilyForm from "../FamilyForm";
 import Helper from '../../helpers/utilities';
 
-const formatCreditCard = (card: string) => `${card.substring(0, 12).replace(/[0-9]/g, "x")}${card.substring(12, 16)}`;
+const formatCreditCard = (card: string) => card.replace(/.(?=.{4})/g, 'x');
 
 const ExpansionPanelSummary = withStyles({
   root: {
@@ -1707,21 +1707,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                                       </Grid>
                                     )
                                   }
-                                  <Grid
-                                    item
-                                    xs={2}
-                                    onClick={() => handleReportByPartner()}
-                                    style={{ textAlign: 'right' }}
-                                  >
-                                    <div>
-                                      <Fab size="small" color="primary" aria-label="report">
-                                        <PrintIcon />
-                                      </Fab>
-                                    </div>
-                                  </Grid>
                                 </Grid>
                               </Grid>
-
                             </Grid>
                           </Grid>
                         </Grid>
