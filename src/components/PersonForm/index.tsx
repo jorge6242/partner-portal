@@ -1896,7 +1896,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                 disabled={loading}
                 className={classes.submit}
               >
-                {tempPersonId > 0 ? "Update" : "Create"}
+                {tempPersonId > 0 ? "Actualizar" : "Crear"}
               </Button>
               {loading && (
                 <CircularProgress
