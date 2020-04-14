@@ -946,7 +946,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           <CustomTextField
             placeholder="Fecha de Vencimiento"
             field="expiration_date"
-            required
             register={register}
             errorsField={errors.expiration_date}
             errorsMessageField={

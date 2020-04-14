@@ -10,6 +10,7 @@ import PersonForm from "../../components/PersonForm";
 import DataTable4 from '../../components/DataTable4'
 import CustomSearch from '../../components/FormElements/CustomSearch';
 import PersonColumn from '../../interfaces/PersonColumn';
+import { Chip } from "@material-ui/core";
 
 const columns: PersonColumn[] = [
     { id: "id", 
@@ -29,6 +30,26 @@ const columns: PersonColumn[] = [
       minWidth: 10,
       align: "right",
       component: (value: any) => <span>{value.value}</span>,
+    },
+    {
+      id: "isPartner",
+      label: "parentesto",
+      minWidth: 30,
+      align: "right",
+      component: (value: any) => {
+        return (
+          <Chip
+            label={value.value === "1" ? "Socio" : "Familiar"}
+            style={{
+              backgroundColor: value.value === "1" ? "#2ecc71" : "#f1c40f",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "10px"
+            }}
+            size="small"
+          />
+        )
+      }
     },
     {
       id: "name",
