@@ -652,7 +652,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
       if (id) {
         const response: any = await dispatch(get(id));
         dispatch(getProfessions());
-        dispatch(getSharesByPartner(id));
         dispatch(searchFamilyByPerson(id));
         dispatch(getCardPerson(id));
         dispatch(getLockersByPartner(id));
@@ -693,6 +692,13 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           isPartner,
           company,
         } = response;
+        if (isPartner === "1") {
+          const shareResponse: any = await dispatch(getSharesByPartner(id));
+          if (shareResponse.length > 0) {
+            const currentShare = shareResponse.find((e: any, i: any) => i === 0);
+            setValue("payment_method_id", currentShare.payment_method_id);
+          }
+        }
         setValue("name", name);
         setValue("last_name", last_name);
         setValue("rif_ci", rif_ci);
@@ -719,6 +725,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         setValue("status_person_id", status_person_id);
         setValue("marital_statuses_id", marital_statuses_id);
         setValue("countries_id", countries_id);
+        setImage({ ...image, preview: picture });
         if (company) {
           setSelectedCompany(company);
         }
@@ -1006,7 +1013,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             disable
           />
         </Grid>
-        
+
         <Grid item xs={3}></Grid>
         <Grid item xs={3}>
           <CustomSelect
@@ -1215,13 +1222,13 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                 Forma de Pago
               </TableCell>
               <TableCell align="left" style={{ fontSize: "12px" }}>
-                Tarjeta 1
+                Primaria
               </TableCell>
               <TableCell align="left" style={{ fontSize: "12px" }}>
-                Tarjeta 2
+                Secundaria
               </TableCell>
               <TableCell align="left" style={{ fontSize: "12px" }}>
-                Tarjeta 3
+                Terciaria
               </TableCell>
             </TableRow>
           </TableHead>
@@ -1680,23 +1687,41 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                               justify="space-around"
                               alignItems="center"
                             >
-                              <Grid item xs={Helper.checkParameter(parameterList, "PARTNER_ALLOW_ADD") ? 6 : 12}>
+                              <Grid item xs={6}>
                                 Familiares
                               </Grid>
-                              {
-                                Helper.checkParameter(parameterList, "PARTNER_ALLOW_ADD") && (
+                              <Grid item xs={6}>
+                                <Grid container direction="row"
+                                  justify="flex-end" spacing={3}>
+                                  {
+                                    Helper.checkParameter(parameterList, "PARTNER_ALLOW_ADD") && (
+                                      <Grid
+                                        item
+                                        xs={2}
+                                        onClick={() => handleFamilyCreate()}
+                                        style={{ textAlign: 'right' }}
+                                      >
+                                        <Fab size="small" color="primary" aria-label="add">
+                                          <AddIcon />
+                                        </Fab>
+                                      </Grid>
+                                    )
+                                  }
                                   <Grid
                                     item
-                                    xs={6}
-                                    className={classes.personRecordTitle}
-                                    onClick={() => handleFamilyCreate()}
+                                    xs={2}
+                                    onClick={() => handleReportByPartner()}
+                                    style={{ textAlign: 'right' }}
                                   >
-                                    <Fab size="small" color="primary" aria-label="add">
-                                      <AddIcon />
-                                    </Fab>
+                                    <div>
+                                      <Fab size="small" color="primary" aria-label="report">
+                                        <PrintIcon />
+                                      </Fab>
+                                    </div>
                                   </Grid>
-                                )
-                              }
+                                </Grid>
+                              </Grid>
+
                             </Grid>
                           </Grid>
                         </Grid>
