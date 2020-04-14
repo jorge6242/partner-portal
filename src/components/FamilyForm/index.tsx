@@ -138,7 +138,6 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
       representante: "",
       company_person_id: 0,
       status_person_id: 1,
-      marital_statuses_id: 0,
       countries_id: 0,
       profession_list: null,
       isPartner: 2,
