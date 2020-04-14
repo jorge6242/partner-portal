@@ -36,6 +36,7 @@ import Chip from "@material-ui/core/Chip";
 import _ from "lodash";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
+import moment from 'moment';
 
 import CustomSelect from "../FormElements/CustomSelect";
 import CustomTextField from "../FormElements/CustomTextField";
@@ -872,6 +873,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   };
 
   const renderMainData = () => {
+    const { expiration_date } = getValues();
     const promotor = userRoles.length > 0 && userRoles.find((e: any) => e.slug === 'promotor');
     let disableField = false;
     if (!_.isEmpty(promotor)) {
@@ -1000,8 +1002,16 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             disable={disableField}
           />
         </Grid>
-        <Grid item xs={3}>
-          <CustomTextField
+        <Grid item xs={3} style={{ lineHeight: 3 }}>
+        <Paper className={classes.parsedPersonContainerDetail}>
+          <strong>Vencimiento</strong> {expiration_date && moment(expiration_date).format('DD-MM-YYYY')}
+        </Paper>
+        <input
+            style={{ display: "none" }}
+            name="expiration_date"
+            ref={register}
+          />
+          {/* <CustomTextField
             placeholder="Fecha de Vencimiento"
             field="expiration_date"
             register={register}
@@ -1011,7 +1021,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             }
             type="date"
             disable
-          />
+          /> */}
         </Grid>
 
         <Grid item xs={3}></Grid>
