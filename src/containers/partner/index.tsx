@@ -17,6 +17,20 @@ const columns: PersonColumn[] = [
     component: (value: any) => <span>{value.value}</span>,
     },
     {
+      id: "shares",
+      label: "Acciones",
+      minWidth: 20,
+      align: "right",
+      component: (value: any) => <span>{value.value}</span>,
+    },
+    {
+      id: "rif_ci",
+      label: "RIF/CI",
+      minWidth: 10,
+      align: "right",
+      component: (value: any) => <span>{value.value}</span>,
+    },
+    {
       id: "name",
       label: "Nombre",
       minWidth: 20,
@@ -30,20 +44,20 @@ const columns: PersonColumn[] = [
       align: "right",
       component: (value: any) => <span>{value.value}</span>,
     },
-    {
-      id: "card_number",
-      label: "Carnet",
-      minWidth: 20,
-      align: "right",
-      component: (value: any) => <span>{value.value}</span>,
-    },
-        {
-      id: "passport",
-      label: "Pasaporte",
-      minWidth: 20,
-      align: "right",
-      component: (value: any) => <span>{value.value}</span>,
-    },
+    // {
+    //   id: "card_number",
+    //   label: "Carnet",
+    //   minWidth: 20,
+    //   align: "right",
+    //   component: (value: any) => <span>{value.value}</span>,
+    // },
+    //     {
+    //   id: "passport",
+    //   label: "Pasaporte",
+    //   minWidth: 20,
+    //   align: "right",
+    //   component: (value: any) => <span>{value.value}</span>,
+    // },
     {
       id: "primary_email",
       label: "Correo Primario",
@@ -51,13 +65,7 @@ const columns: PersonColumn[] = [
       align: "right",
       component: (value: any) => <span>{value.value}</span>,
     },
-    {
-      id: "rif_ci",
-      label: "RIF/CI",
-      minWidth: 20,
-      align: "right",
-      component: (value: any) => <span>{value.value}</span>,
-    },
+
   ];
 
 export default function Partners() {

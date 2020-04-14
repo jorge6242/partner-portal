@@ -96,6 +96,8 @@ import { getAll as getSports } from "../../actions/sportActions";
 import FamilyForm from "../FamilyForm";
 import Helper from '../../helpers/utilities';
 
+const formatCreditCard = (card: string) => `${card.substring(0, 12).replace(/[0-9]/g, "x")}${card.substring(12, 16)}`;
+
 const ExpansionPanelSummary = withStyles({
   root: {
     backgroundColor: "rgba(0, 0, 0, .03)"
@@ -128,7 +130,7 @@ const cardPersonColumns: CardPersonColumns[] = [
     label: "Numero",
     minWidth: 20,
     align: "left",
-    component: (value: any) => <span>{`${value.value.substring(0, 12).replace(/[0-9]/g, "x")}${value.value.substring(12, 16)}`}</span>
+    component: (value: any) => <span>{formatCreditCard(value.value)}</span>
   },
   {
     id: "sec_code",
@@ -291,23 +293,23 @@ function getParsePerson(data: any, classes: any) {
   } = data;
   return (
     <Grid container spacing={1} className={classes.parsedPersonContainer}>
-      <Grid item xs={3} className={classes.parsedPersonContainerTitle}>
+      <Grid item xs={4} className={classes.parsedPersonContainerTitle}>
         <Paper className={classes.parsedPersonContainerDetail}>
           <strong>Tipo Persona:</strong>
           {type_person === 1 ? "Natural" : "Empresa"}
         </Paper>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={4}>
         <Paper className={classes.parsedPersonContainerDetail}>
-          <strong>Cedula:</strong> {rif_ci}
+          <strong>Cedula/RIF:</strong> {rif_ci}
         </Paper>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={4}>
         <Paper className={classes.parsedPersonContainerDetail}>
           <strong>Nombre:</strong> {name} {last_name}
         </Paper>
       </Grid>
-      <Grid item xs={3}>
+      <Grid item xs={12}>
         <Paper className={classes.parsedPersonContainerDetail}>
           <strong>Direccion:</strong> {address}
         </Paper>
@@ -1199,7 +1201,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   };
 
   const renderPaymentMethod = () => {
-    const { share_number } = selectedShare;
+    const { share_number, tarjeta_primaria, tarjeta_secundaria, tarjeta_terciaria, payment_method } = selectedShare;
     return (
       <TableContainer component={Paper}>
         <Table size="small" aria-label="a dense table">
@@ -1228,38 +1230,16 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                 {share_number}
               </TableCell>
               <TableCell align="left" style={{ fontSize: "12px" }}>
-                <CustomSelect
-                  selectionMessage="Seleccione"
-                  field="payment_method_id"
-                  register={register}
-                  errorsMessageField={
-                    errors.payment_method_id && errors.payment_method_id.message
-                  }
-                >
-                  {paymentMethodList.map((item: any) => (
-                    <option key={item.id} value={item.id}>
-                      {item.description}
-                    </option>
-                  ))}
-                </CustomSelect>
+                {payment_method && payment_method.description}
               </TableCell>
-              <TableCell align="left" style={{ fontSize: "12px" }}></TableCell>
-              <TableCell align="left" style={{ fontSize: "12px" }}></TableCell>
               <TableCell align="left" style={{ fontSize: "12px" }}>
-                <div className="custom-select-container">
-                  <select
-                    name="card_people3"
-                    onChange={() => { }}
-                    style={{ fontSize: "13px" }}
-                  >
-                    <option value="">Seleccione</option>
-                    {cardPersonList.map((item: any) => (
-                      <option key={item.id} value={item.id}>
-                        {item.card_number}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                {tarjeta_primaria && formatCreditCard(tarjeta_primaria.card_number)}
+              </TableCell>
+              <TableCell align="left" style={{ fontSize: "12px" }}>
+                {tarjeta_secundaria && formatCreditCard(tarjeta_secundaria.card_number)}
+              </TableCell>
+              <TableCell align="left" style={{ fontSize: "12px" }}>
+                {tarjeta_terciaria && formatCreditCard(tarjeta_terciaria.card_number)}
               </TableCell>
             </TableRow>
           </TableBody>
@@ -1338,9 +1318,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
       <Grid container spacing={3}>
         <Grid item xs={6}>
           <CustomTextField
-            placeholder="Representante"
+            placeholder="Cargo"
             field="representante"
-            required
             register={register}
             errorsField={errors.representante}
             errorsMessageField={
