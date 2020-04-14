@@ -114,7 +114,7 @@ const cardPersonColumns: CardPersonColumns[] = [
   {
     id: "titular",
     label: "Titular",
-    minWidth: 20,
+    minWidth: 30,
     align: "left",
     component: (value: any) => <span>{value.value}</span>
   },
@@ -128,7 +128,7 @@ const cardPersonColumns: CardPersonColumns[] = [
   {
     id: "card_number",
     label: "Numero",
-    minWidth: 20,
+    minWidth: 15,
     align: "left",
     component: (value: any) => <span>{formatCreditCard(value.value)}</span>
   },

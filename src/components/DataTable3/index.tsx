@@ -83,8 +83,7 @@ const DataTable3: FunctionComponent<DataTableProps> = ({
                 </TableCell>
               ))}
               {handleSwitch && <TableCell style={{ minWidth: 5 }}></TableCell>}
-              {handleEdit && <TableCell style={{ minWidth: 5 }}></TableCell>}
-              {handleDelete && <TableCell style={{ minWidth: 5 }}></TableCell>}
+              <TableCell style={{ minWidth: 5 }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -118,30 +117,32 @@ const DataTable3: FunctionComponent<DataTableProps> = ({
                         />
                       </TableCell>
                     )}
-                    {handleEdit && (
                       <TableCell style={{ minWidth: 5, fontSize }}>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          color="primary"
-                          onClick={() => handleEdit(row)}
-                        >
-                          <EditIcon fontSize="inherit" />
-                        </IconButton>
+                        {
+                          handleEdit && (
+                            <IconButton
+                              aria-label="delete"
+                              size="small"
+                              color="primary"
+                              onClick={() => handleEdit(row)}
+                            >
+                              <EditIcon fontSize="inherit" />
+                            </IconButton>
+                          )
+                        }
+                        {
+                          handleDelete && (
+                            <IconButton
+                              aria-label="delete"
+                              size="small"
+                              color="secondary"
+                              onClick={() => handleDelete(row)}
+                            >
+                              <DeleteIcon fontSize="inherit" />
+                            </IconButton>
+                          )
+                        }
                       </TableCell>
-                    )}
-                    {handleDelete && (
-                      <TableCell style={{ minWidth: 5, fontSize }}>
-                        <IconButton
-                          aria-label="delete"
-                          size="small"
-                          color="secondary"
-                          onClick={() => handleDelete(row)}
-                        >
-                          <DeleteIcon fontSize="inherit" />
-                        </IconButton>
-                      </TableCell>
-                    )}
                   </TableRow>
                 );
               })
