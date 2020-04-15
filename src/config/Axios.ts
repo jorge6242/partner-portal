@@ -7,7 +7,7 @@ import axios from 'axios';
 //http://192.168.0.251/api/portalsocios/
 
 const AXIOS = axios.create({
-  baseURL: 'http://192.168.0.251/api/portalsocios',
+  baseURL: 'http://portal.api.com',
   headers: {
     'Content-Type': 'application/json',
     'Partners-Application': 'portal'

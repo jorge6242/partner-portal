@@ -873,7 +873,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   };
 
   const renderMainData = () => {
-    const { expiration_date } = getValues();
+    const { expiration_date, card_number } = getValues();
     const promotor = userRoles.length > 0 && userRoles.find((e: any) => e.slug === 'promotor');
     let disableField = false;
     if (!_.isEmpty(promotor)) {
@@ -989,8 +989,16 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             ))}
           </CustomSelect>
         </Grid>
-        <Grid item xs={3}>
-          <CustomTextField
+        <Grid item xs={3} style={{ lineHeight: 2.5 }}>
+          <Paper className={classes.parsedPersonContainerDetail}>
+            <strong>N° Carnet</strong> {card_number && card_number}
+          </Paper>
+          <input
+            style={{ display: "none" }}
+            name="card_number"
+            ref={register}
+          />
+          {/* <CustomTextField
             placeholder="N° Carnet"
             field="card_number"
             register={register}
@@ -1000,13 +1008,13 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             }
             inputType="number"
             disable={disableField}
-          />
+          /> */}
         </Grid>
         <Grid item xs={3} style={{ lineHeight: 2.5 }}>
-        <Paper className={classes.parsedPersonContainerDetail}>
-          <strong>Vencimiento</strong> {expiration_date && moment(expiration_date).format('DD-MM-YYYY')}
-        </Paper>
-        <input
+          <Paper className={classes.parsedPersonContainerDetail}>
+            <strong>Vencimiento</strong> {expiration_date && moment(expiration_date).format('DD-MM-YYYY')}
+          </Paper>
+          <input
             style={{ display: "none" }}
             name="expiration_date"
             ref={register}
@@ -1688,7 +1696,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                     </TabPanel>
                     <TabPanel value={tabValue} index={1} dir={theme.direction}>
                       <div className={classes.root}>
-                        <Grid container spacing={3}>
+                        <Grid container spacing={3} style={{ marginBottom: 10 }}>
                           <Grid item xs={12}>
                             <Grid
                               container
@@ -1717,8 +1725,21 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                                       </Grid>
                                     )
                                   }
+                                  <Grid
+                                    item
+                                    xs={2}
+                                    onClick={() => handleReportByPartner()}
+                                    style={{ textAlign: 'right' }}
+                                  >
+                                    <div>
+                                      <Fab size="small" color="primary" aria-label="report">
+                                        <PrintIcon />
+                                      </Fab>
+                                    </div>
+                                  </Grid>
                                 </Grid>
                               </Grid>
+
                             </Grid>
                           </Grid>
                         </Grid>
