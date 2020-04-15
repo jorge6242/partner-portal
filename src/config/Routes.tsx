@@ -62,6 +62,7 @@ import MainLoader from "../components/MainLoading";
 import MenuItem from "../containers/MenuItem";
 import CustomModal from "../components/CustomModal";
 import NotFound from "../containers/notFound";
+import About from "../containers/about";
 
 export default function Routes() {
   const dispatch = useDispatch();
@@ -98,6 +99,7 @@ export default function Routes() {
                       <Route path="/dashboard/menu-item" exact component={MenuItem} />
                       <Route path="/dashboard/parameter" exact component={Parameter} />
                       <Route path="/dashboard/not-found" exact component={NotFound} />
+                      <Route path="/dashboard/about" exact component={About} />
                     </Dashboard>
                   </Switch>
                 );

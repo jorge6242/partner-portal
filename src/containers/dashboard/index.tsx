@@ -58,8 +58,11 @@ import Loader from "../../components/common/Loader";
 import { getClient } from "../../actions/personActions";
 import { getBalance } from "../../actions/webServiceActions";
 import icons from "../../helpers/collectionIcons";
-import { Chip } from "@material-ui/core";
+import { Chip, Grid } from "@material-ui/core";
 import SecureStorage from "../../config/SecureStorage";
+import Logo from "../../components/Logo";
+import Helper from '../../helpers/utilities';
+import { getList as getParameterList } from "../../actions/parameterActions";
 
 const drawerWidth = 240;
 
@@ -132,6 +135,10 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
 
   const { listData: menuList } = useSelector((state: any) => state.menuReducer);
 
+  const {
+    parameterReducer: { listData: parameterList }
+  } = useSelector((state: any) => state);
+
   const [open1, setOpen1] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const [open3, setOpen3] = React.useState(false);
@@ -142,22 +149,22 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const checkAuthRoutes = (items: Array<string | number>) => {
     const route = location.pathname === '/dashboard' ? '/dashboard/main' : location.pathname;
     const isValid = items.find((e: any) => e.route === route);
-    if(!isValid) {
+    if (!isValid) {
       window.location.href = "/#/dashboard/main";
     }
   }
 
-  useEffect(()=> {
+  useEffect(() => {
     history.listen((location, action) => {
-      if(!_.isEmpty(menuList) && menuList.items.length > 0) {
+      if (!_.isEmpty(menuList) && menuList.items.length > 0) {
         const route = location.pathname === '/dashboard' ? '/dashboard/main' : location.pathname;
         const isValid = menuList.items.find((e: any) => e.route === route);
-          if(!isValid) {
-            window.location.href = "/#/dashboard/main";
-          }
+        if (!isValid) {
+          window.location.href = "/#/dashboard/main";
+        }
       }
     });
-  },[menuList])
+  }, [menuList])
 
   useEffect(() => {
     async function run() {
@@ -167,10 +174,10 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
           location.pathname === "/dashboard/status-account" ||
           location.pathname === "/dashboard/actualizacion-datos"
         )
-        await dispatch(setForcedLogin(values.socio, values.token));
+          await dispatch(setForcedLogin(values.socio, values.token));
       }
       await dispatch(checkLogin());
-      if(location.pathname !== '/') {
+      if (location.pathname !== '/') {
         dispatch(setupInterceptors());
       }
       dispatch(getMenuList(location.pathname));
@@ -232,9 +239,9 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
 
   const renderThirdMenu = (item: any) => {
     let Icon = SettingsIcon;
-    if(item.icons) {
+    if (item.icons) {
       let currenMenutIcon = icons.find((e: any) => e.slug === item.icons.slug);
-      if(currenMenutIcon) {
+      if (currenMenutIcon) {
         Icon = currenMenutIcon.name;
       }
     }
@@ -251,9 +258,9 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const renderSecondMenu = (CustomIcon: React.ReactType, title: string, route: string, menu: any, item: any) => {
     const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
     let Icon = SettingsIcon;
-    if(item.icons) {
+    if (item.icons) {
       let currenMenutIcon = icons.find((e: any) => e.slug === item.icons.slug);
-      if(currenMenutIcon) {
+      if (currenMenutIcon) {
         Icon = currenMenutIcon.name;
       }
     }
@@ -288,9 +295,9 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       if (item.parent === "0") {
         const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
         let Icon = SettingsIcon;
-        if(item.icons) {
+        if (item.icons) {
           let currenMenutIcon = icons.find((e: any) => e.slug === item.icons.slug);
-          if(currenMenutIcon) {
+          if (currenMenutIcon) {
             Icon = currenMenutIcon.name;
           }
         }
@@ -387,7 +394,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     }
     return (
       <div>
-        <div className={classes.toolbar} />
+        <Logo />
         <Divider />
         <List dense >
           {!_.isEmpty(menuList) && buildMenu(menuList.items)}
@@ -448,7 +455,14 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
           </IconButton>
           <div className={classes.header}>
             <Typography variant="h6" noWrap>
-              Portal de Socio
+              <Grid container spacing={1}>
+                <Grid item xs={12}>Portal de Socio</Grid>
+              </Grid>
+
+              {Helper.checkParameter(parameterList, "CLIENT_NAME") && (
+                <Grid item xs={12} style={{ fontSize: 14, fontStyle: 'italic' }}>{Helper.getParameter(parameterList, 'CLIENT_NAME')}</Grid>
+              )
+              }
             </Typography>
             <Typography variant="h6" noWrap>
               <div>
@@ -468,9 +482,9 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                 <MenuItem>Usuario: {!loading && user.username}</MenuItem>
-                 <MenuItem>Role: {userRoles.length > 0 && userRoles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
-                  <MenuItem onClick={() => handleLogout()}>Logout</MenuItem> 
+                  <MenuItem>Usuario: {!loading && user.username}</MenuItem>
+                  <MenuItem>Role: {userRoles.length > 0 && userRoles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
+                  <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
                 </Menu>
               </div>
             </Typography>

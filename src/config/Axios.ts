@@ -5,7 +5,7 @@ import axios from 'axios';
 //'http://localhost/api/portalsocios
 
 const AXIOS = axios.create({
-  baseURL: 'http://localhost/api/portalsocios',
+  baseURL: 'http://portal.api.com',
   headers: {
     'Content-Type': 'application/json',
     'Partners-Application': 'portal'
