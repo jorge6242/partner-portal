@@ -15,24 +15,18 @@ export default function About(){
         dispatch(getList());
     },[dispatch])
 
+    const renderParameter = (param: string) => {
+        const parameter = Helper.getParameter(parameterList, param);
+        console.log('parameter ', parameter);
+        return (<Grid item xs={12}>{parameter.description}: {parameter.value}</Grid>)
+    }    
+
     return (
         <Grid container style={{ marginTop: 20 }}>
             <Grid item xs={12} style={{ marginBottom: 10 }}><strong>Portal Socios</strong></Grid>
-            {
-                Helper.checkParameter(parameterList, "DB_VERSION") && (
-                <Grid item xs={12}>Version Modelo Bade de datos: {Helper.getParameter(parameterList, 'DB_VERSION')}</Grid>
-                )
-            }
-                        {
-                Helper.checkParameter(parameterList, "FRONTEND_VERSION") && (
-                    <Grid item xs={12}>Version Interfaz: {Helper.getParameter(parameterList, 'FRONTEND_VERSION')}</Grid>
-                )
-            }
-                        {
-                Helper.checkParameter(parameterList, "BACKEND_VERSION") && (
-                    <Grid item xs={12}>Version Backend : {Helper.getParameter(parameterList, 'BACKEND_VERSION')}</Grid>
-                )
-            }
+            {renderParameter("DB_VERSION")}
+            {renderParameter("FRONTEND_VERSION")}
+            {renderParameter("BACKEND_VERSION")}
         </Grid>
     )
 }

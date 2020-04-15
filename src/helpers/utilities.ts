@@ -15,9 +15,9 @@ const checkParameter =  (list: Array<string | number>, param: string) => {
 const getParameter = (list: Array<string | number>, parameter: any) => {
     const current: any =  list.find((e: any) => e.parameter === parameter);
     if(current) {
-        return current.description;
+        return current;
     }
-    return '';
+    return {};
 }  
 
 export default {

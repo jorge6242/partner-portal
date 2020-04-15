@@ -439,6 +439,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     )
   };
   // const nameRole: any = !_.isEmpty(user) ? user.role.name : '';
+  const parameter= Helper.getParameter(parameterList, 'CLIENT_NAME')
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -458,11 +459,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
               <Grid container spacing={1}>
                 <Grid item xs={12}>Portal de Socio</Grid>
               </Grid>
-
-              {Helper.checkParameter(parameterList, "CLIENT_NAME") && (
-                <Grid item xs={12} style={{ fontSize: 14, fontStyle: 'italic' }}>{Helper.getParameter(parameterList, 'CLIENT_NAME')}</Grid>
-              )
-              }
+                <Grid item xs={12} style={{ fontSize: 14, fontStyle: 'italic' }}>{parameter.value}</Grid>
             </Typography>
             <Typography variant="h6" noWrap>
               <div>
