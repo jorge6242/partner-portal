@@ -1002,7 +1002,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             disable={disableField}
           />
         </Grid>
-        <Grid item xs={3} style={{ lineHeight: 3 }}>
+        <Grid item xs={3} style={{ lineHeight: 2.5 }}>
         <Paper className={classes.parsedPersonContainerDetail}>
           <strong>Vencimiento</strong> {expiration_date && moment(expiration_date).format('DD-MM-YYYY')}
         </Paper>
