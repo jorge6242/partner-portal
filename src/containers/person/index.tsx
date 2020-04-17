@@ -27,7 +27,7 @@ const columns: PersonColumn[] = [
   },
   {
     id: "isPartner",
-    label: "parentesto",
+    label: "Parentesco",
     minWidth: 170,
     align: "right",
     component: (value: any) => {

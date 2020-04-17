@@ -195,7 +195,7 @@ const FamilysColumns: FamilyPersonColumns[] = [
     component: (value: any) => <span>{value.value}</span>
   },
   {
-    id: "relationType",
+    id: "description",
     label: "Parentesco",
     minWidth: 30,
     align: "right",
@@ -904,7 +904,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             register={register}
             errorsField={errors.rif_ci}
             errorsMessageField={errors.rif_ci && errors.rif_ci.message}
-            inputType="number"
             disable
           />
         </Grid>
