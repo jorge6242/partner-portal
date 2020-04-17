@@ -27,6 +27,9 @@ export default function About(){
             {renderParameter("DB_VERSION")}
             {renderParameter("FRONTEND_VERSION")}
             {renderParameter("BACKEND_VERSION")}
+            {renderParameter("ENDPOINT_API_URL")}
+            {renderParameter("DB_NAME")}
+            {renderParameter("DB_SERVER")}
         </Grid>
     )
 }
