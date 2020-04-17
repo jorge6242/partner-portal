@@ -1800,7 +1800,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                               </Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
-                              {getParsePerson(
+                              {selectedShare.facturador && getParsePerson(
                                 selectedShare.facturador,
                                 classes
                               )}
@@ -1823,7 +1823,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                               </Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
-                              {getParsePerson(selectedShare.titular, classes)}
+                              {selectedShare.titular && getParsePerson(selectedShare.titular, classes)}
                             </ExpansionPanelDetails>
                           </ExpansionPanel>
 
@@ -1843,7 +1843,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                               </Typography>
                             </ExpansionPanelSummary>
                             <ExpansionPanelDetails>
-                              {getParsePerson(selectedShare.fiador, classes)}
+                              {selectedShare.fiador && getParsePerson(selectedShare.fiador, classes)}
                             </ExpansionPanelDetails>
                           </ExpansionPanel>
 
