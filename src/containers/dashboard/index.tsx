@@ -62,6 +62,8 @@ import { getAll as getCountries } from "../../actions/countryActions";
 import { getAll as getRelationTypes } from "../../actions/relationTypeActions";
 import { getAll as getPaymentMethods } from "../../actions/paymentMethodActions";
 import { getAll as getSports } from "../../actions/sportActions";
+import { getAll as getProfessions } from "../../actions/professionActions";
+import { getList as getParameterList } from "../../actions/parameterActions";
 import Loader from "../../components/common/Loader";
 import { getClient } from "../../actions/personActions";
 import { getBalance } from "../../actions/webServiceActions";
@@ -70,7 +72,6 @@ import { Chip, Grid } from "@material-ui/core";
 import SecureStorage from "../../config/SecureStorage";
 import Logo from "../../components/Logo";
 import Helper from '../../helpers/utilities';
-import { getList as getParameterList } from "../../actions/parameterActions";
 
 const drawerWidth = 240;
 
@@ -191,6 +192,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       dispatch(getMenuList(location.pathname));
       dispatch(getClient(user.username));
       dispatch(getBalance());
+      dispatch(getProfessions());
       dispatch(getWidgetList());
       dispatch(getParameterList());
       dispatch(getGenderAll());

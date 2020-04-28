@@ -54,7 +54,7 @@ import {
   clearPersonLockersByLocation,
   clear
 } from "../../actions/personActions";
-import { getAll as getProfessions } from "../../actions/professionActions";
+
 import { getByLocation, clearList } from "../../actions/lockerActions";
 import {
   getAll as getCardPerson,
@@ -66,7 +66,6 @@ import {
   reset as resetShare
 } from "../../actions/shareActions";
 import { updateModal } from "../../actions/secondModalActions";
-import { getList as getParameterList } from "../../actions/parameterActions";
 import TransferList from "../TransferList";
 import CardPersonColumns from "../../interfaces/CardPersonColumns";
 import FamilyPersonColumns from "../../interfaces/FamilyPersonColumns";
@@ -637,12 +636,10 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     async function fetch() {
       if (id) {
         const response: any = await dispatch(get(id));
-        dispatch(getProfessions());
         dispatch(searchFamilyByPerson(id));
         dispatch(getCardPerson(id));
         dispatch(getLockersByPartner(id));
         dispatch(getRecordsByPerson({ id }));
-        dispatch(getParameterList());
         // dispatch(getNotesByPerson({ id }));
         const {
           name,
