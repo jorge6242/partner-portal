@@ -4,7 +4,7 @@ import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from '../interfaces/actionTypes/sportTypes';
 
-export const getAll = () => async (dispatch: Function) => {
+export const getAll = (intento: boolean = true) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
     payload: true
@@ -25,6 +25,9 @@ export const getAll = () => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    if(intento) {
+      dispatch(getAll(false));
+    }
     snackBarUpdate({
       payload: {
         message: error.message,

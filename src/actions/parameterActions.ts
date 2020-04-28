@@ -51,7 +51,7 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch
   }
 };
 
-export const getList = () => async (dispatch: Function) => {
+export const getList = (intento: boolean = true) => async (dispatch: Function) => {
   dispatch(updateModal({
     payload: {
       isLoader: true,
@@ -74,6 +74,9 @@ export const getList = () => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    if(intento) {
+      dispatch(getList(false));
+    }
     dispatch(updateModal({
       payload: {
         isLoader: false,

@@ -60,7 +60,6 @@ import { getAll as getStatusPersonAll } from "../../actions/statusPersonActions"
 import { getAll as getMaritalStatusAll } from "../../actions/maritalStatusActions";
 import { getAll as getCountries } from "../../actions/countryActions";
 import { getAll as getRelationTypes } from "../../actions/relationTypeActions";
-import { getAll as getPaymentMethods } from "../../actions/paymentMethodActions";
 import { getAll as getSports } from "../../actions/sportActions";
 import { getAll as getProfessions } from "../../actions/professionActions";
 import { getList as getParameterList } from "../../actions/parameterActions";
@@ -201,7 +200,6 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       dispatch(getMaritalStatusAll());
       dispatch(getCountries());
       dispatch(getRelationTypes());
-      dispatch(getPaymentMethods());
       dispatch(getSports());
     }
     run();

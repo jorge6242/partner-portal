@@ -54,7 +54,7 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (
   }
 };
 
-export const getList = () => async (dispatch: Function) => {
+export const getList = (intento: boolean = true) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
     payload: true
@@ -78,6 +78,9 @@ export const getList = () => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    if(intento) {
+      dispatch(getList(false));
+    }
     dispatch({
       type: ACTIONS.SET_LOADING,
       payload: false
