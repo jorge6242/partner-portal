@@ -54,6 +54,14 @@ import { updateModal } from "../../actions/modalActions";
 import { getList as getTransactionTypes } from "../../actions/transactionTypeActions";
 import { getList as getCurrencies } from "../../actions/currencyActions";
 import { getList as getMenuList, getWidgetList } from "../../actions/menuActions";
+import { getAll as getGenderAll } from "../../actions/genderActions";
+import { getList as getLockerLocationList } from "../../actions/lockerLocationsActions";
+import { getAll as getStatusPersonAll } from "../../actions/statusPersonActions";
+import { getAll as getMaritalStatusAll } from "../../actions/maritalStatusActions";
+import { getAll as getCountries } from "../../actions/countryActions";
+import { getAll as getRelationTypes } from "../../actions/relationTypeActions";
+import { getAll as getPaymentMethods } from "../../actions/paymentMethodActions";
+import { getAll as getSports } from "../../actions/sportActions";
 import Loader from "../../components/common/Loader";
 import { getClient } from "../../actions/personActions";
 import { getBalance } from "../../actions/webServiceActions";
@@ -185,6 +193,14 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       dispatch(getBalance());
       dispatch(getWidgetList());
       dispatch(getParameterList());
+      dispatch(getGenderAll());
+      dispatch(getLockerLocationList());
+      dispatch(getStatusPersonAll());
+      dispatch(getMaritalStatusAll());
+      dispatch(getCountries());
+      dispatch(getRelationTypes());
+      dispatch(getPaymentMethods());
+      dispatch(getSports());
     }
     run();
   }, [dispatch])
