@@ -132,6 +132,7 @@ export const getUnpaidInvoices = () => async (dispatch: Function) => {
           payload: false
         });
       }
+      console.log('response ', response);
       return response;
     } catch (error) {
       if(intento) {
