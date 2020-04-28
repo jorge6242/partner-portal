@@ -192,7 +192,7 @@ const FamilysColumns: FamilyPersonColumns[] = [
     minWidth: 30,
     align: "right",
     component: (value: any) => (<Chip
-      label={value.value.description}
+      label={value.value}
       style={{
         backgroundColor: "#f1c40f",
         color: "white",
