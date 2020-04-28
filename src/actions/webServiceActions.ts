@@ -111,7 +111,7 @@ export const getUnpaidInvoices = () => async (dispatch: Function) => {
     }
   };
 
-    export const getBalance = () => async (dispatch: Function) => {
+    export const getBalance = (intento: boolean = true) => async (dispatch: Function) => {
     dispatch({
       type: ACTIONS.SET_BALANCE_LOADING,
       payload: true
@@ -134,6 +134,9 @@ export const getUnpaidInvoices = () => async (dispatch: Function) => {
       }
       return response;
     } catch (error) {
+      if(intento) {
+        dispatch(getBalance(false));
+      }
       snackBarUpdate({
         payload: {
           message: error.message,
