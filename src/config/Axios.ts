@@ -13,7 +13,7 @@ import axios from 'axios';
 //http://190.216.224.53:8081
 
 const AXIOS = axios.create({
-  baseURL: 'http://190.216.224.53:8081',
+  baseURL: 'http://portal.api.com',
   headers: {
     'Content-Type': 'application/json',
     'Partners-Application': 'portal'
