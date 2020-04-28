@@ -61,7 +61,7 @@ const checkAuthRoutes = (items: Array<string | number>, location: string) => {
   }
 }
 
-export const getList = (location: string) => async (dispatch: Function) => {
+export const getList = (location: string, intento: boolean = true) => async (dispatch: Function) => {
   dispatch(mainStatusLoading(true));
   dispatch(updateModal({
     payload: {
@@ -87,6 +87,9 @@ export const getList = (location: string) => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    if(intento) {
+      dispatch(getList(location, false));
+    }
     dispatch(mainStatusLoading(false));
     dispatch(updateModal({
       payload: {
