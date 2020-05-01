@@ -199,7 +199,6 @@ export default function ReportePagos() {
         );
     }
 
-    console.log('client', client);
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -212,7 +211,7 @@ export default function ReportePagos() {
                     )
                 }
             </Grid>
-            <Grid item xs={12}>Facturas por Pagar</Grid>>
+            <Grid item xs={12}>Facturas por Pagar</Grid>
             <Grid item xs={12}>
                 <DataTable4
                     rows={unpaidInvoices.data}
