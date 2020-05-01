@@ -58,7 +58,7 @@ export const getList = (intento: boolean = true) => async (dispatch: Function) =
     }
   }));
   try {
-    const { data: { data, db , dbHost }, status } = await API.getList();
+    const { data: { data, db , dbHost, api }, status } = await API.getList();
     let response = [];
     if (status === 200) {
       response = data;
@@ -73,6 +73,10 @@ export const getList = (intento: boolean = true) => async (dispatch: Function) =
       dispatch({
         type: ACTIONS.GET_DB_HOST,
         payload: dbHost
+      });
+      dispatch({
+        type: ACTIONS.GET_API,
+        payload: api
       });
       dispatch(updateModal({
         payload: {

@@ -11,6 +11,7 @@ export const ACTIONS = {
     SET_UNPAID_INVOICES_LOADING: "web-service/set__unpaid_invoices_loading",
     SET_REPORTED_PAYMENTS_LOADING: "web-service/set__reported_payments_loading",
     SET_BALANCE_LOADING: "web-service/set__balance_loading",
+    SET_PAYPAL_ORDER_LOADING: "web-service/set_paypal_order_loading",
     SET_PAGINATION: "web-service/set_pagination",
     CLEAR_LIST: "web-service/clear_list"
   };
@@ -66,6 +67,11 @@ export const ACTIONS = {
     payload: boolean;
   }
 
+  interface SetPaypalOrderLoading {
+    type: typeof ACTIONS.SET_PAYPAL_ORDER_LOADING;
+    payload: boolean;
+  }
+
     
   interface SetStatusAccountLoading {
     type: typeof ACTIONS.SET_STATUS_ACCOUNT_LOADING;
@@ -95,5 +101,6 @@ export const ACTIONS = {
     | SetReportedPaymentsLoading
     | ClearList
     | SetBalanceLoading
-    | GetBalance;
+    | GetBalance
+    | SetPaypalOrderLoading;
   

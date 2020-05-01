@@ -13,6 +13,9 @@ import IconButton from "@material-ui/core/IconButton";
 import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from "@material-ui/icons/Delete";
+import PaymentIcon from '@material-ui/icons/Payment';
+
+import logo from './paypal-logo.jpeg';
 
 const useStyles = makeStyles({
   root: {
@@ -43,6 +46,7 @@ interface DataTableProps {
   isDelete?: boolean;
   handleEdit?: Function;
   handleView?: Function;
+  handlePayment?: Function;
   handleDelete?: any;
   loading?: boolean;
   onChangePage?: any;
@@ -70,6 +74,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   fontSize = '12px',
   aditionalColumn,
   aditionalColumnLabel,
+  handlePayment
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -115,6 +120,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
               {handleView && <TableCell style={{ minWidth: 5 }}></TableCell>}
               {handleEdit && <TableCell style={{ minWidth: 5 }}></TableCell>}
               {handleDelete && <TableCell style={{ minWidth: 5 }}></TableCell>}
+              {handlePayment && <TableCell style={{ minWidth: 5 }}></TableCell>}
             </TableRow>
           </TableHead>
           <TableBody style={{ overflow: 'hidden' }}>
@@ -148,6 +154,13 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                             </TableCell>
                           );
                         })}
+                        {handlePayment && (
+                          <TableCell align="right" style={{ minWidth: 5 }}>
+                              <div onClick={() => handlePayment(row)}>
+                                <img src={logo} alt="example image" style={{ cursor: 'pointer' }} width="35" height="25" />
+                              </div>
+                          </TableCell>
+                          )}
                         <TableCell align="right" style={{ minWidth: 5 }}>
                           {handleView && (
                             <IconButton

@@ -23,6 +23,14 @@ const API = {
         headers: headers() 
     });
   },
+  setOrder(data: object) {
+    return AXIOS.get(`${Prefix.api}/set-order`, {
+        params: {
+          ...data
+        },
+        headers: headers() 
+    });
+  },
 };
 
 export default API;

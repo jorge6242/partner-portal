@@ -3,6 +3,7 @@ export const ACTIONS = {
   GET: "parameter/get",
   GET_DB_PARAMETER: "parameter/get_db_parameter",
   GET_DB_HOST: "parameter/get_db_host",
+  GET_API: "parameter/get_api",
   GET_LIST: "parameter/get_list",
   SET_LOADING: "parameter/set_loading",
   SET_PAGINATION: "parameter/set_pagination",
@@ -10,6 +11,11 @@ export const ACTIONS = {
 
 interface Get {
   type: typeof ACTIONS.GET;
+  payload: Array<string | number>;
+}
+
+interface GetApi {
+  type: typeof ACTIONS.GET_API;
   payload: Array<string | number>;
 }
 
@@ -50,4 +56,5 @@ export type ActionTypes =
   | SetPagination
   | GetList
   | GetDbParameter
-  | GetDbHost;
+  | GetDbHost
+  | GetApi;

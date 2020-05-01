@@ -23,6 +23,7 @@ import _ from 'lodash';
 
 import { getReportedPayments, getUnpaidInvoices } from "../../actions/webServiceActions";
 import { getClient } from "../../actions/personActions";
+import Paypal from "../../components/Paypal";
 
 const ExpansionPanelSummary = withStyles({
     root: {
@@ -178,6 +179,26 @@ export default function ReportePagos() {
         setExpanded(isExpanded ? panel : false);
     };
 
+    const handlePayment = (row: any) => {
+        console.log('row', row);
+        const monto = row.originalAmount / 1000000;
+
+        dispatch(
+            updateModal({
+                payload: {
+                    status: true,
+                    element: <Paypal 
+                        description={row.descrip} 
+                        invoiceId={row.fact_num} 
+                        customId={user.username} 
+                        amountDetail={monto.toFixed(2)}
+                        amount={monto.toFixed(2)}
+                        />,
+                }
+            })
+        );
+    }
+
     console.log('client', client);
     return (
         <Grid container spacing={3}>
@@ -191,7 +212,7 @@ export default function ReportePagos() {
                     )
                 }
             </Grid>
-            <Grid item xs={12}>Facturas por Pagar</Grid>
+            <Grid item xs={12}>Facturas por Pagar</Grid>>
             <Grid item xs={12}>
                 <DataTable4
                     rows={unpaidInvoices.data}
@@ -199,6 +220,7 @@ export default function ReportePagos() {
                     loading={setUnpaidInvoicestLoading}
                     aditionalColumn={formatNumber(unpaidInvoices.total)}
                     aditionalColumnLabel="Total"
+                    handlePayment={handlePayment}
                 />
             </Grid>
             <Grid item xs={12}>
