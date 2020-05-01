@@ -14,8 +14,10 @@ import axios from 'axios';
 
 //192.168.0.252:9001
 
+const BASE_URL = window.BASE_URL;
+console.log('window.BASE_URL ', window.BASE_URL);
 const AXIOS = axios.create({
-  baseURL: 'http://192.168.0.252:9001',
+  baseURL: BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'Partners-Application': 'portal'

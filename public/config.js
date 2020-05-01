@@ -1,0 +1,1 @@
+var BASE_URL = "http://portal.api.com";
