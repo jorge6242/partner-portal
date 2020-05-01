@@ -1,1 +1,1 @@
-var BASE_URL = "http://portal.api.com";
+const BASE_URL = "http://portal.api.com";
