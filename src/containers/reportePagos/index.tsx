@@ -162,6 +162,8 @@ export default function ReportePagos() {
         setReportedPaymentsLoading
     } = useSelector((state: any) => state.webServiceReducer);
 
+    const clientId = "Ab8frqGsF4rlmjIH9mS9kTdaGo2-vLh-v0PK5G1ZxeKBSTbAkygWF3eRCPYydHRtQBGlRJyLPDY4v5Aw";
+
     const { client } = useSelector((state: any) => state.personReducer);
 
     const { user } = useSelector((state: any) => state.loginReducer);
@@ -193,6 +195,7 @@ export default function ReportePagos() {
                         customId={user.username} 
                         amountDetail={monto.toFixed(2)}
                         amount={monto.toFixed(2)}
+                        client={clientId}
                         />,
                 }
             })
@@ -219,7 +222,7 @@ export default function ReportePagos() {
                     loading={setUnpaidInvoicestLoading}
                     aditionalColumn={formatNumber(unpaidInvoices.total)}
                     aditionalColumnLabel="Total"
-                    handlePayment={handlePayment}
+                    handlePayment={ clientId ? handlePayment : null}
                 />
             </Grid>
             <Grid item xs={12}>

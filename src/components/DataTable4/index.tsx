@@ -46,7 +46,7 @@ interface DataTableProps {
   isDelete?: boolean;
   handleEdit?: Function;
   handleView?: Function;
-  handlePayment?: Function;
+  handlePayment?: any;
   handleDelete?: any;
   loading?: boolean;
   onChangePage?: any;
