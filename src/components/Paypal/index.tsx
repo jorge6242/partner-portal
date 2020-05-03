@@ -4,6 +4,7 @@ import { Grid } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { setOrder, getUnpaidInvoices, getReportedPayments } from '../../actions/webServiceActions';
 import { updateModal } from '../../actions/modalActions';
+import snackBarUpdate from '../../actions/snackBarActions';
 
 interface ComponentProps {
     invoiceId: any;
@@ -32,7 +33,7 @@ const Paypal: FunctionComponent<ComponentProps> = ({ invoiceId, description, cus
                             purchase_units: [{
                                 description,
                                 custom_id: customId,
-                                invoice_id: `F-${invoiceId}`,
+                                invoice_id: invoiceId,
                                 amount: {
                                     currency_code: "USD",
                                     value: amount
@@ -53,7 +54,7 @@ const Paypal: FunctionComponent<ComponentProps> = ({ invoiceId, description, cus
                             // OPTIONAL: Call your server to save the transaction
                             const body = {
                                 order: data.orderID,
-                                invoice: `F-${invoiceId}`,
+                                invoice: invoiceId,
                                 amount
                             };
                             await dispatch(setOrder(body));
@@ -68,6 +69,34 @@ const Paypal: FunctionComponent<ComponentProps> = ({ invoiceId, description, cus
                     }}
                     options={{
                         clientId: client
+                    }}
+                    catchError={(data: any, other: any) => {
+                        dispatch(updateModal({
+                            payload: {
+                                isLoader: false,
+                            }
+                        }));
+                        dispatch(snackBarUpdate({
+                            payload: {
+                              message: `Su Pago no pudo ser procesado <br> Mensaje de Error de Paypal: ${data}`,
+                              status: true,
+                              type: "error",
+                            },
+                          }))
+                    }}
+                    onError={(data: any, other: any) => {
+                        dispatch(updateModal({
+                            payload: {
+                                isLoader: false,
+                            }
+                        }));
+                        dispatch(snackBarUpdate({
+                            payload: {
+                              message: `Su Pago no pudo ser procesado <br> Mensaje de Error de Paypal: ${data}`,
+                              status: true,
+                              type: "error",
+                            },
+                          }))
                     }}
                 />
             </Grid>

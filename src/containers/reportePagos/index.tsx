@@ -24,6 +24,7 @@ import _ from 'lodash';
 import { getReportedPayments, getUnpaidInvoices } from "../../actions/webServiceActions";
 import { getClient } from "../../actions/personActions";
 import Paypal from "../../components/Paypal";
+import Helper from '../../helpers/utilities';
 
 const ExpansionPanelSummary = withStyles({
     root: {
@@ -86,7 +87,7 @@ const columns: reportePagosColumns[] = [
         label: "Status",
         minWidth: 30,
         align: "center",
-        component: (value: any) => <span>Pendiente</span>
+        component: (value: any) => <span>{value.value == "1" ? 'Procesado' : 'En Proceso'}</span>
     },
 ];
 
@@ -162,12 +163,17 @@ export default function ReportePagos() {
         setReportedPaymentsLoading
     } = useSelector((state: any) => state.webServiceReducer);
 
-    const clientId = "Ab8frqGsF4rlmjIH9mS9kTdaGo2-vLh-v0PK5G1ZxeKBSTbAkygWF3eRCPYydHRtQBGlRJyLPDY4v5Aw";
+    const { 
+        personReducer: { client },
+        loginReducer: { user },
+        parameterReducer: { listData: parameterList },
+     } = useSelector((state: any) => state); 
 
-    const { client } = useSelector((state: any) => state.personReducer);
-
-    const { user } = useSelector((state: any) => state.loginReducer);
-
+    const paypalParameter = Helper.getParameter(parameterList, 'PAYPAL_CLIENT_ID');
+    const habilitarPagoParameter = Helper.getParameter(parameterList, 'HABILITAR_PAGO');
+    console.log('habilitarPagoParameter ', habilitarPagoParameter);
+    const paypalClientId =  !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) ? paypalParameter.value : null;
+    console.log('paypalClientId ', paypalClientId);
     useEffect(() => {
         dispatch(getUnpaidInvoices());
         dispatch(getReportedPayments());
@@ -195,13 +201,13 @@ export default function ReportePagos() {
                         customId={user.username} 
                         amountDetail={monto.toFixed(2)}
                         amount={monto.toFixed(2)}
-                        client={clientId}
+                        client={paypalClientId}
                         />,
                 }
             })
         );
     }
-
+    console.log('unpaidInvoices ', unpaidInvoices);
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
@@ -220,9 +226,9 @@ export default function ReportePagos() {
                     rows={unpaidInvoices.data}
                     columns={unpaidInvoicesColumns}
                     loading={setUnpaidInvoicestLoading}
-                    aditionalColumn={formatNumber(unpaidInvoices.total)}
-                    aditionalColumnLabel="Total"
-                    handlePayment={ clientId ? handlePayment : null}
+                    aditionalColumn={unpaidInvoices.length > 0 ? formatNumber(unpaidInvoices.total) : null}
+                    aditionalColumnLabel={unpaidInvoices.length > 0 ? "Total" : null}
+                    handlePayment={ paypalClientId ? handlePayment : null}
                 />
             </Grid>
             <Grid item xs={12}>

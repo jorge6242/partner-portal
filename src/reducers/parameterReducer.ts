@@ -8,6 +8,7 @@ type InitState = {
   dbParameter: string;
   dbHost: string;
   api: string;
+  paypalClientId: string;
 };
 
 const initialState: InitState = {
@@ -23,6 +24,7 @@ const initialState: InitState = {
   dbParameter: "",
   dbHost: "",
   api: "",
+  paypalClientId: "",
 };
 
 const parameterReducer = (state = initialState, action: ActionTypes) => {
@@ -42,16 +44,21 @@ const parameterReducer = (state = initialState, action: ActionTypes) => {
         ...state,
         dbParameter: action.payload,
       };
+    case ACTIONS.GET_PAYPAL_CLIENT_ID:
+      return {
+        ...state,
+        paypalClientId: action.payload,
+      };
     case ACTIONS.GET_DB_HOST:
       return {
         ...state,
         dbHost: action.payload,
       };
-      case ACTIONS.GET_API:
-        return {
-          ...state,
-          api: action.payload,
-        };
+    case ACTIONS.GET_API:
+      return {
+        ...state,
+        api: action.payload,
+      };
     case ACTIONS.SET_PAGINATION:
       return {
         ...state,

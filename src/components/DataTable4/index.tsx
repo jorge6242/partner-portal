@@ -55,7 +55,7 @@ interface DataTableProps {
   handleSubRowComponent?: Function;
   renderSubRow?: any;
   aditionalColumn?: string;
-  aditionalColumnLabel?: string;
+  aditionalColumnLabel?: any;
 }
 
 const DataTable4: FunctionComponent<DataTableProps> = ({
@@ -154,7 +154,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                             </TableCell>
                           );
                         })}
-                        {handlePayment && (
+                        {handlePayment && row.originalAmount !== "0" && (
                           <TableCell align="right" style={{ minWidth: 5 }}>
                               <div onClick={() => handlePayment(row)}>
                                 <img src={logo} alt="example image" style={{ cursor: 'pointer' }} width="35" height="25" />

@@ -49,8 +49,9 @@ export const getUnpaidInvoices = () => async (dispatch: Function) => {
     let response = [];
     if (status === 200) {
       response = data;
-      if (data.length === 1) {
-        const value = data[0];
+      console.log('data ', data);
+      if (data.data.length === 1) {
+        const value = data.data[0];
         if (value && value.saldo && value.saldo === "0.00") {
           response = [];
         }
@@ -187,6 +188,13 @@ export const setOrder = (order: object) => async (dispatch: Function) => {
     if (status === 200) {
       if (data) {
         response = data;
+        snackBarUpdate({
+          payload: {
+            message: "Su pago ha sido Procesado",
+            type: "success",
+            status: true
+          }
+        })(dispatch);
       }
     }
     dispatch(
