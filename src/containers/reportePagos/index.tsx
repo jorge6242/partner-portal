@@ -87,7 +87,12 @@ const columns: reportePagosColumns[] = [
         label: "Status",
         minWidth: 30,
         align: "center",
-        component: (value: any) => <span>{value.value == "1" ? 'Procesado' : 'En Proceso'}</span>
+        component: (value: any) => {
+            let status = "";
+            if(value.value == "0") status = "En Proceso";
+            if(value.value == "1") status = "Procesado";
+            return <span>{status}</span>;
+        }
     },
 ];
 
@@ -190,7 +195,6 @@ export default function ReportePagos() {
     const handlePayment = (row: any) => {
         console.log('row', row);
         const monto = row.originalAmount / 1000000;
-
         dispatch(
             updateModal({
                 payload: {
@@ -207,7 +211,7 @@ export default function ReportePagos() {
             })
         );
     }
-    console.log('unpaidInvoices ', unpaidInvoices);
+
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
