@@ -14,6 +14,7 @@ import { create } from "../../actions/reportePagosActions";
 import { getList as getBancoEmisorList } from "../../actions/bancoEmisorActions";
 import { getList as getBancoReceptorList } from "../../actions/bancoReceptorActions";
 import CustomSelect from "../FormElements/CustomSelect";
+import Upload from "../FormElements/Upload";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -63,6 +64,7 @@ type FormData = {
     codCuentaDestino: string,
     dFechaRegistro: string,
     dFechaPago: string;
+    file1: string;
 };
 
 type FormComponentProps = {
@@ -214,15 +216,12 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                     />
 
                     <div>Comprobante de Pago</div>
-                    <Button
-                        startIcon={<CloudUploadIcon />}
-                        variant="contained"
-                        color="primary"
-                        size="small"
-                        component="span"
-                    >
-                        Archivo
-                    </Button>
+                    <Upload
+                        field="file1"
+                        label="Archivo"
+                        register={register}
+                        setValue={setValue}
+                    />
 
                     <div className={classes.wrapper}>
                         <Button
