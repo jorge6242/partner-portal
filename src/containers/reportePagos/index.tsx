@@ -177,7 +177,7 @@ export default function ReportePagos() {
     const paypalParameter = Helper.getParameter(parameterList, 'PAYPAL_CLIENT_ID');
     const habilitarPagoParameter = Helper.getParameter(parameterList, 'HABILITAR_PAGO');
     console.log('habilitarPagoParameter ', habilitarPagoParameter);
-    const paypalClientId =  !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) ? paypalParameter.value : null;
+    const paypalClientId =  !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) && paypalParameter.value !== '' ? paypalParameter.value : null;
     console.log('paypalClientId ', paypalClientId);
     useEffect(() => {
         dispatch(getUnpaidInvoices());
