@@ -47,6 +47,7 @@ const useStyles = makeStyles(theme => ({
 type FormData = {
   name: string;
   email: string;
+  username: string;
   password: string;
   roles: string;
 };
@@ -69,7 +70,8 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     async function fetch() {
       if (id) {
         const response: any = await dispatch(get(id));
-        const { name, email, roles } = response;
+        const { name, email, roles, username } = response;
+        setValue("username", username);
         setValue("name", name);
         setValue("email", email);
         if (roles.length > 0) {
@@ -114,6 +116,16 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
           noValidate
         >
           <Grid container spacing={2}>
+          <Grid item xs={6}>
+              <CustomTextField
+                placeholder="Usuario"
+                field="username"
+                required
+                register={register}
+                errorsField={errors.username}
+                errorsMessageField={errors.username && errors.username.message}
+              />
+            </Grid>
             <Grid item xs={6}>
               <CustomTextField
                 placeholder="Nombre"
