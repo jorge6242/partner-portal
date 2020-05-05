@@ -32,7 +32,7 @@ const Paypal: FunctionComponent<ComponentProps> = ({ invoiceId, description, cus
                         return actions.order.create({
                             purchase_units: [{
                                 description,
-                                custom_id: `CC-${customId}`,
+                                custom_id: customId,
                                 invoice_id: invoiceId,
                                 amount: {
                                     currency_code: "USD",
@@ -54,7 +54,7 @@ const Paypal: FunctionComponent<ComponentProps> = ({ invoiceId, description, cus
                             // OPTIONAL: Call your server to save the transaction
                             const body = {
                                 order: data.orderID,
-                                invoice: `CC-${customId}`,
+                                invoice: customId,
                                 amount
                             };
                             await dispatch(setOrder(body));
