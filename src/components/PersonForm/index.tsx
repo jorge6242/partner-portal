@@ -939,7 +939,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             label="Estado Civil"
             selectionMessage="Seleccione Estado Civil"
             field="marital_statuses_id"
-            required
             register={register}
             errorsMessageField={
               errors.marital_statuses_id && errors.marital_statuses_id.message
@@ -957,7 +956,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           <CustomSelect
             label="Sexo"
             field="gender_id"
-            required
             register={register}
             errorsMessageField={errors.gender_id && errors.gender_id.message}
             selectionMessage="Seleccione Sexo"
@@ -1019,7 +1017,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             label="Estatus"
             selectionMessage="Seleccione Estatus"
             field="status_person_id"
-            required
             register={register}
             errorsMessageField={
               errors.status_person_id && errors.status_person_id.message
