@@ -1747,17 +1747,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                                   fontSize="12px"
                                 />
                               </Grid>
-                              <Grid
-                                item
-                                xs={12}
-                                className={classes.reportButtonContainer}
-                              >
-                                <LoadingButton
-                                  Icon={PrintIcon}
-                                  loading={reportByPartnerLoading}
-                                  handleClick={() => handleReportByPartner()}
-                                />
-                              </Grid>
                             </Grid>
                           </ExpansionPanelDetails>
                         </ExpansionPanel>

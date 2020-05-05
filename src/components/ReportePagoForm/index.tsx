@@ -15,6 +15,7 @@ import { getList as getBancoEmisorList } from "../../actions/bancoEmisorActions"
 import { getList as getBancoReceptorList } from "../../actions/bancoReceptorActions";
 import CustomSelect from "../FormElements/CustomSelect";
 import Upload from "../FormElements/Upload";
+import { getReportedPayments } from "../../actions/webServiceActions";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -122,6 +123,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
         }
         await dispatch(create(body));
         reset();
+        dispatch(getReportedPayments());
     };
     //substring(12, 16)
     return (

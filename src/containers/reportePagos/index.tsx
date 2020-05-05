@@ -176,9 +176,8 @@ export default function ReportePagos() {
 
     const paypalParameter = Helper.getParameter(parameterList, 'PAYPAL_CLIENT_ID');
     const habilitarPagoParameter = Helper.getParameter(parameterList, 'HABILITAR_PAGO');
-    console.log('habilitarPagoParameter ', habilitarPagoParameter);
     const paypalClientId =  !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) && paypalParameter.value !== '' ? paypalParameter.value : null;
-    console.log('paypalClientId ', paypalClientId);
+
     useEffect(() => {
         dispatch(getUnpaidInvoices());
         dispatch(getReportedPayments());
@@ -193,8 +192,8 @@ export default function ReportePagos() {
     };
 
     const handlePayment = (row: any) => {
-        console.log('row', row);
-        const monto = row.originalAmount / 1000000;
+        // console.log('row', row);
+        const monto = Number(row.saldo);
         dispatch(
             updateModal({
                 payload: {
