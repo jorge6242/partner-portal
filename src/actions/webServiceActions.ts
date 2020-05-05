@@ -13,6 +13,12 @@ export const getStatusAccount = () => async (dispatch: Function) => {
     let response = [];
     if (status === 200) {
       response = data;
+      if (data.data.length === 1) {
+        const value = data.data[0];
+        if (value && value.saldo && value.saldo === "0.00") {
+          response = [];
+        }
+      }
       dispatch({
         type: ACTIONS.GET_STATUS_ACCOUNT,
         payload: response,
@@ -49,7 +55,6 @@ export const getUnpaidInvoices = () => async (dispatch: Function) => {
     let response = [];
     if (status === 200) {
       response = data;
-      console.log('data ', data);
       if (data.data.length === 1) {
         const value = data.data[0];
         if (value && value.saldo && value.saldo === "0.00") {

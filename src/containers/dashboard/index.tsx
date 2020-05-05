@@ -190,7 +190,6 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       }
       dispatch(getMenuList(location.pathname));
       dispatch(getClient(user.username));
-      dispatch(getBalance());
       dispatch(getProfessions());
       dispatch(getWidgetList());
       dispatch(getParameterList());

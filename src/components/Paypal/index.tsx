@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent } from 'react';
 import { PayPalButton } from "react-paypal-button-v2";
 import { Grid } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
@@ -54,7 +54,7 @@ const Paypal: FunctionComponent<ComponentProps> = ({ invoiceId, description, cus
                             // OPTIONAL: Call your server to save the transaction
                             const body = {
                                 order: data.orderID,
-                                invoice: customId,
+                                invoice: invoiceId,
                                 amount
                             };
                             await dispatch(setOrder(body));
