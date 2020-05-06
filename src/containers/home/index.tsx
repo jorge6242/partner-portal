@@ -40,8 +40,6 @@ export default function Home() {
     loginReducer: { userRoles }
   } = useSelector((state: any) => state);
   const dispatch = useDispatch();
-
-  const isRolePartner = userRoles.find((e:any) => e.slug === "socio");
   
   const validateWidget = (value: string) => {
     const isValid = widgetList.find((e: any) => e.slug === value);
@@ -52,15 +50,15 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if(validateWidget('PARTNERPORTAL_saldo') && !_.isEmpty(isRolePartner)) {
+    if(validateWidget('PARTNERPORTAL_saldo')) {
         dispatch(getBalance());
       }
-  }, [dispatch, isRolePartner, userRoles, widgetList]);
+  }, [dispatch, widgetList]);
 
   return (
     <div className="home-container">
       <Grid container spacing={3} className={classes.widgetContainer}>
-        { validateWidget('PARTNERPORTAL_saldo') && isRolePartner &&
+        { validateWidget('PARTNERPORTAL_saldo') &&
           <Grid item xs={3}>
           {setBalanceLoading ? (
             <Loader />
