@@ -88,7 +88,8 @@ const GuestForm: FunctionComponent<GuestFormProps> = ({
   } = useForm<FormData>();
   const {
     personReducer: { loading },
-    genderReducer: { list: genderList }
+    genderReducer: { list: genderList },
+    loginReducer: { user },
   } = useSelector((state: any) => state);
 
   const dispatch = useDispatch();
@@ -107,17 +108,19 @@ const GuestForm: FunctionComponent<GuestFormProps> = ({
   const handleForm = async (form: object) => {
     const body = {
       ...form,
-      id_card_picture: "N/A",
-      passport: "N/A",
-      card_number: "N/A",
+      id_card_picture: null,
+      passport: "",
+      card_number: "",
       expiration_date: moment().format('YYYY-MM-DD'),
       birth_date: moment().format('YYYY-MM-DD'),
-      representante: "N/A",
+      representante: "",
       company_person_id: 0,
       status_person_id: 1,
       marital_statuses_id: 0,
       countries_id: 0,
-      profession_list: null
+      profession_list: null,
+      user: user.username,
+      date: moment().format('YYYY-MM-DD'),
     };
     dispatch(createGuest(body, refresh));
   }
