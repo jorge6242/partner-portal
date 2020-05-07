@@ -3,7 +3,7 @@ import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from '../interfaces/actionTypes/bancoReceptor';
 
-export const getList = () => async (dispatch: Function) => {
+export const getList = (intento: boolean = true) => async (dispatch: Function) => {
   dispatch(updateModal({
     payload: {
       isLoader: true,
@@ -26,6 +26,9 @@ export const getList = () => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    if(intento) {
+      dispatch(getList(false));
+    }
     dispatch(updateModal({
       payload: {
         isLoader: false,

@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import Parse from 'react-html-parser';
 
 import CustomTextField from "../FormElements/CustomTextField";
 import { create } from "../../actions/reportePagosActions";
@@ -16,6 +17,14 @@ import { getList as getBancoReceptorList } from "../../actions/bancoReceptorActi
 import CustomSelect from "../FormElements/CustomSelect";
 import Upload from "../FormElements/Upload";
 import { getReportedPayments } from "../../actions/webServiceActions";
+
+// const __html = require('./DatosPago.html');
+
+// const template = { __html: __html };
+
+// function Template () {
+//     return ( <div dangerouslySetInnerHTML={template} /> );
+// }
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -29,18 +38,20 @@ const useStyles = makeStyles(theme => ({
     },
     wrapper: {
         margin: theme.spacing(1),
-        position: "relative"
-    },
-    buttonProgress: {
+        position: "relative",
+        textAlign: 'center',
+      },
+      buttonProgress: {
         position: "absolute",
         top: "50%",
         left: "50%",
         marginTop: -9,
         marginLeft: -9
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2)
-    },
+      },
+      submit: {
+        margin: theme.spacing(3, 0, 2),
+        width: '30%',
+      },
     select: {
         padding: '10px 0px 10px 0px',
         width: ' 100%',
@@ -110,7 +121,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     // DFechaRegistro es la fecha actual
     // EstadoCuenta no recuerdo que era lo que se guardaba aqui
 
-    const handleForm = async (form: object) => {
+    const handleForm = async (form: any) => {
         const { NroReferencia } = getValues();
         const body = {
             ...form,
@@ -119,7 +130,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
             EstadoCuenta: '',
             status: 0,
             Login: user.username,
-            NroReferencia2: NroReferencia
+            NroReferencia2: NroReferencia,
         }
         await dispatch(create(body));
         reset();
@@ -175,6 +186,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                             errors.dFechaPago && errors.dFechaPago.message
                         }
                         type="date"
+                        maxDate={moment().format("YYYY-MM-DD")}
                     />
 
                     <CustomSelect
@@ -239,6 +251,14 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                         {loading && (
                             <CircularProgress size={24} className={classes.buttonProgress} />
                         )}
+                    </div>
+                    <div style={{ marginTop: 30 }} >
+                        <b>Texto de demo a mostrar </b>
+                        <br />
+                        mas informacion<br />
+                        mas informacion<br />
+                        mas informacion<br />
+                        mas informacion<br />
                     </div>
                 </form>
             </div>

@@ -94,6 +94,7 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
     genderReducer: { list: genderList },
     maritalStatusReducer: { list: maritalStatusList },
     relationTypeReducer: { dataList: relationTypeList },
+    loginReducer: { user },
   } = useSelector((state: any) => state);
 
   const dispatch = useDispatch();
@@ -130,7 +131,7 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
   const handleForm = async (form: object) => {
     const body = {
       ...form,
-      id_card_picture: "N/A",
+      id_card_picture: null,
       passport: "",
       card_number: "",
       expiration_date: moment().format('YYYY-MM-DD'),
@@ -147,6 +148,8 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
       lockers: null,
       base_id: id,
       type_person: 1,
+      user: user.username,
+      date: moment().format('YYYY-MM-DD'),
     };
       dispatch(createFamily(body));
   }
@@ -323,7 +326,7 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
                     errorsMessageField={
                       errors.relation_type_id && errors.relation_type_id.message
                     }
-                    selectionMessage="Seleccione Sexo"
+                    selectionMessage="Seleccione"
                   >
                     {relationTypeList.map((item: any) => (
                       <option key={item.id} value={item.id}>

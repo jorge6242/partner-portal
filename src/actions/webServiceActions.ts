@@ -3,7 +3,7 @@ import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from "../interfaces/actionTypes/webServiceTypes";
 
-export const getStatusAccount = () => async (dispatch: Function) => {
+export const getStatusAccount = (intento: boolean = true) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_STATUS_ACCOUNT_LOADING,
     payload: true,
@@ -30,6 +30,9 @@ export const getStatusAccount = () => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    if(intento) {
+      dispatch(getStatusAccount(false));
+    }
     snackBarUpdate({
       payload: {
         message: error.message,
@@ -45,7 +48,7 @@ export const getStatusAccount = () => async (dispatch: Function) => {
   }
 };
 
-export const getUnpaidInvoices = () => async (dispatch: Function) => {
+export const getUnpaidInvoices = (intento: boolean = true) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
     payload: true,
@@ -72,6 +75,9 @@ export const getUnpaidInvoices = () => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    if(intento) {
+      dispatch(getUnpaidInvoices(false));
+    }
     snackBarUpdate({
       payload: {
         message: error.message,
@@ -87,7 +93,7 @@ export const getUnpaidInvoices = () => async (dispatch: Function) => {
   }
 };
 
-export const getReportedPayments = () => async (dispatch: Function) => {
+export const getReportedPayments = (intento: boolean = true) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_REPORTED_PAYMENTS_LOADING,
     payload: true,
@@ -117,6 +123,9 @@ export const getReportedPayments = () => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    if(intento) {
+      dispatch(getReportedPayments(false));
+    }
     snackBarUpdate({
       payload: {
         message: error.message,

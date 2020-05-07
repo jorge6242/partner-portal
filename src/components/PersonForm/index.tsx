@@ -770,14 +770,17 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   const handleForm = async (form: object) => {
     const data = {
       lockers: initialSelectedItems,
-      id_card_picture: "empty.png"
+      id_card_picture: null,
+      user: user.username,
+      date: moment().format('YYYY-MM-DD'),
     };
     if (tempPersonId > 0) {
       await dispatch(update({ id: tempPersonId, ...form, ...data }));
       dispatch(getLockersByPartner(tempPersonId));
+      dispatch(searchFamilyByPerson(tempPersonId));
     } else {
       const response: any = await dispatch(
-        create({ ...form, id_card_picture: "empty.png" })
+        create({ ...form, id_card_picture: null })
       );
       setTempPersonId(response.id);
       dispatch(searchPersonToAssignFamily(response.id));
@@ -865,8 +868,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
       <Grid container spacing={2}>
         <Grid item xs={3}>
           <CustomSelect
-            label="Tipo"
-            selectionMessage="Seleccione Tipo"
+            label="Tipo Persona"
+            selectionMessage="Seleccione"
             field="type_person"
             register={register}
             errorsMessageField={
@@ -936,7 +939,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         <Grid item xs={3}>
           <CustomSelect
             label="Estado Civil"
-            selectionMessage="Seleccione Estado Civil"
+            selectionMessage="Seleccione"
             field="marital_statuses_id"
             required
             register={register}
@@ -959,7 +962,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             required
             register={register}
             errorsMessageField={errors.gender_id && errors.gender_id.message}
-            selectionMessage="Seleccione Sexo"
+            selectionMessage="Seleccione"
             disabled={disableField}
           >
             {genderList.map((item: any) => (
@@ -1016,7 +1019,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         <Grid item xs={3}>
           <CustomSelect
             label="Estatus"
-            selectionMessage="Seleccione Estatus"
+            selectionMessage="Seleccione"
             field="status_person_id"
             register={register}
             errorsMessageField={
@@ -1056,7 +1059,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         <Grid item xs={3}>
           <CustomSelect
             label="Pais"
-            selectionMessage="Seleccione Pais"
+            selectionMessage="Seleccione"
             field="countries_id"
             register={register}
             errorsMessageField={
