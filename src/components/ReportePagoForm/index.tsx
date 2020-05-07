@@ -26,6 +26,14 @@ import { getReportedPayments } from "../../actions/webServiceActions";
 //     return ( <div dangerouslySetInnerHTML={template} /> );
 // }
 
+declare global {
+    interface Window {
+        TEMPLATE_INFO:any;
+    }
+}
+
+const templateInfo = window.TEMPLATE_INFO;
+
 const useStyles = makeStyles(theme => ({
     paper: {
         display: "flex",
@@ -253,12 +261,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                         )}
                     </div>
                     <div style={{ marginTop: 30 }} >
-                        <b>Texto de demo a mostrar </b>
-                        <br />
-                        mas informacion<br />
-                        mas informacion<br />
-                        mas informacion<br />
-                        mas informacion<br />
+                        {Parse(templateInfo)}
                     </div>
                 </form>
             </div>
