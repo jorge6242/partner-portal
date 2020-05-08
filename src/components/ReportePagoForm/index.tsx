@@ -131,6 +131,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
 
     const handleForm = async (form: any) => {
         const { NroReferencia } = getValues();
+        const monto = form.nMonto.replace(',','');
         const body = {
             ...form,
             dFechaProceso: null,
@@ -139,6 +140,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
             status: 0,
             Login: user.username,
             NroReferencia2: NroReferencia,
+            nMonto: monto,
         }
         await dispatch(create(body));
         reset();
@@ -224,7 +226,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                         errorsMessageField={
                             errors.nMonto && errors.nMonto.message
                         }
-                        inputType="number"
+                        formatNumber
                     />
                     <CustomTextField
                         placeholder="Descripcion"
