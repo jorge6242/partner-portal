@@ -3,7 +3,9 @@ import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from '../interfaces/actionTypes/statusPersonTypes';
 
-export const getAll = (intento: boolean = true) => async (dispatch: Function) => {
+const attempts = window.attempts;
+
+export const getAll = (count: number = 0) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
     payload: true
@@ -24,16 +26,18 @@ export const getAll = (intento: boolean = true) => async (dispatch: Function) =>
     }
     return response;
   } catch (error) {
-    if(intento) {
-      dispatch(getAll(false));
+    if(count <= attempts) {
+      let counter = count + 1;
+      dispatch(getAll(counter));
+    } else {
+      snackBarUpdate({
+        payload: {
+          message: error.message,
+          status: true,
+          type: "error",
+        },
+      })(dispatch);
     }
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error"
-      }
-    })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
       payload: false

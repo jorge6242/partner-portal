@@ -5,6 +5,8 @@ import { ACTIONS } from '../interfaces/actionTypes/menuTypes';
 import { mainStatusLoading } from '../actions/loadingMainActions';
 import SecureStorage from "../config/SecureStorage";
 
+const attempts = window.attempts;
+
 export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
@@ -61,7 +63,7 @@ const checkAuthRoutes = (items: Array<string | number>, location: string) => {
   }
 }
 
-export const getList = (location: string, intento: boolean = true) => async (dispatch: Function) => {
+export const getList = (location: string, count: number = 0) => async (dispatch: Function) => {
   dispatch(mainStatusLoading(true));
   dispatch(updateModal({
     payload: {
@@ -87,8 +89,17 @@ export const getList = (location: string, intento: boolean = true) => async (dis
     }
     return response;
   } catch (error) {
-    if(intento) {
-      dispatch(getList(location, false));
+    if(count <= attempts) {
+      let counter = count + 1;
+      dispatch(getList(location, counter));
+    } else {
+      snackBarUpdate({
+        payload: {
+          message: error.message,
+          status: true,
+          type: "error",
+        },
+      })(dispatch);
     }
     dispatch(mainStatusLoading(false));
     dispatch(updateModal({
@@ -96,13 +107,6 @@ export const getList = (location: string, intento: boolean = true) => async (dis
         isLoader: false,
       }
     }));
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error"
-      }
-    })(dispatch);
     return error;
   }
 };

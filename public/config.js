@@ -14,3 +14,6 @@ mas informacion<br>
 mas informacion<br>
 mas informacion<br></br>
 `;
+
+// Numero de intentos para la excepcion del enpoint.
+var attempts = 5;

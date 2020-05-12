@@ -3,7 +3,9 @@ import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from '../interfaces/actionTypes/bancoEmisorTypes';
 
-export const getList = (intento: boolean = true) => async (dispatch: Function) => {
+const attempts = window.attempts;
+
+export const getList = (count: number = 0) => async (dispatch: Function) => {
   dispatch(updateModal({
     payload: {
       isLoader: true,
@@ -26,21 +28,23 @@ export const getList = (intento: boolean = true) => async (dispatch: Function) =
     }
     return response;
   } catch (error) {
-    if(intento) {
-      dispatch(getList(false));
+    if(count <= attempts) {
+      let counter = count + 1;
+      dispatch(getList(counter));
+    } else {
+      snackBarUpdate({
+        payload: {
+          message: error.message,
+          status: true,
+          type: "error",
+        },
+      })(dispatch);
     }
     dispatch(updateModal({
       payload: {
         isLoader: false,
       }
     }));
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error"
-      }
-    })(dispatch);
     return error;
   }
 };

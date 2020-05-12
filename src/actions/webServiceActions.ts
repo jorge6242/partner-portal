@@ -3,7 +3,9 @@ import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from "../interfaces/actionTypes/webServiceTypes";
 
-export const getStatusAccount = (intento: boolean = true) => async (dispatch: Function) => {
+const attempts = window.attempts;
+
+export const getStatusAccount = (count: number = 0) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_STATUS_ACCOUNT_LOADING,
     payload: true,
@@ -30,16 +32,19 @@ export const getStatusAccount = (intento: boolean = true) => async (dispatch: Fu
     }
     return response;
   } catch (error) {
-    if(intento) {
-      dispatch(getStatusAccount(false));
-    }
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error",
-      },
-    })(dispatch);
+      if(count <= attempts) {
+        let counter = count + 1;
+        dispatch(getStatusAccount(counter));
+      } else {
+        snackBarUpdate({
+          payload: {
+            message: error.message,
+            status: true,
+            type: "error",
+          },
+        })(dispatch);
+      }
+    
     dispatch({
       type: ACTIONS.SET_STATUS_ACCOUNT_LOADING,
       payload: false,
@@ -48,7 +53,7 @@ export const getStatusAccount = (intento: boolean = true) => async (dispatch: Fu
   }
 };
 
-export const getUnpaidInvoices = (intento: boolean = true) => async (dispatch: Function) => {
+export const getUnpaidInvoices = (count: number = 0) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
     payload: true,
@@ -75,16 +80,18 @@ export const getUnpaidInvoices = (intento: boolean = true) => async (dispatch: F
     }
     return response;
   } catch (error) {
-    if(intento) {
-      dispatch(getUnpaidInvoices(false));
+    if(count <= attempts) {
+      let counter = count + 1;
+      dispatch(getUnpaidInvoices(counter));
+    } else {
+      snackBarUpdate({
+        payload: {
+          message: error.message,
+          status: true,
+          type: "error",
+        },
+      })(dispatch);
     }
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error",
-      },
-    })(dispatch);
     dispatch({
       type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
       payload: false,
@@ -93,7 +100,7 @@ export const getUnpaidInvoices = (intento: boolean = true) => async (dispatch: F
   }
 };
 
-export const getReportedPayments = (intento: boolean = true) => async (dispatch: Function) => {
+export const getReportedPayments = (count: number = 0) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_REPORTED_PAYMENTS_LOADING,
     payload: true,
@@ -123,16 +130,18 @@ export const getReportedPayments = (intento: boolean = true) => async (dispatch:
     }
     return response;
   } catch (error) {
-    if(intento) {
-      dispatch(getReportedPayments(false));
+    if(count <= attempts) {
+      let counter = count + 1;
+      dispatch(getReportedPayments(counter));
+    } else {
+      snackBarUpdate({
+        payload: {
+          message: error.message,
+          status: true,
+          type: "error",
+        },
+      })(dispatch);
     }
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error",
-      },
-    })(dispatch);
     dispatch({
       type: ACTIONS.SET_REPORTED_PAYMENTS_LOADING,
       payload: false,
@@ -141,7 +150,7 @@ export const getReportedPayments = (intento: boolean = true) => async (dispatch:
   }
 };
 
-export const getBalance = (intento: boolean = true) => async (
+export const getBalance = (count: number = 0) => async (
   dispatch: Function
 ) => {
   dispatch({
@@ -167,19 +176,20 @@ export const getBalance = (intento: boolean = true) => async (
         payload: false,
       });
     }
-    console.log("response ", response);
     return response;
   } catch (error) {
-    if (intento) {
-      dispatch(getBalance(false));
+    if(count <= attempts) {
+      let counter = count + 1;
+      dispatch(getBalance(counter));
+    } else {
+      snackBarUpdate({
+        payload: {
+          message: error.message,
+          status: true,
+          type: "error",
+        },
+      })(dispatch);
     }
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error",
-      },
-    })(dispatch);
     dispatch({
       type: ACTIONS.SET_BALANCE_LOADING,
       payload: false,
