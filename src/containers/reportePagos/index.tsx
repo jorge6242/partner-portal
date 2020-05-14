@@ -158,7 +158,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export default function ReportePagos() {
-    const [expanded, setExpanded] = useState<string | false>("");
+    const [expanded, setExpanded] = useState<string | false>("panel");
     const classes = useStyles();
     const dispatch = useDispatch();
     const {
