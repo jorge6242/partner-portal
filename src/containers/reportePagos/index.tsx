@@ -223,19 +223,8 @@ export default function ReportePagos() {
                     )
                 }
             </Grid>
-            <Grid item xs={12}>Facturas por Pagar</Grid>
             <Grid item xs={12}>
-                <DataTable4
-                    rows={unpaidInvoices.data}
-                    columns={unpaidInvoicesColumns}
-                    loading={setUnpaidInvoicestLoading}
-                    aditionalColumn={unpaidInvoices.length > 0 ? formatNumber(unpaidInvoices.total) : null}
-                    aditionalColumnLabel={unpaidInvoices.length > 0 ? "Total" : null}
-                    handlePayment={ paypalClientId ? handlePayment : null}
-                />
-            </Grid>
-            <Grid item xs={12}>
-                <ExpansionPanel
+            <ExpansionPanel
                     expanded={expanded === "panel"}
                     onChange={handleExpandedPanel("panel")}
                 >
@@ -243,6 +232,33 @@ export default function ReportePagos() {
                         expandIcon={<ExpandMoreIcon />}
                         aria-controls="panel-content"
                         id="panel-header"
+                    >
+                        <Typography className={classes.heading}>
+                        Facturas por Pagar
+                            </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                    <DataTable4
+                    rows={unpaidInvoices.data}
+                    columns={unpaidInvoicesColumns}
+                    loading={setUnpaidInvoicestLoading}
+                    aditionalColumn={unpaidInvoices.length > 0 ? formatNumber(unpaidInvoices.total) : null}
+                    aditionalColumnLabel={unpaidInvoices.length > 0 ? "Total" : null}
+                    handlePayment={ paypalClientId ? handlePayment : null}
+                />
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+                
+            </Grid>
+            <Grid item xs={12}>
+                <ExpansionPanel
+                    expanded={expanded === "panel-pagos-reportados"}
+                    onChange={handleExpandedPanel("panel-pagos-reportados")}
+                >
+                    <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel-pagos-reportados-content"
+                        id="panel-pagos-reportados-header"
                     >
                         <Typography className={classes.heading}>
                             Pagos Reportados
@@ -257,9 +273,29 @@ export default function ReportePagos() {
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             </Grid>
-            <Grid item xs={6}>
-
-                <ReportePagosForm />
+            <Grid item xs={12}>
+            <ExpansionPanel
+                    expanded={expanded === "panel-reportar-pago"}
+                    onChange={handleExpandedPanel("panel-reportar-pago")}
+                >
+                    <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel-reportar-pago-content"
+                        id="panel-reportar-pago-header"
+                    >
+                        <Typography className={classes.heading}>
+                            Reportar Pago
+                            </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                    <Grid container>
+                        <Grid item xs={6}>
+                            <ReportePagosForm />
+                        </Grid>
+                    </Grid>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+                
             </Grid>
         </Grid>
     );
