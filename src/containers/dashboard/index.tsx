@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, FunctionComponent, useCallback, useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Divider from "@material-ui/core/Divider";
@@ -7,20 +7,7 @@ import Hidden from "@material-ui/core/Hidden";
 import IconButton from "@material-ui/core/IconButton";
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import PaymentIcon from '@material-ui/icons/Payment';
 import SettingsIcon from '@material-ui/icons/Settings';
-import LockIcon from '@material-ui/icons/Lock';
-import PeopleIcon from '@material-ui/icons/People';
-// import SportsBaseballIcon from '@material-ui/icons/SportsBaseball';
-// import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
-// import ListAltIcon from '@material-ui/icons/ListAlt';
-// import LockIcon from '@material-ui/icons/Lock';
-// import DoubleArrowIcon from "@material-ui/icons/DoubleArrow";
-// import PeopleIcon from '@material-ui/icons/People';
-// import CenterFocusWeakIcon from '@material-ui/icons/CenterFocusWeak';
-// import BuildIcon from '@material-ui/icons/Build';
-import AssignmentLateIcon from '@material-ui/icons/AssignmentLate';
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -41,18 +28,13 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconExpandLess from '@material-ui/icons/ExpandLess'
 import IconExpandMore from '@material-ui/icons/ExpandMore'
-import IconLibraryBooks from '@material-ui/icons/LibraryBooks';
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
-// import Collapse from '@material-ui/core/Collapse'
 import _ from 'lodash';
-import CommentIcon from '@material-ui/icons/Comment';
+
 import queryString from "query-string";
 
 import { logout, setForcedLogin, checkLogin, setupInterceptors } from "../../actions/loginActions";
 import AccessControlForm from "../../components/AccessControlForm";
 import { updateModal } from "../../actions/modalActions";
-import { getList as getTransactionTypes } from "../../actions/transactionTypeActions";
-import { getList as getCurrencies } from "../../actions/currencyActions";
 import { getList as getMenuList, getWidgetList } from "../../actions/menuActions";
 import { getAll as getGenderAll } from "../../actions/genderActions";
 import { getList as getLockerLocationList } from "../../actions/lockerLocationsActions";
@@ -65,10 +47,8 @@ import { getAll as getProfessions } from "../../actions/professionActions";
 import { getList as getParameterList } from "../../actions/parameterActions";
 import Loader from "../../components/common/Loader";
 import { getClient } from "../../actions/personActions";
-import { getBalance } from "../../actions/webServiceActions";
 import icons from "../../helpers/collectionIcons";
 import { Chip, Grid } from "@material-ui/core";
-import SecureStorage from "../../config/SecureStorage";
 import Logo from "../../components/Logo";
 import Helper from '../../helpers/utilities';
 
@@ -119,6 +99,66 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+interface SubMenuProps {
+  menu: Array<string | number>;
+  item: any;
+}
+
+const SubMenu: FunctionComponent<SubMenuProps> = ({ menu, item }) => {
+  const [menuItem, setMenuItem] = useState(null);
+  const history = useHistory();
+  const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
+  let Icon = SettingsIcon;
+  if (item.icons) {
+    let currenMenutIcon = icons.find((e: any) => e.slug === item.icons.slug);
+    if (currenMenutIcon) {
+      Icon = currenMenutIcon.name;
+    }
+  }
+
+  const handleRoute = (path: string) => {
+    history.push(path);
+  };
+
+  const handleSubMenu = (currentItem: any) => {
+    if (menuItem === currentItem) {
+      setMenuItem(null);
+    } else {
+      setMenuItem(currentItem);
+    }
+  }
+
+  const handleSubMenuOrRoute = useCallback(() => {
+    findChildrens.length > 0 ? handleSubMenu(item.id) : handleRoute(item.route ? item.route : '/dashboard/main')
+  },
+    [item, findChildrens],
+  );
+
+  return (
+    <React.Fragment key={item.id}>
+      <ListItem button onClick={handleSubMenuOrRoute}>
+        <ListItemIcon >
+          <Icon />
+        </ListItemIcon>
+        <ListItemText primary={item.name} />
+        {findChildrens.length > 0 && (
+          item.id === menuItem ? <IconExpandLess /> : <IconExpandMore />
+        )
+        }
+      </ListItem>
+      {findChildrens.length > 0 && (
+        <Collapse in={item.id === menuItem || false} timeout="auto" unmountOnExit>
+          <List dense>
+            {findChildrens.map((e: any, i: number) => <SubMenu key={i} menu={menu} item={e} />)}
+          </List>
+        </Collapse>
+      )
+
+      }
+    </React.Fragment>
+  )
+}
+
 interface ResponsiveDrawerProps {
   /**
    * Injected by the documentation to work in an iframe.
@@ -144,7 +184,8 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const { listData: menuList } = useSelector((state: any) => state.menuReducer);
 
   const {
-    parameterReducer: { listData: parameterList }
+    parameterReducer: { listData: parameterList },
+    menuReducer: { loading: menuLoading },
   } = useSelector((state: any) => state);
 
   const [open1, setOpen1] = React.useState(false);
@@ -332,7 +373,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
             {findChildrens.length > 0 && (
               <Collapse in={item.id === subMenuItem ? true : false} timeout="auto" unmountOnExit>
                 <List dense>
-                  {findChildrens.map((e: any) => renderSecondMenu(DoubleArrowIcon, e.name, "", menu, e))}
+                  {findChildrens.map((e: any, i: number) => <SubMenu key={i} menu={menu} item={e} />)}
                 </List>
               </Collapse>
             )
@@ -405,8 +446,12 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
   const getRole = (role: string) => !_.isEmpty(user) ? user.roles.find((e: any) => e.slug === role) : '';
 
   const drawer = () => {
-    if (loading) {
-      return <Loader />;
+    if (menuLoading) {
+      return (
+        <div style={{ textAlign: 'center', marginTop: 20 }} >
+          <Loader />
+        </div>
+      )
     }
     return (
       <div>
@@ -471,13 +516,13 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
             <MenuIcon />
           </IconButton>
           <div className={classes.header}>
-            <Typography variant="h6" noWrap>
+            <Typography variant="h6" noWrap >
               <Grid container spacing={1}>
                 <Grid item xs={12}>Portal de Socio</Grid>
               </Grid>
                 <Grid item xs={12} style={{ fontSize: 14, fontStyle: 'italic' }}>{parameter.value}</Grid>
             </Typography>
-            <Typography variant="h6" noWrap>
+            <Typography variant="h6" noWrap style={{ lineHeight: 3 }} >
               <div>
                 <Button
                   startIcon={<AccountCircleIcon />}
