@@ -128,9 +128,11 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
     };
   }, [reset]);
 
-  const handleForm = async (form: object) => {
+  const handleForm = async (form: FormData) => {
+    const rif_ci = form.rif_ci.replace(/[.-]/g,"");
     const body = {
       ...form,
+      rif_ci,
       id_card_picture: null,
       passport: "",
       card_number: "",
@@ -151,7 +153,7 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
       user: user.username,
       date: moment().format('YYYY-MM-DD'),
     };
-      dispatch(createFamily(body));
+    dispatch(createFamily(body));
   }
 
   const triggerClick = (input: any) => {
@@ -237,12 +239,14 @@ const FamilyForm: FunctionComponent<ComponentProps> = ({ id }) => {
                 </Grid>
                 <Grid item xs={6}>
                   <CustomTextField
-                    placeholder="Cedula"
+                    placeholder="V10065168"
+                    label="Cedula/RIF"
                     field="rif_ci"
                     required
                     register={register}
                     errorsField={errors.rif_ci}
                     errorsMessageField={errors.rif_ci && errors.rif_ci.message}
+                    inputType="rif-ci"
                   />
                 </Grid>
                 <Grid item xs={6}>

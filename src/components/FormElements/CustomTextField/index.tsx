@@ -23,12 +23,19 @@ function getParseDateTime() {
   return parse;
 }
 
+const rifCi = {
+  value: new RegExp(/[ABCDFGHIJKLMNOPQRSTUVWXYZ][0-9]./),
+  message: "Formato: V10065168"
+}
+
 function getPattern(type: string){
   switch (type) {
     case 'email':
       return email;
       case 'number':
       return numbers;
+      case 'rif-ci':
+        return rifCi;
     default:
       return {};
   }
@@ -49,6 +56,7 @@ type CustomTextFieldProps = {
   multiline?: boolean;
   maxDate?: any;
   formatNumber?: boolean;
+  label?: string;
 };
 
 const CustomTextField: FunctionComponent<CustomTextFieldProps> = ({
@@ -65,17 +73,17 @@ const CustomTextField: FunctionComponent<CustomTextFieldProps> = ({
   Icon,
   multiline = false,
   maxDate,
-  formatNumber
+  formatNumber,
+  label
 }) => (
   <TextField
     rows={multiline ? "4" : ""}
     multiline={multiline}
-    label={placeholder}
+    label={ label ? label : placeholder}
     disabled={disable}
     size="small"
     margin="dense"
     fullWidth
-    autoFocus
     placeholder={multiline ? '' : placeholder}
     name={field}
     type={type}

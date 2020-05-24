@@ -213,7 +213,7 @@ export default function ReportePagos() {
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid item sm={12} xs={12} md={12}>
                 {
                     !_.isEmpty(client) && (
                         <div>
@@ -223,7 +223,7 @@ export default function ReportePagos() {
                     )
                 }
             </Grid>
-            <Grid item xs={12}>
+            <Grid item sm={12} xs={12} md={12}>
             <ExpansionPanel
                     expanded={expanded === "panel"}
                     onChange={handleExpandedPanel("panel")}
@@ -250,7 +250,7 @@ export default function ReportePagos() {
                 </ExpansionPanel>
                 
             </Grid>
-            <Grid item xs={12}>
+            <Grid item sm={12} xs={12} md={12}>
                 <ExpansionPanel
                     expanded={expanded === "panel-pagos-reportados"}
                     onChange={handleExpandedPanel("panel-pagos-reportados")}
@@ -289,7 +289,7 @@ export default function ReportePagos() {
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                     <Grid container>
-                        <Grid item xs={6}>
+                        <Grid item sm={12} xs={12} md={6}>
                             <ReportePagosForm />
                         </Grid>
                     </Grid>

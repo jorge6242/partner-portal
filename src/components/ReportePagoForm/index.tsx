@@ -17,6 +17,7 @@ import { getList as getBancoReceptorList } from "../../actions/bancoReceptorActi
 import CustomSelect from "../FormElements/CustomSelect";
 import Upload from "../FormElements/Upload";
 import { getReportedPayments } from "../../actions/webServiceActions";
+import { Grid } from "@material-ui/core";
 
 // const __html = require('./DatosPago.html');
 
@@ -28,7 +29,7 @@ import { getReportedPayments } from "../../actions/webServiceActions";
 
 declare global {
     interface Window {
-        TEMPLATE_INFO:any;
+        TEMPLATE_INFO: any;
     }
 }
 
@@ -48,18 +49,18 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         position: "relative",
         textAlign: 'center',
-      },
-      buttonProgress: {
+    },
+    buttonProgress: {
         position: "absolute",
         top: "50%",
         left: "50%",
         marginTop: -9,
         marginLeft: -9
-      },
-      submit: {
+    },
+    submit: {
         margin: theme.spacing(3, 0, 2),
         width: '30%',
-      },
+    },
     select: {
         padding: '10px 0px 10px 0px',
         width: ' 100%',
@@ -131,7 +132,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
 
     const handleForm = async (form: any) => {
         const { NroReferencia } = getValues();
-        const monto = form.nMonto.replace(',','');
+        const monto = form.nMonto.replace(',', '');
         const body = {
             ...form,
             dFechaProceso: null,
@@ -158,113 +159,130 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                     onSubmit={handleSubmit(handleForm)}
                     noValidate
                 >
-                    <CustomSelect
-                        label="Banco Origen"
-                        selectionMessage="Seleccione"
-                        field="codBancoOrigen"
-                        required
-                        register={register}
-                        errorsMessageField={
-                            errors.codBancoOrigen &&
-                            errors.codBancoOrigen.message
-                        }
-                    >
-                        {bancoEmisorList.map((item: any) => (
-                            <option key={item.cCodBanco} value={item.cCodBanco}>
-                                {item.cNombreBanco}
-                            </option>
-                        ))}
-                    </CustomSelect>
-                    <CustomTextField
-                        placeholder="Referencia"
-                        field="NroReferencia"
-                        required
-                        register={register}
-                        errorsField={errors.NroReferencia}
-                        errorsMessageField={
-                            errors.NroReferencia && errors.NroReferencia.message
-                        }
-                    />
-
-                    <CustomTextField
-                        placeholder="Fecha"
-                        field="dFechaPago"
-                        required
-                        register={register}
-                        errorsField={errors.dFechaPago}
-                        errorsMessageField={
-                            errors.dFechaPago && errors.dFechaPago.message
-                        }
-                        type="date"
-                        maxDate={moment().format("YYYY-MM-DD")}
-                    />
-
-                    <CustomSelect
-                        label="Banco Destino"
-                        selectionMessage="Seleccione"
-                        field="codCuentaDestino"
-                        required
-                        register={register}
-                        errorsMessageField={
-                            errors.codCuentaDestino &&
-                            errors.codCuentaDestino.message
-                        }
-                    >
-                        {bancoReceptorList.map((item: any) => (
-                            <option key={item.cCodCuenta} value={item.cCodCuenta}>
-                                {`${item.cNombreBanco} - ${item.cNumCuenta.substring(12, 16)}`}
-                            </option>
-                        ))}
-                    </CustomSelect>
-
-                    <CustomTextField
-                        placeholder="Monto"
-                        field="nMonto"
-                        required
-                        register={register}
-                        errorsField={errors.nMonto}
-                        errorsMessageField={
-                            errors.nMonto && errors.nMonto.message
-                        }
-                        formatNumber
-                    />
-                    <CustomTextField
-                        placeholder="Descripcion"
-                        field="sDescripcion"
-                        required
-                        register={register}
-                        errorsField={errors.sDescripcion}
-                        errorsMessageField={
-                            errors.sDescripcion && errors.sDescripcion.message
-                        }
-                    />
-
-                    <div>Comprobante de Pago</div>
-                    <Upload
-                        field="file1"
-                        label="Archivo"
-                        register={register}
-                        setValue={setValue}
-                    />
-
-                    <div className={classes.wrapper}>
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            disabled={loading}
-                            className={classes.submit}
-                        >
-                            Enviar
+                    <Grid container spacing={1} >
+                        <Grid item sm={12} xs={12} md={12}>
+                            <CustomSelect
+                                label="Banco Origen"
+                                selectionMessage="Seleccione"
+                                field="codBancoOrigen"
+                                required
+                                register={register}
+                                errorsMessageField={
+                                    errors.codBancoOrigen &&
+                                    errors.codBancoOrigen.message
+                                }
+                            >
+                                {bancoEmisorList.map((item: any) => (
+                                    <option key={item.cCodBanco} value={item.cCodBanco}>
+                                        {item.cNombreBanco}
+                                    </option>
+                                ))}
+                            </CustomSelect>
+                        </Grid>
+                        <Grid item sm={12} xs={12} md={12}>
+                            <CustomTextField
+                                placeholder="Referencia"
+                                field="NroReferencia"
+                                required
+                                register={register}
+                                errorsField={errors.NroReferencia}
+                                errorsMessageField={
+                                    errors.NroReferencia && errors.NroReferencia.message
+                                }
+                            />
+                        </Grid>
+                        <Grid item sm={12} xs={12} md={12}>
+                            <CustomTextField
+                                placeholder="Fecha"
+                                field="dFechaPago"
+                                required
+                                register={register}
+                                errorsField={errors.dFechaPago}
+                                errorsMessageField={
+                                    errors.dFechaPago && errors.dFechaPago.message
+                                }
+                                type="date"
+                                maxDate={moment().format("YYYY-MM-DD")}
+                            />
+                        </Grid>
+                        <Grid item sm={12} xs={12} md={12}>
+                            <CustomSelect
+                                label="Banco Destino"
+                                selectionMessage="Seleccione"
+                                field="codCuentaDestino"
+                                required
+                                register={register}
+                                errorsMessageField={
+                                    errors.codCuentaDestino &&
+                                    errors.codCuentaDestino.message
+                                }
+                            >
+                                {bancoReceptorList.map((item: any) => (
+                                    <option key={item.cCodCuenta} value={item.cCodCuenta}>
+                                        {`${item.cNombreBanco} - ${item.cNumCuenta.substring(12, 16)}`}
+                                    </option>
+                                ))}
+                            </CustomSelect>
+                        </Grid>
+                        <Grid item sm={12} xs={12} md={12}>
+                            <CustomTextField
+                                placeholder="Monto"
+                                field="nMonto"
+                                required
+                                register={register}
+                                errorsField={errors.nMonto}
+                                errorsMessageField={
+                                    errors.nMonto && errors.nMonto.message
+                                }
+                                formatNumber
+                            />
+                        </Grid>
+                        <Grid item sm={12} xs={12} md={12}>
+                            <CustomTextField
+                                placeholder="Descripcion"
+                                field="sDescripcion"
+                                required
+                                register={register}
+                                errorsField={errors.sDescripcion}
+                                errorsMessageField={
+                                    errors.sDescripcion && errors.sDescripcion.message
+                                }
+                            />
+                        </Grid>
+                        <Grid item sm={12} xs={12} md={12}>
+                            <Grid container spacing={1}>
+                                <Grid item xs={12}>Comprobante de Pago</Grid>
+                                <Grid item xs={12}><Upload
+                                    field="file1"
+                                    label="Archivo"
+                                    register={register}
+                                    setValue={setValue}
+                                /></Grid>
+                            </Grid>
+                        </Grid>
+                        <Grid item sm={12} xs={12} md={12}>
+                            <div className={classes.wrapper}>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    color="primary"
+                                    disabled={loading}
+                                    className={classes.submit}
+                                >
+                                    Registrar
                         </Button>
-                        {loading && (
-                            <CircularProgress size={24} className={classes.buttonProgress} />
-                        )}
-                    </div>
-                    <div style={{ marginTop: 30 }} >
-                        {Parse(templateInfo)}
-                    </div>
+                                {loading && (
+                                    <CircularProgress size={24} className={classes.buttonProgress} />
+                                )}
+                            </div>
+                        </Grid>
+                        <Grid item sm={12} xs={12} md={12}>
+                            <div style={{ marginTop: 30 }} >
+                                {Parse(templateInfo)}
+                            </div>
+                        </Grid>
+                    </Grid>
                 </form>
             </div>
         </Container>

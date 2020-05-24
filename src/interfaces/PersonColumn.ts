@@ -27,6 +27,7 @@ export default interface PersonColumn {
     | "professions"
     | "status_person"
     | "relationship"
+    | "relation"
     | "shares"
     | "card_number"
     | "isPartner"

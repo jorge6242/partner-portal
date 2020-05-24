@@ -504,6 +504,8 @@ type FormData = {
   sport_list: any;
   locker_list: any;
   locker_location_id: string;
+  branch_company_id: number,
+  company: string;
 };
 
 type PersonFormProps = {
@@ -537,6 +539,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   const [selectedCountries, setSelectedCountries] = useState<
     Array<string | number>
   >([]);
+  const [ relation, setRelation ] = useState<string>("") 
   const [selectedSports, setSelectedSports] = useState<Array<string | number>>(
     []
   );
@@ -587,11 +590,11 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   const { sharesByPartner, selectedShare } = useSelector(
     (state: any) => state.shareReducer
   );
-  const { loading: cardPersonLoading, list: cardPersonList } = useSelector(
+  const { loading: cardPersonLoading } = useSelector(
     (state: any) => state.cardPersonReducer
   );
-  const { list: paymentMethodList } = useSelector(
-    (state: any) => state.paymentMethodReducer
+  const { listData: branchCompanyList } = useSelector(
+    (state: any) => state.branchCompanyReducer
   );
 
   const { user, userRoles } = useSelector(
@@ -609,7 +612,13 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     pagination: recordPagination
   } = useSelector((state: any) => state.recordReducer);
 
+
+
   const disableTabs = tempPersonId > 0 ? false : true;
+  let hideTabs = false;
+  if (Helper.getRole(userRoles, 'socio')) {
+    hideTabs = true;
+  }
 
   /* Styles */
 
@@ -673,7 +682,10 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           sports,
           lockers,
           isPartner,
-          company,
+          company_person,
+          relation,
+          branch_company_id,
+          company
         } = response;
         if (isPartner === "1") {
           const shareResponse: any = await dispatch(getSharesByPartner(id));
@@ -708,11 +720,14 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         setValue("status_person_id", status_person_id);
         setValue("marital_statuses_id", marital_statuses_id);
         setValue("countries_id", countries_id);
+        setValue("branch_company_id", branch_company_id);
+        setValue("company", company);
         setImage({ ...image, preview: picture });
-        if (company) {
-          setSelectedCompany(company);
+        setRelation(relation);
+        if (company_person) {
+          setSelectedCompany(company_person);
         }
-        if (isPartner === 2) {
+        if (isPartner === "2") {
           setIsFamily(true);
         } else {
           setIsFamily(false);
@@ -747,7 +762,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
       }
     }
     fetch();
-  }, [id, dispatch, setValue, user]);
+  }, [id, dispatch, setValue, user, setRelation]);
 
 
   useEffect(() => {
@@ -1107,9 +1122,10 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
   };
 
   const renderContactsData = () => {
+    const gridPartner = Helper.getRole(userRoles, 'socio') ? 12 : 6;
     return (
       <Grid container spacing={2}>
-        <Grid item xs={6}>
+        <Grid item xs={gridPartner}>
           <Grid container spacing={3}>
             <Grid item xs={6}>
               <CustomTextField
@@ -1178,7 +1194,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           </Grid>
         </Grid>
 
-        <Grid item xs={6} style={{
+        <Grid item xs={gridPartner} style={{
           display: 'flex',
           alignItems: 'center',
         }}>
@@ -1188,7 +1204,9 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             justify="flex-start"
             alignItems="center"
           >
-            <Grid item xs={6}>
+          { Helper.getRole(userRoles, 'promotor') &&
+            (
+              <Grid item xs={6}>
               <CustomTextField
                 placeholder="Fax"
                 field="fax"
@@ -1197,6 +1215,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                 errorsMessageField={errors.fax && errors.fax.message}
               />
             </Grid>
+            )
+          }
           </Grid>
         </Grid>
       </Grid>
@@ -1328,8 +1348,36 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             errorsMessageField={
               errors.representante && errors.representante.message
             }
-            disable
           />
+        </Grid>
+        <Grid item xs={6}>
+          <CustomTextField
+            placeholder="Compañia"
+            field="company"
+            register={register}
+            errorsField={errors.company}
+            errorsMessageField={
+              errors.company && errors.company.message
+            }
+          />
+        </Grid>
+        <Grid item xs={6}>
+        <CustomSelect
+            label="Ramo"
+            selectionMessage="Seleccione"
+            field="branch_company_id"
+            required
+            register={register}
+            errorsMessageField={
+              errors.branch_company_id && errors.branch_company_id.message
+            }
+          >
+            {branchCompanyList.map((item: any) => (
+              <option key={item.id} value={item.id}>
+                {item.description}
+              </option>
+            ))}
+          </CustomSelect>
         </Grid>
         {
           selectedCompany && (
@@ -1417,6 +1465,15 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
     )
   }
 
+  const renderName = () => {
+    if(Helper.getRole(userRoles, 'socio')) {
+      return relation;
+    }
+    if(Helper.getRole(userRoles, 'promotor')) {
+      return isFamily ? 'Familiar' : 'Socio';
+    }
+  }
+
   let imagePreview = picture;
   if (image.preview) imagePreview = image.preview;
   return (
@@ -1457,7 +1514,7 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                   {name} {last_name}
                 </Grid>
                 <Grid item xs={12} className={classes.profileSubTitle}>
-                  {isFamily ? 'Familiar' : 'Socio'}
+                  {renderName()}
                 </Grid>
                 {renderShareProfile()}
                 {renderLastMovement()}
@@ -1477,10 +1534,16 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                       aria-label="full width tabs example"
                     >
                       <Tab label="Datos" />
-                      <Tab label="Familiares" disabled={isFamily} />
-                      <Tab label="Pagos" disabled={isFamily} />
-                      <Tab label="Expedientes" disabled={isFamily} />
-                      <Tab label="Lockers" disabled={isFamily} />
+                      <Tab label="Familiares" />
+                      {
+                        !hideTabs && (
+                          <React.Fragment>
+                            <Tab label="Pagos" disabled={disableTabs} />
+                            <Tab label="Expedientes" disabled={disableTabs} />
+                            <Tab label="Lockers" disabled={disableTabs} />
+                          </React.Fragment>
+                        )
+                      }
                     </Tabs>
                   </AppBar>
                   <SwipeableViews
@@ -1597,8 +1660,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                             </Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
-                            <Grid container spacing={3}>
-                              <Grid item xs={12} justify="flex-start">
+                            <Grid container spacing={3} justify="flex-start" >
+                              <Grid item xs={12}>
                                 {countryList.length > 0 && (
                                   <TransferList
                                     data={countryList}
@@ -1632,8 +1695,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                             </Typography>
                           </ExpansionPanelSummary>
                           <ExpansionPanelDetails>
-                            <Grid container spacing={3}>
-                              <Grid item xs={12} justify="flex-start">
+                            <Grid container spacing={3} justify="flex-start" >
+                              <Grid item xs={12}>
                                 {sportList.length > 0 && (
                                   <TransferList
                                     data={sportList}

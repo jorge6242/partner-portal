@@ -26,16 +26,16 @@ const columns: PersonColumn[] = [
     component: (value: any) => <span>{value.value}</span>,
   },
   {
-    id: "isPartner",
+    id: "relation",
     label: "Parentesco",
     minWidth: 170,
     align: "right",
     component: (value: any) => {
       return (
         <Chip
-          label={value.value === "1" ? "Socio" : "Familiar"}
+          label={value.value}
           style={{
-            backgroundColor: value.value === "1" ? "#2ecc71" : "#f1c40f",
+            backgroundColor: value.value === 'SOCIO' ? "#2ecc71" : "#f1c40f",
             color: "white",
             fontWeight: "bold",
             fontSize: "10px"

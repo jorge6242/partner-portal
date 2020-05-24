@@ -45,6 +45,7 @@ import { getAll as getRelationTypes } from "../../actions/relationTypeActions";
 import { getAll as getSports } from "../../actions/sportActions";
 import { getAll as getProfessions } from "../../actions/professionActions";
 import { getList as getParameterList } from "../../actions/parameterActions";
+import { getList as getBranchCompanyList } from "../../actions/branchCompanyActions";
 import Loader from "../../components/common/Loader";
 import { getClient } from "../../actions/personActions";
 import icons from "../../helpers/collectionIcons";
@@ -241,6 +242,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
       dispatch(getCountries());
       dispatch(getRelationTypes());
       dispatch(getSports());
+      dispatch(getBranchCompanyList());
     }
     run();
   }, [dispatch])
@@ -500,7 +502,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     )
   };
   // const nameRole: any = !_.isEmpty(user) ? user.role.name : '';
-  const parameter= Helper.getParameter(parameterList, 'CLIENT_NAME')
+  const parameter = Helper.getParameter(parameterList, 'CLIENT_NAME')
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -516,36 +518,45 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
             <MenuIcon />
           </IconButton>
           <div className={classes.header}>
-            <Typography variant="h6" noWrap >
-              <Grid container spacing={1}>
-                <Grid item xs={12}>Portal de Socio</Grid>
+            <Grid container spacing={1}>
+              <Hidden xsDown>
+                <Grid item xs={6}>
+                  <Typography variant="h6" noWrap >
+                    <Grid container spacing={1}>
+                      <Grid item xs={12}>Portal de Socio</Grid>
+                    </Grid>
+                    <Grid item xs={12} style={{ fontSize: 14, fontStyle: 'italic' }}>{parameter.value}</Grid>
+                  </Typography>
+                </Grid>
+              </Hidden>
+
+              <Grid item sm={12} xs={12} md={6} style={{ textAlign: 'right' }}>
+                <Typography variant="h6" noWrap style={{ lineHeight: 3 }} >
+                  <div>
+                    <Button
+                      startIcon={<AccountCircleIcon />}
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={handleMenu}
+                      className={classes.profileButton}
+                    >
+                      {!loading && user.name}
+                    </Button>
+                    <Menu
+                      id="simple-menu"
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleClose}
+                    >
+                      <MenuItem>Usuario: {!loading && user.username}</MenuItem>
+                      <MenuItem>Role: {userRoles.length > 0 && userRoles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
+                      <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+                    </Menu>
+                  </div>
+                </Typography>
               </Grid>
-                <Grid item xs={12} style={{ fontSize: 14, fontStyle: 'italic' }}>{parameter.value}</Grid>
-            </Typography>
-            <Typography variant="h6" noWrap style={{ lineHeight: 3 }} >
-              <div>
-                <Button
-                  startIcon={<AccountCircleIcon />}
-                  aria-controls="simple-menu"
-                  aria-haspopup="true"
-                  onClick={handleMenu}
-                  className={classes.profileButton}
-                >
-                  Usuario: {!loading && user.name}
-                </Button>
-                <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                >
-                  <MenuItem>Usuario: {!loading && user.username}</MenuItem>
-                  <MenuItem>Role: {userRoles.length > 0 && userRoles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
-                  <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
-                </Menu>
-              </div>
-            </Typography>
+            </Grid>
           </div>
         </Toolbar>
       </AppBar>

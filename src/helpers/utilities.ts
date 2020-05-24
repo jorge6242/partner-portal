@@ -18,9 +18,18 @@ const getParameter = (list: Array<string | number>, parameter: any) => {
         return current;
     }
     return {};
+}
+
+const getRole = (list: Array<string | number>, role: string) => {
+  const current: any =  list.find((e: any) => e.slug === role);
+  if(current) {
+      return true;
+  }
+  return false;
 }  
 
 export default {
     checkParameter,
-    getParameter
+    getParameter,
+    getRole,
 }

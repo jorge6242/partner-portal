@@ -47,6 +47,7 @@ import menuItemReducer from './menuItemReducer';
 import mainLoaderReducer from './mainLoaderReducer';
 import menuItemIconReducer from './menuItemIconReducer';
 import customModalReducer from './customModalReducer';
+import branchCompanyReducer from './branchCompanyReducer';
 
 const rootReducer = combineReducers({
   modalReducer,
@@ -93,7 +94,8 @@ const rootReducer = combineReducers({
   menuItemReducer,
   mainLoaderReducer,
   menuItemIconReducer,
-  customModalReducer
+  customModalReducer,
+  branchCompanyReducer
 });
 
 export default rootReducer;
