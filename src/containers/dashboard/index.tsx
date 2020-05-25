@@ -519,8 +519,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
           </IconButton>
           <div className={classes.header}>
             <Grid container spacing={1}>
-              <Hidden xsDown>
-                <Grid item xs={6}>
+                <Grid item xs={6} sm={6} md={6} onClick={ () => history.push('/dashboard/main')} style={{ cursor: 'pointer' }}>
                   <Typography variant="h6" noWrap >
                     <Grid container spacing={1}>
                       <Grid item xs={12}>Portal de Socio</Grid>
@@ -528,9 +527,8 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                     <Grid item xs={12} style={{ fontSize: 14, fontStyle: 'italic' }}>{parameter.value}</Grid>
                   </Typography>
                 </Grid>
-              </Hidden>
 
-              <Grid item sm={12} xs={12} md={6} style={{ textAlign: 'right' }}>
+              <Grid item xs={6} sm={6} md={6} style={{ textAlign: 'right' }}>
                 <Typography variant="h6" noWrap style={{ lineHeight: 3 }} >
                   <div>
                     <Button

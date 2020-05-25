@@ -249,7 +249,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                                 }
                             />
                         </Grid>
-                        <Grid item sm={12} xs={12} md={12}>
+                        <Grid item sm={12} xs={12} md={12} style={{ paddingTop: 15 }}>
                             <Grid container spacing={1}>
                                 <Grid item xs={12}>Comprobante de Pago</Grid>
                                 <Grid item xs={12}><Upload

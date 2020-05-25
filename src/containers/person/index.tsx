@@ -11,12 +11,13 @@ import PersonForm from "../../components/PersonForm";
 import DataTable4 from '../../components/DataTable4';
 import PersonColumn from '../../interfaces/PersonColumn';
 import { setForcedLogin } from "../../actions/loginActions";
-import { Chip } from "@material-ui/core";
+import { Chip, Grid } from "@material-ui/core";
 
 const columns: PersonColumn[] = [
-  { id: "id", 
-  label: "Id", minWidth: 20,
-  component: (value: any) => <span>{value.value}</span>,
+  {
+    id: "id",
+    label: "Id", minWidth: 20,
+    component: (value: any) => <span>{value.value}</span>,
   },
   {
     id: "rif_ci",
@@ -81,10 +82,10 @@ export default function Person() {
         await dispatch(setForcedLogin(values.socio, values.token));
         dispatch(getAll(values.socio));
       } else {
-          dispatch(getAll(user.username));
+        dispatch(getAll(user.username));
       }
-      }
-      
+    }
+
     fetchData();
   }, [dispatch]);
 
@@ -103,15 +104,15 @@ export default function Person() {
   // var str = "1234123412341234";
   // var res = `${str.substring(0, 12).replace(/[0-9]/g, "x")}${str.substring(12, 16)}`;
   return (
-    <div className="person-container">
-      <div>
+    <Grid container spacing={3}>
+      <Grid item xs={12} sm={12} md={12}>
         <DataTable4
           rows={persons}
           columns={columns}
           loading={loading}
           handleEdit={handleEdit}
         />
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   );
 }

@@ -250,7 +250,7 @@ export default function ReportePagos() {
                 </ExpansionPanel>
                 
             </Grid>
-            <Grid item sm={12} xs={12} md={12}>
+            <Grid item xs={12} sm={12} md={12}>
                 <ExpansionPanel
                     expanded={expanded === "panel-pagos-reportados"}
                     onChange={handleExpandedPanel("panel-pagos-reportados")}
@@ -273,7 +273,7 @@ export default function ReportePagos() {
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} sm={12} md={12}>
             <ExpansionPanel
                     expanded={expanded === "panel-reportar-pago"}
                     onChange={handleExpandedPanel("panel-reportar-pago")}

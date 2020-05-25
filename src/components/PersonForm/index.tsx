@@ -1366,7 +1366,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             label="Ramo"
             selectionMessage="Seleccione"
             field="branch_company_id"
-            required
             register={register}
             errorsMessageField={
               errors.branch_company_id && errors.branch_company_id.message
@@ -1535,15 +1534,9 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
                     >
                       <Tab label="Datos" />
                       <Tab label="Familiares" />
-                      {
-                        !hideTabs && (
-                          <React.Fragment>
-                            <Tab label="Pagos" disabled={disableTabs} />
-                            <Tab label="Expedientes" disabled={disableTabs} />
-                            <Tab label="Lockers" disabled={disableTabs} />
-                          </React.Fragment>
-                        )
-                      }
+                      { !hideTabs && <Tab label="Pagos" disabled={disableTabs} /> }
+                      { !hideTabs && <Tab label="Expedientes" disabled={disableTabs} /> }
+                      { !hideTabs && <Tab label="Lockers" disabled={disableTabs} /> }
                     </Tabs>
                   </AppBar>
                   <SwipeableViews
