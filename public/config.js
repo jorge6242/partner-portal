@@ -17,3 +17,6 @@ mas informacion<br></br>
 
 // Numero de intentos para la excepcion del enpoint.
 var attempts = 5;
+
+// Parametro en el formulario de login
+var campoUsuario = 'Ejemplo campo usuario';

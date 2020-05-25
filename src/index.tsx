@@ -6,11 +6,11 @@ import './index.sass';
 import * as serviceWorker from './serviceWorker';
 import CreateStore from './store';
 import Routes from './config/Routes';
-import { setupInterceptors } from './actions/loginActions';
 
 declare global {
     interface Window {
       attempts:any;
+      campoUsuario:any;
     }
   }
 

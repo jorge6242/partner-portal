@@ -72,16 +72,19 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
         >
           <TextField
             variant="outlined"
+            placeholder={window.campoUsuario}
             margin="normal"
             fullWidth
             id="email"
             label="Usuario"
             name="username"
-            autoComplete="username"
             autoFocus
             inputRef={register({
               required: "Required",
             })}
+            InputLabelProps={{
+              shrink: true,
+            }}
             required={errors.username ? true : false}
             error={errors.username ? true : false}
             helperText={errors.username && errors.username.message}
@@ -92,15 +95,18 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
             fullWidth
             name="password"
             label="Clave"
+            placeholder="Clave"
             type="password"
             id="password"
-            autoComplete="current-password"
             inputRef={register({
               required: "Required"
             })}
             required={errors.password ? true : false}
             error={errors.password ? true : false}
             helperText={errors.password && errors.password.message}
+            InputLabelProps={{
+              shrink: true,
+            }}
           />
           <div className={classes.wrapper}>
           <Button
