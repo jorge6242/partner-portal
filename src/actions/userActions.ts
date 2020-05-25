@@ -89,7 +89,7 @@ export const create = (body: object) => async (dispatch: Function) => {
       response = apiResponse;
       snackBarUpdate({
         payload: {
-          message: "Gender ha sido Registrado!",
+          message: "Usuario ha sido Registrado!",
           type: "success",
           status: true
         }
@@ -165,7 +165,7 @@ export const update = (body: object) => async (dispatch: Function) => {
       };
       snackBarUpdate({
         payload: {
-          message: "Gender ha sido Actualizado!",
+          message: "Usuario ha sido Actualizado!",
           type: "success",
           status: true
         }
@@ -212,7 +212,7 @@ export const remove = (id: number) => async (dispatch: Function) => {
       };
       snackBarUpdate({
         payload: {
-          message: "Gender ha sido Elmiminado!",
+          message: "Usuario ha sido Elmiminado!",
           type: "success",
           status: true
         }
