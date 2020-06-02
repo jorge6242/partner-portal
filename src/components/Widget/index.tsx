@@ -58,9 +58,9 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
   if (type === 'Saldo' && amount <= 0) statusAmount = false;
   const renderTitle = () => {
     if(title === "Reservaciones") {
-      return !statusAmount ? <div><a href={link} target="_blank" style={{ textDecoration: 'none', color: "#2980b9", }} >{link}</a></div> : <div></div>;
+      return !statusAmount ? <div><a href={link} target="_blank" style={{ textDecoration: 'none', color: "#2980b9", }} >Enlace</a></div> : <div></div>;
     }
-    return <div><a href={link} target="_blank" style={{ textDecoration: 'none', color: "#2980b9",  }} >{link}</a></div>;
+    return <div><a href={link} target="_blank" style={{ textDecoration: 'none', color: "#2980b9",  }} >Enlace</a></div>;
   }
   const renderLink = () => {
     if(internal) {

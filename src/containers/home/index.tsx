@@ -42,7 +42,7 @@ export default function Home() {
     menuReducer: {
       widgetList,
     },
-    loginReducer: { userRoles },
+    loginReducer: { userRoles, user },
     parameterReducer: { listData: parameterList }
   } = useSelector((state: any) => state);
   const dispatch = useDispatch();
@@ -69,7 +69,7 @@ export default function Home() {
   let torneosLink = null;
   if (validateWidget('PARTNERPORTAL_torneos')) {
     const parameter = Helper.getParameter(parameterList, 'LINK_TORNEOS');
-    torneosLink = parameter.value
+    torneosLink = `${parameter.value}?doc_id=${user.doc_id}&token=${user.token}`
   }
 
   let reportePagosLink = null;
@@ -90,6 +90,11 @@ export default function Home() {
     actualizacionDatosLink = parameter.value;
   }
 
+  let miAccesoLink = null;
+  if (validateWidget('PARTNERPORTAL_mi-acceso')) {
+    const parameter = Helper.getParameter(parameterList, 'LINK_MI_ACCESO');
+    miAccesoLink = parameter.value;
+  }
 
   return (
     <div className="home-container">
@@ -174,6 +179,19 @@ export default function Home() {
                     Icon={AccountBoxIcon}
                     title="Actualizacion de Datos"
                     link={actualizacionDatosLink}
+                    internal
+                  />
+                </Paper>
+          </Grid>
+        }
+
+      {validateWidget('PARTNERPORTAL_mi-acceso') &&
+          <Grid item sm={12} xs={12} md={3}>
+            <Paper>
+                  <Widgtet
+                    Icon={AccountBoxIcon}
+                    title="Mi Accesso"
+                    link={miAccesoLink}
                     internal
                   />
                 </Paper>

@@ -11,6 +11,7 @@ declare global {
     interface Window {
       attempts:any;
       campoUsuario:any;
+      TEMPLATE_HELP: any;
     }
   }
 

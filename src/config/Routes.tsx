@@ -63,6 +63,8 @@ import MenuItem from "../containers/MenuItem";
 import CustomModal from "../components/CustomModal";
 import NotFound from "../containers/notFound";
 import About from "../containers/about";
+import Help from "../containers/help";
+import MyAccess from "../containers/MyAccess";
 
 export default function Routes() {
   const dispatch = useDispatch();
@@ -100,6 +102,8 @@ export default function Routes() {
                       <Route path="/dashboard/parameter" exact component={Parameter} />
                       <Route path="/dashboard/not-found" exact component={NotFound} />
                       <Route path="/dashboard/about" exact component={About} />
+                      <Route path="/dashboard/help" exact component={Help} />
+                      <Route path="/dashboard/my-access" exact component={MyAccess} />
                     </Dashboard>
                   </Switch>
                 );
