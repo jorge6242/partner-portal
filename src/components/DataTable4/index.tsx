@@ -14,8 +14,24 @@ import EditIcon from "@material-ui/icons/Edit";
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import DeleteIcon from "@material-ui/icons/Delete";
 import PaymentIcon from '@material-ui/icons/Payment';
+import Switch from "@material-ui/core/Switch";
+import { green } from "@material-ui/core/colors";
 
 import logo from './paypal-logo.jpeg';
+
+const GreenSwitch = withStyles({
+  switchBase: {
+    color: '#e74c3c',
+    "&$checked": {
+      color: '#27ae60'
+    },
+    "&$checked + $track": {
+      backgroundColor: green[500]
+    }
+  },
+  checked: {},
+  track: {}
+})(Switch);
 
 const useStyles = makeStyles( (theme: Theme) => createStyles(
   {
@@ -65,6 +81,7 @@ interface DataTableProps {
   renderSubRow?: any;
   aditionalColumn?: string;
   aditionalColumnLabel?: any;
+  handleSwitch?: Function;
 }
 
 const DataTable4: FunctionComponent<DataTableProps> = ({
@@ -83,7 +100,8 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   fontSize = '12px',
   aditionalColumn,
   aditionalColumnLabel,
-  handlePayment
+  handlePayment,
+  handleSwitch,
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -104,6 +122,12 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
     } else {
       setSelectedRow(id);
     }
+  }
+
+  const handleConditionSwitch = (row: any) => {
+    if(row.status == "0") return false;
+    if(row.status == "1") return true;
+    if(row.status == "-1") return false;
   }
 
   return (
@@ -170,6 +194,14 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                               </div>
                           </TableCell>
                           )}
+                          {handleSwitch && (
+                          <TableCell style={{ minWidth: 5, fontSize }}>
+                            <GreenSwitch
+                              checked={handleConditionSwitch(row)}
+                              onChange={() => handleSwitch(row)}
+                            />
+                          </TableCell>
+                        )}
                         <TableCell align="right" style={{ minWidth: 5 }}>
                           {handleView && (
                             <IconButton

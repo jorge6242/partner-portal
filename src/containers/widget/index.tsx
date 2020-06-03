@@ -39,6 +39,13 @@ const columns: Columns[] = [
     align: "right",
     component: (value: any) => <span>{value.value}</span>
   },
+    {
+    id: "order",
+    label: "Orden",
+    minWidth: 30,
+    align: "right",
+    component: (value: any) => <span>{value.value}</span>
+  },
 ];
 
 const useStyles = makeStyles(() => ({

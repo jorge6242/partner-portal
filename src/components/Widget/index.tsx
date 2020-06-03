@@ -56,20 +56,26 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
   let statusAmount = false;
   if (type === 'Saldo' && amount > 0) statusAmount = true;
   if (type === 'Saldo' && amount <= 0) statusAmount = false;
+
   const renderTitle = () => {
     if(title === "Reservaciones") {
-      return !statusAmount ? <div><a href={link} target="_blank" style={{ textDecoration: 'none', color: "#2980b9", }} >Enlace</a></div> : <div></div>;
+      return !statusAmount ? true : false;
     }
-    return <div><a href={link} target="_blank" style={{ textDecoration: 'none', color: "#2980b9",  }} >Enlace</a></div>;
+    return true;
   }
-  const renderLink = () => {
-    if(internal) {
-      return <div onClick={() => history.push(link)} style={{ cursor: 'pointer' }} > Enlace </div>;
+
+  const handleLink = () => {
+    if (internal) {
+      history.push(link)
+    } else {
+      if(renderTitle()) {
+        window.open(link, '_blank');
+      }
     }
-    return  renderTitle();
   }
+
   return (
-    <Card className="widget-container__card">
+    <Card className="widget-container__card" onClick={() => handleLink()} style={{ cursor: link ? 'pointer' : '' }} >
       <div className={`widget-container__widget ${statusAmount ? 'widget-container__widget--red' : ''}`}>
         <div className="widget-container__avatar">
           <Avatar className={`${classes.avatarContainer} ${statusAmount ? classes.red : classes.blue}`}>
@@ -81,11 +87,7 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
           {subTitle && (
             <div className="widget-container__detail-title">{subTitle}</div>
           )}
-          {
-            link ? renderLink()
-              :
-              <div className="widget-container__detail-amount">{amount}</div>
-          }
+          {!link && (<div className="widget-container__detail-amount">{amount}</div>)}
         </div>
       </div>
     </Card>

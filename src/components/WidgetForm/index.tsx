@@ -46,6 +46,7 @@ type FormData = {
     name: string;
     slug: string;
     description: string;
+    order: string;
     roles: string;
 };
 
@@ -129,10 +130,11 @@ const WidgetForm: FunctionComponent<ComponentProps> = ({
         async function fetch() {
             if (id) {
                 const response: any = await dispatch(get(id));
-                const { name, slug, description, roles } = response;
+                const { name, slug, description, roles, order } = response;
                 setValue("name", name);
                 setValue("slug", slug);
                 setValue("description", description);
+                setValue("order", order);
                 if (roles && roles.length > 0) {
                     setSelectedData(roles);
                     roles.forEach((element: any) => {
@@ -214,6 +216,18 @@ const WidgetForm: FunctionComponent<ComponentProps> = ({
                                 errorsField={errors.description}
                                 errorsMessageField={
                                     errors.description && errors.description.message
+                                }
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <CustomTextField
+                                placeholder="Orden"
+                                field="order"
+                                required
+                                register={register}
+                                errorsField={errors.order}
+                                errorsMessageField={
+                                    errors.order && errors.order.message
                                 }
                             />
                         </Grid>

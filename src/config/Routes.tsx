@@ -65,6 +65,8 @@ import NotFound from "../containers/notFound";
 import About from "../containers/about";
 import Help from "../containers/help";
 import MyAccess from "../containers/MyAccess";
+import PaymentsManagement from "../containers/paymentsManagement";
+import UnpaidInvoices from "../containers/unpaidInvoices";
 
 export default function Routes() {
   const dispatch = useDispatch();
@@ -104,6 +106,8 @@ export default function Routes() {
                       <Route path="/dashboard/about" exact component={About} />
                       <Route path="/dashboard/help" exact component={Help} />
                       <Route path="/dashboard/my-access" exact component={MyAccess} />
+                      <Route path="/dashboard/payments-management" exact component={PaymentsManagement} />
+                      <Route path="/dashboard/unpaid-invoices" exact component={UnpaidInvoices} />
                     </Dashboard>
                   </Switch>
                 );
