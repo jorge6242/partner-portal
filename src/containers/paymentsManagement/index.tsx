@@ -14,6 +14,7 @@ import ReportePagoNotaForm from "../../components/ReportePagoNotaForm";
 import { useForm } from "react-hook-form";
 import CustomSelect from "../../components/FormElements/CustomSelect";
 import CustomTextField from "../../components/FormElements/CustomTextField";
+import { getList as getBancoReceptorList } from "../../actions/bancoReceptorActions";
 
 interface Columns {
     id:
@@ -72,6 +73,8 @@ const useStyles = makeStyles(theme => ({
 type FormData = {
     status: string;
     banco: string;
+    bancoDestino: string;
+    referencia: string;
     accion: string;
 };
 
@@ -90,6 +93,14 @@ export default function PaymentsManagement() {
         reset,
         getValues
     } = useForm<FormData>();
+
+    const {
+        bancoReceptorReducer: { listData: bancoReceptorList }
+    } = useSelector((state: any) => state)
+
+    useEffect(() => {
+        dispatch(getBancoReceptorList());
+    }, [dispatch]);
 
     const getStatusNote = (row: any) => {
         const value = list.find((e: any) => e.idPago == row);
@@ -297,49 +308,83 @@ export default function PaymentsManagement() {
                 <Grid item xs={12} style={{ fontSize: 18 }}>Gestion de Cobranza</Grid>
                 <Grid item xs={12}>
                     <Grid container spacing={3}>
-                    <Grid item xs={3}>
-              <CustomTextField
-                placeholder="Accion"
-                field="accion"
-                register={register}
-                errorsField={errors.accion}
-                errorsMessageField={
-                  errors.accion && errors.accion.message
-                }
-                Icon={SearchIcon}
-              />
-            </Grid>
-            <Grid item xs={3}>
-              <CustomTextField
-                placeholder="Banco"
-                field="banco"
-                register={register}
-                errorsField={errors.banco}
-                errorsMessageField={
-                  errors.banco && errors.banco.message
-                }
-                Icon={SearchIcon}
-              />
-            </Grid>
-                        <Grid item xs={3}>
-                            <CustomSelect
-                                label="Status"
-                                selectionMessage="Seleccione"
-                                field="status"
-                                register={register}
-                                errorsMessageField={
-                                    errors.status && errors.status.message
-                                }
-                            >
-                                <option value={0}> En Proceso </option>
-                                <option value={1}> Procesado </option>
-                                <option value={-1}> Rechazado </option>
-                            </CustomSelect>
+                        <Grid item xs={12}>
+                            <Grid container spacing={3}>
+                                <Grid item xs={3}>
+                                    <CustomTextField
+                                        placeholder="Accion"
+                                        field="accion"
+                                        register={register}
+                                        errorsField={errors.accion}
+                                        errorsMessageField={
+                                            errors.accion && errors.accion.message
+                                        }
+                                        Icon={SearchIcon}
+                                    />
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <CustomSelect
+                                        label="Status"
+                                        selectionMessage="Seleccione"
+                                        field="status"
+                                        register={register}
+                                        errorsMessageField={
+                                            errors.status && errors.status.message
+                                        }
+                                    >
+                                        <option value={0}> En Proceso </option>
+                                        <option value={1}> Procesado </option>
+                                        <option value={-1}> Rechazado </option>
+                                    </CustomSelect>
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <CustomTextField
+                                        placeholder="Referencia"
+                                        field="referencia"
+                                        register={register}
+                                        errorsField={errors.referencia}
+                                        errorsMessageField={
+                                            errors.referencia && errors.referencia.message
+                                        }
+                                        Icon={SearchIcon}
+                                    />
+                                </Grid>
+                                <Grid item xs={3}>
+                                    <Button variant="contained" color="primary" type="submit" style={{ marginTop: 15 }}>
+                                        Buscar
+                                    </Button>
+                                </Grid>
+                            </Grid>
                         </Grid>
                         <Grid item xs={3}>
-                            <Button variant="contained" color="primary" type="submit" style={{ marginTop: 15 }}>
-                                Buscar
-                            </Button>
+                            <CustomTextField
+                                placeholder="Banco"
+                                field="banco"
+                                register={register}
+                                errorsField={errors.banco}
+                                errorsMessageField={
+                                    errors.banco && errors.banco.message
+                                }
+                                Icon={SearchIcon}
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <CustomSelect
+                                label="Cuenta"
+                                selectionMessage="Seleccione"
+                                field="bancoDestino"
+                                register={register}
+                                errorsMessageField={
+                                    errors.bancoDestino &&
+                                    errors.bancoDestino.message
+                                }
+                            >
+                                {bancoReceptorList.map((item: any) => (
+                                    <option key={item.cCodCuenta} value={item.cCodCuenta}>
+                                        {`${item.cNombreBanco} - ${item.cNumCuenta.substring(12, 16)}`}
+                                    </option>
+                                ))}
+                            </CustomSelect>
                         </Grid>
                     </Grid>
                 </Grid>
