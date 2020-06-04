@@ -102,7 +102,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
         setValue,
         getValues
     } = useForm<FormData>();
-    const loading = useSelector((state: any) => state.genderReducer.loading);
+    const loading = useSelector((state: any) => state.reportePagosReducer.loading);
 
     const { user } = useSelector((state: any) => state.loginReducer);
     const dispatch = useDispatch();

@@ -4,7 +4,7 @@
 
 // QA http://192.168.0.252:9001
 
-var BASE_URL = "http://localhost:8000";
+var BASE_URL = "http://portal.api.com";
 
 var TEMPLATE_INFO = `
 <b>Texto de demo a mostrar </b>

@@ -71,7 +71,6 @@ export const create = (body: object) => async (dispatch: Function) => {
           status: true
         }
       })(dispatch);
-      dispatch(getAll());
       dispatch(
         updateModal({
           payload: {
