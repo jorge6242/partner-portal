@@ -2,6 +2,7 @@ import API from "../api/ReportePagos";
 import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from '../interfaces/actionTypes/reportePagosType';
+import Message from '../helpers/message';
 
 export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch: Function) => {
   dispatch({
@@ -36,9 +37,10 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch
     }
     return response;
   } catch (error) {
+    const message = Message.exception(error);
     snackBarUpdate({
       payload: {
-        message: error.message,
+        message,
         status: true,
         type: "error"
       }
@@ -161,9 +163,10 @@ export const update = (id: any, body: object) => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    const message = Message.exception(error);
     snackBarUpdate({
       payload: {
-        message: error.message,
+        message,
         type: "error",
         status: true
       }
@@ -215,9 +218,10 @@ export const filter = (
     }
     return response;
   } catch (error) {
+    const message = Message.exception(error);
     snackBarUpdate({
       payload: {
-        message: error.message,
+        message,
         status: true,
         type: "error"
       }

@@ -142,6 +142,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
             Login: user.username,
             NroReferencia2: NroReferencia,
             nMonto: monto,
+            Moneda: 'USD',
         }
         await dispatch(create(body));
         reset();
