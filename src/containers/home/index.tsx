@@ -62,8 +62,8 @@ export default function Home() {
   }, [dispatch, widgetList]);
   let reservacionesLink = null;
   if (validateWidget('PARTNERPORTAL_reservaciones')) {
-    const parameterReservaciones = Helper.getParameter(parameterList, 'LINK_RESERVACIONES');
-    reservacionesLink = parameterReservaciones.value
+    const parameter = Helper.getParameter(parameterList, 'LINK_RESERVACIONES');
+    reservacionesLink = `${parameter.value}?doc_id=${user.doc_id}&token=${user.token}`
   }
 
   let torneosLink = null;
