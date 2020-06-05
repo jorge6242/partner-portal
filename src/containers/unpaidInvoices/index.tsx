@@ -95,7 +95,7 @@ export default function UnpaidInvoices() {
   return (
     <div>
       <div className={classes.headerContainer}>
-        <div className={classes.headerTitle}>Facturas por Pagar</div>
+        <div className={classes.headerTitle}>Que dia facturas</div>
       </div>
       <div className={classes.tableContainer}>
         <DataTable4

@@ -18,7 +18,7 @@ import reportePagosColumns from '../../interfaces/reportePagosColumns';
 import UnpaidInvoicesColumns from '../../interfaces/UnpaidInvoicesColumns';
 import CustomSearch from '../../components/FormElements/CustomSearch';
 import ReportePagosForm from "../../components/ReportePagoForm";
-import { Grid } from "@material-ui/core";
+import { Grid, Chip } from "@material-ui/core";
 import _ from 'lodash';
 
 import { getReportedPayments, getUnpaidInvoices } from "../../actions/webServiceActions";
@@ -88,11 +88,33 @@ const columns: reportePagosColumns[] = [
         minWidth: 30,
         align: "center",
         component: (value: any) => {
-            let status = "";
-            if(value.value == "0") status = "En Proceso";
-            if(value.value == "1") status = "Procesado";
-            return <span>{status}</span>;
-        }
+            let status = '';
+            let backgroundColor = '';
+            if(value.value == "0") {
+              status = "En Proceso";
+              backgroundColor = '#2980b9';
+            }
+            if(value.value == "1") {
+              status = "Procesado";
+              backgroundColor = '#2ecc71';
+            }
+            if(value.value == "-1") {
+              status = "Rechazado";
+              backgroundColor = '#e74c3c';
+            }
+            return (
+              <Chip
+                label={status}
+                style={{
+                  backgroundColor,
+                  color: "white",
+                  fontWeight: "bold",
+                  fontSize: "10px"
+                }}
+                size="small"
+              />
+            )
+          }
     },
 ];
 
@@ -284,7 +306,7 @@ export default function ReportePagos() {
                         id="panel-reportar-pago-header"
                     >
                         <Typography className={classes.heading}>
-                            Reportar Pago
+                            Notificacion de Pagos
                             </Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>

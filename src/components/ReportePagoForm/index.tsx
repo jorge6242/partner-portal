@@ -152,9 +152,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     return (
         <Container component="main">
             <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
-                    Reporte de Pagos
-        </Typography>
+                <Typography component="h1" variant="h5">  Notificacion de Pagos </Typography>
                 <form
                     className={classes.form}
                     onSubmit={handleSubmit(handleForm)}
