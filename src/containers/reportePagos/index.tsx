@@ -201,8 +201,8 @@ export default function ReportePagos() {
     const paypalClientId =  !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) && paypalParameter.value !== '' ? paypalParameter.value : null;
 
     useEffect(() => {
-        dispatch(getUnpaidInvoices());
-        dispatch(getReportedPayments());
+        // dispatch(getUnpaidInvoices());
+        // dispatch(getReportedPayments());
     }, [dispatch]);
 
 
@@ -245,7 +245,7 @@ export default function ReportePagos() {
                     )
                 }
             </Grid>
-            <Grid item sm={12} xs={12} md={12}>
+            {/* <Grid item sm={12} xs={12} md={12}>
             <ExpansionPanel
                     expanded={expanded === "panel"}
                     onChange={handleExpandedPanel("panel")}
@@ -269,10 +269,10 @@ export default function ReportePagos() {
                     handlePayment={ paypalClientId ? handlePayment : null}
                 />
                     </ExpansionPanelDetails>
-                </ExpansionPanel>
+                </ExpansionPanel> 
                 
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
+            </Grid> */}
+            {/* <Grid item xs={12} sm={12} md={12}>
                 <ExpansionPanel
                     expanded={expanded === "panel-pagos-reportados"}
                     onChange={handleExpandedPanel("panel-pagos-reportados")}
@@ -294,7 +294,7 @@ export default function ReportePagos() {
                         />
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} sm={12} md={12}>
             <ExpansionPanel
                     expanded={expanded === "panel-reportar-pago"}

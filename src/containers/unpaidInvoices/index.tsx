@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import _ from 'lodash';
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +12,8 @@ import DataTable4 from '../../components/DataTable4'
 import UnpaidInvoicesColumns from '../../interfaces/UnpaidInvoicesColumns';
 import CustomSearch from '../../components/FormElements/CustomSearch';
 import moment from "moment";
+import Paypal from "../../components/Paypal";
+import Helper from '../../helpers/utilities';
 
 function formatNumber(num: any) {
   num = "" + Math.floor(num * 100.0 + 0.5) / 100.0;
@@ -83,8 +86,18 @@ export default function UnpaidInvoices() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const {
-    unpaidInvoices, setUnpaidInvoicestLoading
+    unpaidInvoices, setUnpaidInvoicestLoading,
   } = useSelector((state: any) => state.webServiceReducer);
+
+  const { 
+    parameterReducer: { listData: parameterList },
+    loginReducer: { user },
+   } = useSelector((state: any) => state);
+
+  const paypalParameter = Helper.getParameter(parameterList, 'PAYPAL_CLIENT_ID');
+  const habilitarPagoParameter = Helper.getParameter(parameterList, 'HABILITAR_PAGO');
+  const paypalClientId =  !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) && paypalParameter.value !== '' ? paypalParameter.value : null;
+
   useEffect(() => {
     async function fetchData() {
       dispatch(getUnpaidInvoices());
@@ -92,16 +105,39 @@ export default function UnpaidInvoices() {
     fetchData();
   }, [dispatch]);
 
+  const handlePayment = (row: any) => {
+    // console.log('row', row);
+    const monto = Number(row.saldo);
+    dispatch(
+        updateModal({
+            payload: {
+                status: true,
+                element: <Paypal 
+                    description={row.descrip} 
+                    invoiceId={row.fact_num} 
+                    customId={user.username} 
+                    amountDetail={monto.toFixed(2)}
+                    amount={monto.toFixed(2)}
+                    client={paypalClientId}
+                    />,
+            }
+        })
+    );
+}
+
   return (
     <div>
       <div className={classes.headerContainer}>
-        <div className={classes.headerTitle}>Que dia facturas</div>
+        <div className={classes.headerTitle}>Facturas</div>
       </div>
       <div className={classes.tableContainer}>
         <DataTable4
           rows={unpaidInvoices.data}
           columns={columns}
           loading={setUnpaidInvoicestLoading}
+          aditionalColumn={unpaidInvoices.length > 0 ? formatNumber(unpaidInvoices.total) : null}
+          aditionalColumnLabel={unpaidInvoices.length > 0 ? "Total" : null}
+          handlePayment={ paypalClientId ? handlePayment : null}
         />
       </div>
     </div>

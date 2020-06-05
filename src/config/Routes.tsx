@@ -67,6 +67,7 @@ import Help from "../containers/help";
 import MyAccess from "../containers/MyAccess";
 import PaymentsManagement from "../containers/paymentsManagement";
 import UnpaidInvoices from "../containers/unpaidInvoices";
+import ReportedPayments from "../containers/reportedPayments";
 
 export default function Routes() {
   const dispatch = useDispatch();
@@ -108,6 +109,7 @@ export default function Routes() {
                       <Route path="/dashboard/my-access" exact component={MyAccess} />
                       <Route path="/dashboard/payments-management" exact component={PaymentsManagement} />
                       <Route path="/dashboard/unpaid-invoices" exact component={UnpaidInvoices} />
+                      <Route path="/dashboard/reported-payments" exact component={ReportedPayments} />
                     </Dashboard>
                   </Switch>
                 );
