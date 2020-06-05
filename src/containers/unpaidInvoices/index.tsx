@@ -124,7 +124,6 @@ export default function UnpaidInvoices() {
         })
     );
 }
-
   return (
     <div>
       <div className={classes.headerContainer}>
@@ -135,8 +134,8 @@ export default function UnpaidInvoices() {
           rows={unpaidInvoices.data}
           columns={columns}
           loading={setUnpaidInvoicestLoading}
-          aditionalColumn={unpaidInvoices.length > 0 ? formatNumber(unpaidInvoices.total) : null}
-          aditionalColumnLabel={unpaidInvoices.length > 0 ? "Total" : null}
+          aditionalColumn={unpaidInvoices.total && unpaidInvoices.total > 0 ? formatNumber(unpaidInvoices.total) : null}
+          aditionalColumnLabel={unpaidInvoices.total && unpaidInvoices.total > 0 ? "Total" : null}
           handlePayment={ paypalClientId ? handlePayment : null}
         />
       </div>
