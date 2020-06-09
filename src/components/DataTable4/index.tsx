@@ -54,11 +54,12 @@ const useStyles = makeStyles( (theme: Theme) => createStyles(
       padding: 10
     },
     tableCellHeader: {
+      padding: 4,
       '&:first-child': {
-        paddingLeft: 10
+        paddingLeft: 5
       },
       '&:last-child': {
-        paddingRight: 10
+        paddingRight: '0px !important'
       }
     },
   }
@@ -150,10 +151,8 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   {column.label}
                 </TableCell>
               ))}
-              {handleView && <TableCell style={{ minWidth: 5 }}></TableCell>}
-              {handleEdit && <TableCell style={{ minWidth: 5 }}></TableCell>}
-              {handleDelete && <TableCell style={{ minWidth: 5 }}></TableCell>}
-              {handlePayment && <TableCell style={{ minWidth: 5 }}></TableCell>}
+            {handleSwitch && <TableCell style={{ minWidth: 5, }}></TableCell>}
+            <TableCell style={{ minWidth: 6, display: !handleView && !handleEdit && !handleDelete ? 'none' : 'table-cell' }}></TableCell>
             </TableRow>
           </TableHead>
           <TableBody style={{ overflow: 'hidden' }}>
@@ -202,7 +201,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                             />
                           </TableCell>
                         )}
-                        <TableCell align="right" style={{ minWidth: 5 }}>
+                        <TableCell align="right" style={{ minWidth: 7, display: !handleView && !handleEdit && !handleDelete ? 'none' : 'table-cell' }}>
                           {handleView && (
                             <IconButton
                               aria-label="delete"

@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import CustomSelect from "../../components/FormElements/CustomSelect";
 import CustomTextField from "../../components/FormElements/CustomTextField";
 import { getList as getBancoReceptorList } from "../../actions/bancoReceptorActions";
+import MultipleSwitch from "../../components/common/MultipleSwitch";
 
 interface Columns {
     id:
@@ -118,6 +119,23 @@ export default function PaymentsManagement() {
         );
     }
 
+    const renderPaymentStatus = (id: any) => {
+        const selected = list.find((e: any) => e.idPago == id);
+        if (selected) {
+          return selected;
+        }
+        return <div></div>
+      }
+
+      const handleSwitchStatus =  (currentStatus: string, row: any) => {
+        const form = getValues();
+        let status = '';
+        status = currentStatus;
+        if(currentStatus !== row.status) {
+            dispatch(update(row.idPago, { status }, {query: form, page: pagination.currentPage, perPage: pagination.perPage}));
+        }
+      };
+
     const columns: Columns[] = [
         {
             id: "dFechaRegistro",
@@ -206,19 +224,37 @@ export default function PaymentsManagement() {
             minWidth: 10,
             align: "left",
             component: (value: any) => {
-                return (
-                    <a target="_blank" href={value.value} title="comprobante" >
-                        <IconButton
-                            aria-label="file"
-                            size="small"
-                            color="primary"
-                        >
-                            <SearchIcon fontSize="inherit" />
-                        </IconButton>
-                    </a>
-                )
+                if(value.value) {
+                    return (
+                        <a target="_blank" href={value.value} title="comprobante" >
+                            <IconButton
+                                aria-label="file"
+                                size="small"
+                                color="primary"
+                            >
+                                <SearchIcon fontSize="inherit" />
+                            </IconButton>
+                        </a>
+                    )
+                }
+                return <div />          
             }
         },
+        {
+            id: "idPago",
+            label: "",
+            minWidth: 10,
+            align: "right",
+            component: (value: any) => {
+              const selected = renderPaymentStatus(value.value);
+              const pattern = [
+                { status: 0, color: "#2980b9" },
+                { status: 1, color: "#2ecc71" },
+                { status: -1, color: "#e74c3c" },
+              ]
+              return <MultipleSwitch pattern={pattern} selected={selected} handleClick={handleSwitchStatus} />
+            },
+          },
         {
             id: "status",
             label: "",
@@ -257,7 +293,8 @@ export default function PaymentsManagement() {
 
     useEffect(() => {
         async function fetchData() {
-            dispatch(getAll());
+            const form = getValues();
+            dispatch(filter(form));
         }
         fetchData();
     }, [dispatch]);
@@ -269,19 +306,6 @@ export default function PaymentsManagement() {
             //dispatch(search(event.value))
         }
     };
-
-    const handleSwitchStatus = async (row: any) => {
-        let status = '';
-        if (row.status == '0') {
-            status = '1';
-        } else {
-            status = row.status == "1" ? '-1' : '1';
-        }
-        const data = {
-            status
-        };
-        dispatch(update(row.idPago, data));
-    }
 
     const handleForm = async (form: FormData) => {
         dispatch(filter(form));
@@ -396,7 +420,6 @@ export default function PaymentsManagement() {
                         loading={loading}
                         onChangePage={handleChangePage}
                         onChangePerPage={handlePerPage}
-                        handleSwitch={handleSwitchStatus}
                     />
                 </Grid>
             </form>

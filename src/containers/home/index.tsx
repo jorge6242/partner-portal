@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import AccountBalanceIcon from "@material-ui/icons/AccountBalance";
 import PaymentIcon from '@material-ui/icons/Payment';
@@ -15,22 +15,29 @@ import Helper from '../../helpers/utilities';
 import Loader from "../../components/common/Loader";
 import { getBalance } from "../../actions/webServiceActions";
 
-const useStyles = makeStyles({
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)"
-  },
-  title: {
-    fontSize: 14
-  },
-  pos: {
-    marginBottom: 12
-  },
-  widgetContainer: {
-    marginBottom: "100px"
-  }
-});
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    bullet: {
+      display: "inline-block",
+      margin: "0 2px",
+      transform: "scale(0.8)"
+    },
+    title: {
+      fontSize: 14
+    },
+    pos: {
+      marginBottom: 12
+    },
+    widgetContainer: {
+      marginBottom: "100px"
+    },
+    hideMobileWidget: {
+      [theme.breakpoints.down('xs')]: {
+        display: 'none'
+      },
+    }
+  })
+);
 
 export default function Home() {
   const classes = useStyles();
@@ -50,6 +57,14 @@ export default function Home() {
   const validateWidget = (value: string) => {
     const isValid = widgetList.find((e: any) => e.slug === value);
     if (isValid) {
+      return true
+    }
+    return false;
+  }
+
+  const hiddeMobileWidget = (value: string) => {
+    const isValid = widgetList.find((e: any) => e.slug === value);
+    if (isValid && isValid.show_mobile !== null && isValid.show_mobile == 0) {
       return true
     }
     return false;
@@ -96,6 +111,12 @@ export default function Home() {
     miAccesoLink = parameter.value;
   }
 
+  let tennisLink = null;
+  if (validateWidget('PARTNERPORTAL_tennis')) {
+    const parameter = Helper.getParameter(parameterList, 'LINK_TENNIS');
+    tennisLink = parameter.value;
+  }
+
   return (
     <div className="home-container">
       <Grid container spacing={3} className={classes.widgetContainer}>
@@ -116,6 +137,58 @@ export default function Home() {
           </Grid>
         }
 
+        {validateWidget('PARTNERPORTAL_actualizacion-datos') &&
+          <Grid item sm={12} xs={12} md={3} className={`${hiddeMobileWidget('PARTNERPORTAL_actualizacion-datos') ? classes.hideMobileWidget : ''}`} >
+            <Paper>
+              <Widgtet
+                Icon={AccountBoxIcon}
+                title="Actualizacion de Datos"
+                link={actualizacionDatosLink}
+                internal
+              />
+            </Paper>
+          </Grid>
+        }
+
+        {validateWidget('PARTNERPORTAL_facturas') &&
+          <Grid item sm={12} xs={12} md={3}>
+            <Paper>
+              <Widgtet
+                Icon={AccountBoxIcon}
+                title="Facturas"
+                link="/dashboard/unpaid-invoices"
+                internal
+              />
+            </Paper>
+          </Grid>
+        }
+
+        {validateWidget('PARTNERPORTAL_reporte-pagos') &&
+          <Grid item sm={12} xs={12} md={3}>
+            <Paper>
+              <Widgtet
+                Icon={PaymentIcon}
+                title="Reporte de Pagos"
+                link={reportePagosLink}
+                internal
+              />
+            </Paper>
+          </Grid>
+        }
+
+        {validateWidget('PARTNERPORTAL_pagos-reportados') &&
+          <Grid item sm={12} xs={12} md={3}>
+            <Paper>
+              <Widgtet
+                Icon={AccountBoxIcon}
+                title="Pagos Reportados"
+                link="/dashboard/reported-payments"
+                internal
+              />
+            </Paper>
+          </Grid>
+        }
+
         {validateWidget('PARTNERPORTAL_reservaciones') &&
           <Grid item sm={12} xs={12} md={3}>
             {setBalanceLoading ? (
@@ -124,7 +197,7 @@ export default function Home() {
                 <Paper>
                   <Widgtet
                     Icon={EventAvailableIcon}
-                    title="Reservaciones"
+                    title="Golf"
                     type="Saldo"
                     amount={clientBalance.saldo}
                     link={reservacionesLink}
@@ -134,67 +207,59 @@ export default function Home() {
           </Grid>
         }
 
+      {validateWidget('PARTNERPORTAL_tennis') &&
+          <Grid item sm={12} xs={12} md={3}>
+            {setBalanceLoading ? (
+              <Loader />
+            ) : (
+                <Paper>
+                  <Widgtet
+                    Icon={EventAvailableIcon}
+                    title="Tennis"
+                    type="Saldo"
+                    amount={clientBalance.saldo}
+                    link={tennisLink}
+                  />
+                </Paper>
+              )}
+          </Grid>
+        }
+
         {validateWidget('PARTNERPORTAL_torneos') &&
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
-                  <Widgtet
-                    Icon={ScheduleIcon}
-                    title="Torneos"
-                    link={torneosLink}
-                  />
-                </Paper>
+              <Widgtet
+                Icon={ScheduleIcon}
+                title="Eventos"
+                link={torneosLink}
+              />
+            </Paper>
           </Grid>
         }
 
-        {validateWidget('PARTNERPORTAL_reporte-pagos') &&
+        {/* {validateWidget('PARTNERPORTAL_estado-cuenta') &&
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
-                  <Widgtet
-                    Icon={PaymentIcon}
-                    title="Reporte de Pagos"
-                    link={reportePagosLink}
-                    internal
-                  />
-                </Paper>
+              <Widgtet
+                Icon={AccountBalanceIcon}
+                title="Estado de Cuenta"
+                link={estadoCuentaLink}
+                internal
+              />
+            </Paper>
           </Grid>
-        }
+        } */}
 
-        {validateWidget('PARTNERPORTAL_estado-cuenta') &&
+        {validateWidget('PARTNERPORTAL_mi-acceso') &&
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
-                  <Widgtet
-                    Icon={AccountBalanceIcon}
-                    title="Estado de Cuenta"
-                    link={estadoCuentaLink}
-                    internal
-                  />
-                </Paper>
-          </Grid>
-        }
-
-        {validateWidget('PARTNERPORTAL_actualizacion-datos') &&
-          <Grid item sm={12} xs={12} md={3}>
-            <Paper>
-                  <Widgtet
-                    Icon={AccountBoxIcon}
-                    title="Actualizacion de Datos"
-                    link={actualizacionDatosLink}
-                    internal
-                  />
-                </Paper>
-          </Grid>
-        }
-
-      {validateWidget('PARTNERPORTAL_mi-acceso') &&
-          <Grid item sm={12} xs={12} md={3}>
-            <Paper>
-                  <Widgtet
-                    Icon={AccountBoxIcon}
-                    title="Mi Accesso"
-                    link={miAccesoLink}
-                    internal
-                  />
-                </Paper>
+              <Widgtet
+                Icon={AccountBoxIcon}
+                title="Mi Acceso"
+                link={miAccesoLink}
+                internal
+              />
+            </Paper>
           </Grid>
         }
 

@@ -13,6 +13,7 @@ import { update, create, get } from "../../actions/widgetActions";
 import { Grid } from "@material-ui/core";
 import TransferList from "../TransferList";
 import { getAll as getAllRoles } from "../../actions/roleActions";
+import CustomSelect from "../FormElements/CustomSelect";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -28,18 +29,18 @@ const useStyles = makeStyles(theme => ({
         margin: theme.spacing(1),
         position: "relative",
         textAlign: 'center',
-      },
-      buttonProgress: {
+    },
+    buttonProgress: {
         position: "absolute",
         top: "50%",
         left: "50%",
         marginTop: -9,
         marginLeft: -9
-      },
-      submit: {
+    },
+    submit: {
         margin: theme.spacing(3, 0, 2),
         width: '30%',
-      },
+    },
 }));
 
 type FormData = {
@@ -48,6 +49,7 @@ type FormData = {
     description: string;
     order: string;
     roles: string;
+    show_mobile: string;
 };
 
 type ComponentProps = {
@@ -130,11 +132,12 @@ const WidgetForm: FunctionComponent<ComponentProps> = ({
         async function fetch() {
             if (id) {
                 const response: any = await dispatch(get(id));
-                const { name, slug, description, roles, order } = response;
+                const { name, slug, description, roles, order, show_mobile } = response;
                 setValue("name", name);
                 setValue("slug", slug);
                 setValue("description", description);
                 setValue("order", order);
+                setValue("show_mobile", show_mobile);
                 if (roles && roles.length > 0) {
                     setSelectedData(roles);
                     roles.forEach((element: any) => {
@@ -230,6 +233,21 @@ const WidgetForm: FunctionComponent<ComponentProps> = ({
                                     errors.order && errors.order.message
                                 }
                             />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <CustomSelect
+                                label="Mostrar Mobile"
+                                selectionMessage="Seleccione"
+                                field="show_mobile"
+                                register={register}
+                                required
+                                errorsMessageField={
+                                    errors.show_mobile && errors.show_mobile.message
+                                }
+                            >
+                                <option value={1}> SI </option>
+                                <option value={0}> NO </option>
+                            </CustomSelect>
                         </Grid>
                         <Grid item xs={12}>
                             {list.length > 0 && (

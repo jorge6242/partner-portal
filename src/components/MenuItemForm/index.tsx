@@ -55,6 +55,7 @@ type FormData = {
     route: string;
     menu_id: string;
     menu_item_icon_id: string;
+    show_mobile: string;
 };
 
 type ComponentProps = {
@@ -103,7 +104,7 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
         async function fetch() {
             if (id) {
                 const response: any = await dispatch(get(id));
-                const { name, slug, description, route, menu_id, parent , menu_item_icon_id, roles, order } = response;
+                const { name, slug, description, route, menu_id, parent , menu_item_icon_id, roles, order, show_mobile } = response;
                 setValue("name", name);
                 setValue("slug", slug);
                 setValue("description", description);
@@ -112,6 +113,7 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
                 setValue("menu_id", menu_id);
                 setValue("order", order);
                 setValue("menu_item_icon_id", menu_item_icon_id);
+                setValue("show_mobile", show_mobile);
                 if (roles && roles.length > 0) {
                     setSelectedData(roles);
                     roles.forEach((element: any) => {
@@ -299,6 +301,21 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
                                         </option>
                                     )
                                 })}
+                            </CustomSelect>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <CustomSelect
+                                label="Mostrar Mobile"
+                                selectionMessage="Seleccione"
+                                field="show_mobile"
+                                register={register}
+                                required
+                                errorsMessageField={
+                                    errors.show_mobile && errors.show_mobile.message
+                                }
+                            >
+                                <option value={1}> SI </option>
+                                <option value={0}> NO </option>
                             </CustomSelect>
                         </Grid>
                         <Grid item xs={12}>

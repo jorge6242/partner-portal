@@ -126,7 +126,7 @@ export const get = (id: number) => async (dispatch: Function) => {
   }
 };
 
-export const update = (id: any, body: object) => async (dispatch: Function) => {
+export const update = (id: any, body: object, filterQuery: any = null) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
     payload: true
@@ -154,7 +154,11 @@ export const update = (id: any, body: object) => async (dispatch: Function) => {
           }
         })
       );
-      dispatch(getAll());
+      if(filterQuery) {
+        dispatch(filter(filterQuery.query, filterQuery.page, filterQuery.perPage));
+      } else {
+        dispatch(getAll());
+      }
       dispatch({
         type: ACTIONS.SET_LOADING,
         payload: false
@@ -192,14 +196,15 @@ export const filter = (
       data: { data },
       status
     } = await API.filter(form, page, perPage);
-    console.log('data ', data);
     let response = [];
     if (status === 200) {
       const pagination = {
         total: data.total,
         perPage: data.per_page,
         prevPageUrl: data.prev_page_url,
-        currentPage: data.current_page
+        currentPage: data.current_page,
+        from: data.from,
+        to: data.to,
       };
       response = data.data;
       dispatch({

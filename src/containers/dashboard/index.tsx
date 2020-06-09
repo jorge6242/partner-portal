@@ -96,6 +96,11 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     profileButton: {
       background: 'white'
+    },
+    hideMenu: {
+      [theme.breakpoints.down('xs')]: {
+        display: 'none'
+      },
     }
   })
 );
@@ -108,6 +113,7 @@ interface SubMenuProps {
 const SubMenu: FunctionComponent<SubMenuProps> = ({ menu, item }) => {
   const [menuItem, setMenuItem] = useState(null);
   const history = useHistory();
+  const classes = useStyles();
   const findChildrens: any = menu.filter((e: any) => e.parent == item.id);
   let Icon = SettingsIcon;
   if (item.icons) {
@@ -137,7 +143,7 @@ const SubMenu: FunctionComponent<SubMenuProps> = ({ menu, item }) => {
 
   return (
     <React.Fragment key={item.id}>
-      <ListItem button onClick={handleSubMenuOrRoute}>
+      <ListItem button onClick={handleSubMenuOrRoute} className={`${item.show_mobile !== null && item.show_mobile == 0 ? classes.hideMenu : ''}`}>
         <ListItemIcon >
           <Icon />
         </ListItemIcon>
@@ -362,7 +368,10 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
         }
         return (
           <React.Fragment key={i}>
-            <ListItem button onClick={() => findChildrens.length > 0 ? setSubMenu(item.id) : handeClick(item.route ? item.route : '/dashboard/main')}>
+            <ListItem 
+              button onClick={() => findChildrens.length > 0 ? setSubMenu(item.id) : handeClick(item.route ? item.route : '/dashboard/main')}
+              className={`${item.show_mobile !== null && item.show_mobile == 0 ? classes.hideMenu : ''}`}
+              >
               <ListItemIcon >
                 <Icon />
               </ListItemIcon>
@@ -547,7 +556,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      <MenuItem>Usuario: {!loading && user.username}</MenuItem>
+                      <MenuItem>Usuario: {!loading && user.name}</MenuItem>
                       <MenuItem>Role: {userRoles.length > 0 && userRoles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
                       <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
                     </Menu>
