@@ -1,4 +1,4 @@
-import {  ACTIONS, ActionTypes } from '../interfaces/actionTypes/locationTypes';
+import {  ACTIONS, ActionTypes } from '../interfaces/actionTypes/notificacionTypes';
 
 type InitStates = {
     list: Array<string | number>;
@@ -19,7 +19,7 @@ const initialState: InitStates = {
     listData: [],
 };
 
-const locationReducer = (state = initialState, action: ActionTypes) => {
+const notificacionReducer = (state = initialState, action: ActionTypes) => {
     switch (action.type) {
         case ACTIONS.GET_ALL:
             return {
@@ -46,4 +46,4 @@ const locationReducer = (state = initialState, action: ActionTypes) => {
     }
 };
 
-export default locationReducer;
+export default notificacionReducer;
