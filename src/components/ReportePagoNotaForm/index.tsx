@@ -1,27 +1,14 @@
 import React, { useEffect, FunctionComponent, useState } from "react";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from 'react-redux'
-import parseHtml from 'react-html-parser';
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import MuiExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
-import CustomTextField from "../FormElements/CustomTextField";
 import { update, get } from "../../actions/reportePagosActions";
 import { Grid } from "@material-ui/core";
 import CustomEditor from "../Editor";
-
-const ExpansionPanelSummary = withStyles({
-    root: {
-        backgroundColor: "rgba(0, 0, 0, .03)"
-    }
-})(MuiExpansionPanelSummary);
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -72,17 +59,11 @@ type ComponentProps = {
 };
 
 const ReportePagoNotaForm: FunctionComponent<ComponentProps> = ({ id }) => {
-    const [comments, setComments] = useState();
-    const [expanded, setExpanded] = React.useState<string | false>("");
     const [userNotes, setUserNotes] = useState();
     const classes = useStyles();
     const {
         handleSubmit,
-        register,
-        errors,
         reset,
-        setValue,
-        getValues
     } = useForm<FormData>();
     const { loading } = useSelector((state: any) => state.reportePagosReducer);
     const dispatch = useDispatch();

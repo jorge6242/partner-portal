@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
-import { Grid, Chip, makeStyles, Button } from "@material-ui/core";
+import { Grid, Chip, makeStyles, Button, withStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import MessageIcon from '@material-ui/icons/Message';
+import { green } from "@material-ui/core/colors";
+import Switch from "@material-ui/core/Switch";
 
 import { getAll, update, filter } from "../../actions/reportePagosActions";
 import DataTable4 from "../../components/DataTable4";
-import CustomSearch from "../../components/FormElements/CustomSearch";
+import TableCell from "@material-ui/core/TableCell";
+import TableRow from "@material-ui/core/TableRow";
 import moment from "moment";
 import { updateModal } from "../../actions/modalActions";
 import ReportePagoNotaForm from "../../components/ReportePagoNotaForm";
@@ -16,6 +19,22 @@ import CustomSelect from "../../components/FormElements/CustomSelect";
 import CustomTextField from "../../components/FormElements/CustomTextField";
 import { getList as getBancoReceptorList } from "../../actions/bancoReceptorActions";
 import MultipleSwitch from "../../components/common/MultipleSwitch";
+import UnpaidInvoicesColumns from '../../interfaces/UnpaidInvoicesColumns';
+import { getUnpaidInvoicesbyShare, setInvoicePayment } from "../../actions/webServiceActions";
+
+const GreenSwitch = withStyles({
+    switchBase: {
+        color: '#e74c3c',
+        "&$checked": {
+            color: '#27ae60'
+        },
+        "&$checked + $track": {
+            backgroundColor: green[500]
+        }
+    },
+    checked: {},
+    track: {}
+})(Switch);
 
 interface Columns {
     id:
@@ -39,7 +58,7 @@ interface Columns {
     | "cuenta"
     label: string;
     minWidth?: number;
-    align?: "left" | "right";
+    align?: "left" | "right" | "center";
     component?: any;
 }
 
@@ -50,7 +69,7 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 'bold',
     },
     printButtonContainer: {
-        textAlign: "right",
+        textAlign: "left",
     },
     form: {
         width: "100%", // Fix IE 11 issue.
@@ -83,9 +102,12 @@ type FormData = {
 export default function PaymentsManagement() {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const { list, loading, pagination } = useSelector(
-        (state: any) => state.reportePagosReducer
-    );
+
+
+    const {
+        reportePagosReducer: { list, loading, pagination },
+        webServiceReducer: { unpaidInvoices, setUnpaidInvoicestLoading, }
+    } = useSelector((state: any) => state);
 
     const {
         handleSubmit,
@@ -122,26 +144,39 @@ export default function PaymentsManagement() {
     const renderPaymentStatus = (id: any) => {
         const selected = list.find((e: any) => e.idPago == id);
         if (selected) {
-          return selected;
+            return selected;
         }
         return <div></div>
-      }
+    }
 
-      const handleSwitchStatus =  (currentStatus: string, row: any) => {
+    const getSelectedRow = (id: any) => {
+        const selected = unpaidInvoices.data.find((e: any) => e.portal_id == id);
+        if (selected) {
+            return selected;
+        }
+        return null;
+    }
+
+    const handleSwitchStatus = (currentStatus: string, row: any) => {
         const form = getValues();
         let status = '';
         status = currentStatus;
-        if(currentStatus !== row.status) {
-            dispatch(update(row.idPago, { status }, {query: form, page: pagination.currentPage, perPage: pagination.perPage}));
+        if (currentStatus !== row.status) {
+            dispatch(update(row.idPago, { status }, { query: form, page: pagination.currentPage, perPage: pagination.perPage }));
         }
-      };
+    };
 
     const columns: Columns[] = [
         {
             id: "dFechaRegistro",
             label: "Registrado",
-            minWidth: 20,
-            component: (value: any) => <span>{value.value && moment(value.value).format('YYYY-MM-DD')} <br /> {moment(value.value).format('hh:mm:ss A')}</span>,
+            minWidth: 10,
+            component: (value: any) => {
+                if (value.value) {
+                    return <span>{value.value && moment(value.value).format('YYYY-MM-DD')} <br /> {moment(value.value).format('hh:mm:ss A')}</span>
+                }
+                return <div />
+            },
         },
         {
             id: "Login",
@@ -153,9 +188,14 @@ export default function PaymentsManagement() {
         {
             id: "dFechaProceso",
             label: "Fecha",
-            minWidth: 20,
+            minWidth: 10,
             align: "left",
-            component: (value: any) => <span>{value.value && moment(value.value).format('YYYY-MM-DD')} <br /> {moment(value.value).format('hh:mm:ss A')}</span>,
+            component: (value: any) => {
+                if (value.value) {
+                    return <span>{value.value && moment(value.value).format('YYYY-MM-DD')} <br /> {moment(value.value).format('hh:mm:ss A')}</span>
+                }
+                return <div />
+            },
         },
         {
             id: "NroReferencia",
@@ -222,9 +262,9 @@ export default function PaymentsManagement() {
             id: "Archivos",
             label: "Comprobante",
             minWidth: 10,
-            align: "left",
+            align: "center",
             component: (value: any) => {
-                if(value.value) {
+                if (value.value) {
                     return (
                         <a target="_blank" href={value.value} title="comprobante" >
                             <IconButton
@@ -237,29 +277,29 @@ export default function PaymentsManagement() {
                         </a>
                     )
                 }
-                return <div />          
+                return <div />
             }
         },
         {
             id: "idPago",
             label: "",
             minWidth: 10,
-            align: "right",
+            align: "left",
             component: (value: any) => {
-              const selected = renderPaymentStatus(value.value);
-              const pattern = [
-                { status: 0, color: "#2980b9" },
-                { status: 1, color: "#2ecc71" },
-                { status: -1, color: "#e74c3c" },
-              ]
-              return <MultipleSwitch pattern={pattern} selected={selected} handleClick={handleSwitchStatus} />
+                const selected = renderPaymentStatus(value.value);
+                const pattern = [
+                    { status: 0, color: "#2980b9" },
+                    { status: 1, color: "#2ecc71" },
+                    { status: -1, color: "#e74c3c" },
+                ]
+                return <MultipleSwitch pattern={pattern} selected={selected} handleClick={handleSwitchStatus} />
             },
-          },
+        },
         {
             id: "status",
             label: "",
             minWidth: 20,
-            align: "right",
+            align: "left",
             component: (value: any) => {
                 let status = '';
                 let backgroundColor = '';
@@ -291,6 +331,166 @@ export default function PaymentsManagement() {
         }
     ];
 
+    const handleConditionSwitch = (row: any) => {
+        if (row.status == "0") return false;
+        if (row.status == "1") return true;
+        if (row.status == "-1") return false;
+    }
+
+
+    const handleSubRowSwitch = (row: any, subRow: any) => {
+        // const status = subRow.status === "1" ? 0 : 1;
+        const data = {
+            share: row.Login,
+            numFactura: subRow.fact_num,
+            idPago: row.idPago,
+            fechaPago: row.dFechaPago,
+        };
+        dispatch(setInvoicePayment(data));
+    };
+
+    const renderSubRows = (row: any, selected: any) => {
+        const invoicesByShareColumns: UnpaidInvoicesColumns[] = [
+            {
+                id: "status",
+                label: "",
+                minWidth: 30,
+                align: "left",
+                component: (value: any) => <span>&nbsp;</span>
+            },
+            {
+                id: "fec_emis",
+                label: "Emision",
+                minWidth: 10,
+                align: "left",
+                component: (value: any) => <span>{moment(value.value).format("DD-MM-YYYY")}</span>
+            },
+            {
+                id: "fec_venc",
+                label: "Vencimiento",
+                minWidth: 10,
+                align: "left",
+                component: (value: any) => <span>{moment(value.value).format("DD-MM-YYYY")}</span>
+            },
+            {
+                id: "fact_num",
+                label: "Nro",
+                minWidth: 10,
+                align: "left",
+                component: (value: any) => <span>{value.value}</span>
+            },
+            {
+                id: "descrip",
+                label: "Descripcion",
+                minWidth: 10,
+                align: "left",
+                component: (value: any) => <span>{value.value}</span>
+            },
+            {
+                id: "status",
+                label: "",
+                minWidth: 30,
+                align: "left",
+                component: (value: any) => <span>&nbsp;</span>
+            },
+            {
+                id: "status",
+                label: "",
+                minWidth: 30,
+                align: "left",
+                component: (value: any) => <span>&nbsp;</span>
+            },
+            {
+                id: "status",
+                label: "",
+                minWidth: 10,
+                align: "left",
+                component: (value: any) => <span>&nbsp;</span>
+            },
+            {
+                id: "saldo",
+                label: "Saldo",
+                minWidth: 10,
+                align: "left",
+                component: (value: any) => <span>{value.value}</span>
+            },
+            {
+                id: "status",
+                label: "",
+                minWidth: 30,
+                align: "left",
+                component: (value: any) => <span>&nbsp;</span>
+            },
+            {
+                id: "status",
+                label: "",
+                minWidth: 10,
+                align: "left",
+                component: (value: any) => <span>&nbsp;</span>
+            },
+            {
+                id: "portal_id",
+                label: "",
+                minWidth: 10,
+                align: "right",
+                component: (value: any) => {
+                    const selected = getSelectedRow(value.value);
+                    console.log('selected ', selected);
+                    let status = '';
+                    let backgroundColor = '';
+                    if (selected.status == "0") {
+                        status = "Pendiente";
+                        backgroundColor = '#e74c3c';
+                    }
+                    if (selected.status == "1") {
+                        status = "Pagado";
+                        backgroundColor = '#2ecc71';
+                    }
+                    return (
+                        <div>
+                            <Chip
+                                label={status}
+                                style={{
+                                    backgroundColor,
+                                    color: "white",
+                                    fontWeight: "bold",
+                                    fontSize: "10px"
+                                }}
+                                size="small"
+                            />
+                            <GreenSwitch
+                                checked={handleConditionSwitch(selected)}
+                                onChange={() => handleSubRowSwitch(row, selected)}
+                            />
+                        </div>
+                    )
+                }
+            }
+        ];
+        if (row.idPago == selected) {
+            return (
+                <TableRow>
+                    <TableCell colSpan={13}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={12} className={classes.subtitleRow}>
+                                <Chip label="Facturas" color="primary" />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <DataTable4
+                                    rows={unpaidInvoices.data}
+                                    columns={invoicesByShareColumns}
+                                    loading={setUnpaidInvoicestLoading}
+                                    fontSize="10px"
+                                    colorColumn='#3f51b5'
+                                />
+                            </Grid>
+                        </Grid>
+                    </TableCell>
+                </TableRow>
+            )
+        }
+    }
+
     useEffect(() => {
         async function fetchData() {
             const form = getValues();
@@ -320,6 +520,14 @@ export default function PaymentsManagement() {
     const handlePerPage = (page: number, perPage: number) => {
         const form = getValues();
         dispatch(filter(form, page, perPage))
+    }
+
+    const getSelectRow = (row: any) => {
+        if (row.status === 0) {
+            dispatch(getUnpaidInvoicesbyShare(row.Login));
+            return row.idPago;
+        }
+        return 0;
     }
 
     return (
@@ -420,6 +628,8 @@ export default function PaymentsManagement() {
                         loading={loading}
                         onChangePage={handleChangePage}
                         onChangePerPage={handlePerPage}
+                        getSelectRow={getSelectRow}
+                        renderSubRows={renderSubRows}
                     />
                 </Grid>
             </form>

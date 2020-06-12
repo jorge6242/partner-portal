@@ -14,6 +14,8 @@ import CustomSearch from '../../components/FormElements/CustomSearch';
 import moment from "moment";
 import Paypal from "../../components/Paypal";
 import Helper from '../../helpers/utilities';
+import logo from '../../styles/images/paypal-small-logo.jpeg';
+import mercantilLogo from '../../styles/images/mercantil-small-logo.jpeg';
 
 function formatNumber(num: any) {
   num = "" + Math.floor(num * 100.0 + 0.5) / 100.0;
@@ -31,40 +33,6 @@ function formatNumber(num: any) {
 
   return num;
 }
-
-const columns: UnpaidInvoicesColumns[] = [
-  {
-    id: "fact_num",
-    label: "Nro",
-    minWidth: 10,
-    component: (value: any) => <span>{value.value}</span>
-  },
-  {
-    id: "fec_emis",
-    label: "Emision",
-    minWidth: 10,
-    component: (value: any) => <span>{moment(value.value).format("DD-MM-YYYY")}</span>
-  },
-  {
-    id: "fec_venc",
-    label: "Vencimiento",
-    minWidth: 10,
-    component: (value: any) => <span>{moment(value.value).format("DD-MM-YYYY")}</span>
-  },
-  {
-    id: "descrip",
-    label: "Descripcion",
-    minWidth: 10,
-    component: (value: any) => <span>{value.value}</span>
-  },
-  {
-    id: "saldo",
-    label: "Saldo",
-    minWidth: 10,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>
-  },
-];
 
 const useStyles = makeStyles(() => ({
   headerContainer: {
@@ -89,14 +57,105 @@ export default function UnpaidInvoices() {
     unpaidInvoices, setUnpaidInvoicestLoading,
   } = useSelector((state: any) => state.webServiceReducer);
 
-  const { 
+  const {
     parameterReducer: { listData: parameterList },
     loginReducer: { user },
-   } = useSelector((state: any) => state);
+  } = useSelector((state: any) => state);
 
   const paypalParameter = Helper.getParameter(parameterList, 'PAYPAL_CLIENT_ID');
   const habilitarPagoParameter = Helper.getParameter(parameterList, 'HABILITAR_PAGO');
-  const paypalClientId =  !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) && paypalParameter.value !== '' ? paypalParameter.value : null;
+  const linkMercantil = Helper.getParameter(parameterList, 'LINK_PORTAL_MERCANTIL');
+  const paypalClientId = !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) && paypalParameter.value !== '' ? paypalParameter.value : null;
+  
+  const handlePayment = (row: any) => {
+    const monto = Number(row.saldo);
+    dispatch(
+      updateModal({
+        payload: {
+          status: true,
+          element: <Paypal
+            description={row.descrip}
+            invoiceId={row.fact_num}
+            customId={user.username}
+            amountDetail={monto.toFixed(2)}
+            amount={monto.toFixed(2)}
+            client={paypalClientId}
+          />,
+        }
+      })
+    );
+  }
+
+  const renderPaypalButton = (row: any) => {
+    const current = unpaidInvoices.data.find((e: any) => e.portal_id == row);
+    if (current && current.originalAmount !== "0") {
+      return (
+        <div onClick={() => handlePayment(current)}>
+          <img src={logo} alt="example image" style={{ cursor: 'pointer' }} />
+        </div>
+      )
+    }
+  }
+
+  const renderMercantilButton = () => {
+    if(!_.isEmpty(linkMercantil) && linkMercantil.value !== null ) {
+      return (
+        <div onClick={() => window.open(linkMercantil.value, '_blank')} style={{ marginLeft: 10 }}>
+          <img src={mercantilLogo} alt="mercantil image" style={{ cursor: 'pointer' }} />
+        </div>
+      )
+    }
+    return <div />
+  }
+
+  const columns: UnpaidInvoicesColumns[] = [
+    {
+      id: "fact_num",
+      label: "Nro",
+      minWidth: 10,
+      component: (value: any) => <span>{value.value}</span>
+    },
+    {
+      id: "fec_emis",
+      label: "Emision",
+      minWidth: 10,
+      component: (value: any) => <span>{moment(value.value).format("DD-MM-YYYY")}</span>
+    },
+    {
+      id: "fec_venc",
+      label: "Vencimiento",
+      minWidth: 10,
+      component: (value: any) => <span>{moment(value.value).format("DD-MM-YYYY")}</span>
+    },
+    {
+      id: "descrip",
+      label: "Descripcion",
+      minWidth: 10,
+      component: (value: any) => <span>{value.value}</span>
+    },
+    {
+      id: "saldo",
+      label: "Saldo",
+      minWidth: 10,
+      align: "right",
+      component: (value: any) => <span>{value.value}</span>
+    },
+    {
+      id: "portal_id",
+      label: "",
+      minWidth:10,
+      align: "right",
+      component: (value: any) => {
+        return (
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            {paypalClientId && renderPaypalButton(value.value)}
+            {renderMercantilButton()}
+          </div>
+        )
+        
+      }
+    },
+  ];
 
   useEffect(() => {
     async function fetchData() {
@@ -105,25 +164,6 @@ export default function UnpaidInvoices() {
     fetchData();
   }, [dispatch]);
 
-  const handlePayment = (row: any) => {
-    // console.log('row', row);
-    const monto = Number(row.saldo);
-    dispatch(
-        updateModal({
-            payload: {
-                status: true,
-                element: <Paypal 
-                    description={row.descrip} 
-                    invoiceId={row.fact_num} 
-                    customId={user.username} 
-                    amountDetail={monto.toFixed(2)}
-                    amount={monto.toFixed(2)}
-                    client={paypalClientId}
-                    />,
-            }
-        })
-    );
-}
   return (
     <div>
       <div className={classes.headerContainer}>
@@ -136,7 +176,6 @@ export default function UnpaidInvoices() {
           loading={setUnpaidInvoicestLoading}
           aditionalColumn={unpaidInvoices.total && unpaidInvoices.total > 0 ? formatNumber(unpaidInvoices.total) : null}
           aditionalColumnLabel={unpaidInvoices.total && unpaidInvoices.total > 0 ? "Total" : null}
-          handlePayment={ paypalClientId ? handlePayment : null}
         />
       </div>
     </div>

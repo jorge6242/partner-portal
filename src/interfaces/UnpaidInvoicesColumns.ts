@@ -1,5 +1,6 @@
 export default interface Columns {
     id:
+      | ""
       | "status"
       | "co_cli"
       | "fact_num"
@@ -13,6 +14,7 @@ export default interface Columns {
       | "idPago"
       | "acumulado"
       | "saldo"
+      | "portal_id"
       | "iStatusDisabled";
     label: string;
     minWidth?: number;

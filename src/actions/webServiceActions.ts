@@ -100,6 +100,53 @@ export const getUnpaidInvoices = (count: number = 0) => async (dispatch: Functio
   }
 };
 
+export const getUnpaidInvoicesbyShare = (share:string ,count: number = 0) => async (dispatch: Function) => {
+  dispatch({
+    type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
+    payload: true,
+  });
+  try {
+    const { data, status } = await API.getUnpaidInvoicesByShare(share);
+    let response = [];
+    if (status === 200) {
+      response = data;
+      if (data.data.length === 1) {
+        const value = data.data[0];
+        if (value && value.saldo && value.saldo === "0.00") {
+          response = [];
+        }
+      }
+      dispatch({
+        type: ACTIONS.GET_UNPAID_INVOICES,
+        payload: response,
+      });
+      dispatch({
+        type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
+        payload: false,
+      });
+    }
+    return response;
+  } catch (error) {
+    if(count <= attempts) {
+      let counter = count + 1;
+      dispatch(getUnpaidInvoicesbyShare(share ,counter));
+    } else {
+      snackBarUpdate({
+        payload: {
+          message: error.message,
+          status: true,
+          type: "error",
+        },
+      })(dispatch);
+    }
+    dispatch({
+      type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
+      payload: false,
+    });
+    return error;
+  }
+};
+
 export const getReportedPayments = (count: number = 0) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_REPORTED_PAYMENTS_LOADING,
@@ -219,6 +266,52 @@ export const setOrder = (order: object) => async (dispatch: Function) => {
             status: true
           }
         })(dispatch);
+      }
+    }
+    dispatch(
+      updateModal({
+        payload: {
+          isLoader: false,
+          status: false,
+          element: null,
+        },
+      })
+    );
+    return response;
+  } catch (error) {
+    dispatch(
+      updateModal({
+        payload: {
+          isLoader: false,
+        },
+      })
+    );
+    snackBarUpdate({
+      payload: {
+        message: error.message,
+        status: true,
+        type: "error",
+      },
+    })(dispatch);
+    return error;
+  }
+};
+
+export const setInvoicePayment = (body: any) => async (dispatch: Function) => {
+  try {
+    const { data, status } = await API.setInvoicePayment(body);
+    let response = [];
+    if (status === 200) {
+      if (data) {
+        response = data;
+        snackBarUpdate({
+          payload: {
+            message: "Su pago ha sido Procesado",
+            type: "success",
+            status: true
+          }
+        })(dispatch);
+        dispatch(getUnpaidInvoicesbyShare(body.share));
       }
     }
     dispatch(

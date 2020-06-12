@@ -1,5 +1,5 @@
 import React, { FunctionComponent, createElement, useState } from "react";
-import { makeStyles, withStyles,   Theme, createStyles } from "@material-ui/core/styles";
+import { makeStyles, withStyles, Theme, createStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -33,7 +33,7 @@ const GreenSwitch = withStyles({
   track: {}
 })(Switch);
 
-const useStyles = makeStyles( (theme: Theme) => createStyles(
+const useStyles = makeStyles((theme: Theme) => createStyles(
   {
     root: {
       overflowX: "auto",
@@ -42,7 +42,7 @@ const useStyles = makeStyles( (theme: Theme) => createStyles(
       },
       [theme.breakpoints.down('sm')]: {
         maxWidth: window.innerWidth - 20,
-        width: window.innerWidth  - 20,
+        width: window.innerWidth - 20,
       },
     },
     container: {
@@ -79,10 +79,12 @@ interface DataTableProps {
   onChangePerPage?: any;
   fontSize?: string;
   handleSubRowComponent?: Function;
-  renderSubRow?: any;
+  renderSubRows?: any;
   aditionalColumn?: string;
   aditionalColumnLabel?: any;
   handleSwitch?: Function;
+  getSelectRow?: any;
+  colorColumn?: string;
 }
 
 const DataTable4: FunctionComponent<DataTableProps> = ({
@@ -97,12 +99,14 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   onChangePage,
   onChangePerPage,
   handleSubRowComponent,
-  renderSubRow,
+  renderSubRows,
   fontSize = '12px',
   aditionalColumn,
   aditionalColumnLabel,
   handlePayment,
   handleSwitch,
+  getSelectRow,
+  colorColumn
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -118,7 +122,7 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   };
 
   const handleSelect = (id: number) => {
-    if (id === selectedRow) {
+    if (id == selectedRow) {
       setSelectedRow(0);
     } else {
       setSelectedRow(id);
@@ -126,9 +130,99 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   }
 
   const handleConditionSwitch = (row: any) => {
-    if(row.status == "0") return false;
-    if(row.status == "1") return true;
-    if(row.status == "-1") return false;
+    if (row.status == "0") return false;
+    if (row.status == "1") return true;
+    if (row.status == "-1") return false;
+  }
+
+  const renderBody = () => {
+    if (rows.length === 0) {
+      return (
+        <TableRow>
+          <TableCell colSpan={columns.length} style={{ fontWeight: 'bold', textAlign: 'center' }} >Sin datos</TableCell>
+        </TableRow>
+      )
+    }
+    return rows.map((row: any) => {
+      return (
+        <React.Fragment>
+          <TableRow
+            hover
+            role="checkbox"
+            tabIndex={-1} key={row.id}
+            style={{ cursor: getSelectRow ? 'pointer' : 'auto' }}
+            onClick={() => getSelectRow ? handleSelect(getSelectRow(row)) : {}}
+          >
+            {columns.map((column: any) => {
+              const value = row[column.id];
+              return (
+                <TableCell
+                  key={column.id}
+                  align={column.align}
+                  className={classes.tableCellHeader}
+                  style={{
+                    fontSize,
+                  }}
+                  onClick={() => handleSubRowComponent ? handleSubRowComponent() : {}}
+                >
+                  {column.format && typeof value === "number"
+                    ? column.format(value)
+                    : createElement(column.component, { value })}
+                </TableCell>
+              );
+            })}
+            {handlePayment && row.originalAmount !== "0" && (
+              <TableCell align="right" style={{ minWidth: 5 }}>
+                <div onClick={() => handlePayment(row)}>
+                  <img src={logo} alt="example image" style={{ cursor: 'pointer' }} width="35" height="25" />
+                </div>
+              </TableCell>
+            )}
+            {handleSwitch && (
+              <TableCell align="right" style={{ minWidth: 5, fontSize }}>
+                <GreenSwitch
+                  checked={handleConditionSwitch(row)}
+                  onChange={() => handleSwitch(row)}
+                />
+              </TableCell>
+            )}
+            <TableCell align="right" style={{ minWidth: 7, display: !handleView && !handleEdit && !handleDelete ? 'none' : 'table-cell' }}>
+              {handleView && (
+                <IconButton
+                  aria-label="delete"
+                  size="small"
+                  color="primary"
+                  onClick={() => handleView(row.id)}
+                >
+                  <VisibilityIcon fontSize="inherit" />
+                </IconButton>
+              )}
+              {handleEdit && (
+                <IconButton
+                  aria-label="delete"
+                  size="small"
+                  color="primary"
+                  onClick={() => handleEdit(row.id)}
+                >
+                  <EditIcon fontSize="inherit" />
+                </IconButton>
+              )}
+              {handleDelete && (
+                <IconButton
+                  aria-label="delete"
+                  size="small"
+                  color="secondary"
+                  onClick={() => handleDelete(row.id)}
+                >
+                  <DeleteIcon fontSize="inherit" />
+                </IconButton>
+              )}
+            </TableCell>
+          </TableRow>
+          {renderSubRows && renderSubRows(row, selectedRow)}
+        </React.Fragment>
+      );
+    })
   }
 
   return (
@@ -143,104 +237,34 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   align={column.align}
                   className={classes.tableCellHeader}
                   style={{
-                    minWidth: column.minWidth, 
+                    minWidth: column.minWidth,
                     fontSize,
                     fontWeight: 'bold',
+                    background: colorColumn && colorColumn,
+                    color: colorColumn ? 'white' : 'black',
                   }}
                 >
                   {column.label}
                 </TableCell>
               ))}
-            {handleSwitch && <TableCell style={{ minWidth: 5, }}></TableCell>}
-            <TableCell style={{ minWidth: 6, display: !handleView && !handleEdit && !handleDelete ? 'none' : 'table-cell' }}></TableCell>
+              {handleSwitch && <TableCell style={{
+                minWidth: 5,
+                background: colorColumn && colorColumn,
+                color: colorColumn ? 'white' : 'black',
+              }}></TableCell>}
+              <TableCell style={{
+                minWidth: 6,
+                background: colorColumn && colorColumn,
+                color: colorColumn ? 'white' : 'black', display: !handleView && !handleEdit && !handleDelete ? 'none' : 'table-cell'
+              }}></TableCell>
             </TableRow>
           </TableHead>
-          <TableBody style={{ overflow: 'hidden' }}>
+          <TableBody style={{ overflow: 'hidden', textAlign: 'center' }}>
             {loading ? (
               <TableRow className={classes.progress}>
                 <TableCell colSpan={columns.length}><CircularProgress color="primary" /></TableCell>
               </TableRow>
-            ) : (
-                rows.map((row: any) => {
-                  return (
-                    <React.Fragment>
-                      <TableRow
-                        hover
-                        role="checkbox"
-                        tabIndex={-1} key={row.id}
-                        onClick={() => handleSelect(row.share_movements && row.share_movements.length ? row.id : 0)}
-                      >
-                        {columns.map((column: any) => {
-                          const value = row[column.id];
-                          return (
-                            <TableCell
-                              key={column.id}
-                              align={column.align}
-                              className={classes.tableCellHeader}
-                              style={{ fontSize }}
-                              onClick={() => handleSubRowComponent ? handleSubRowComponent() : {}}
-                            >
-                              {column.format && typeof value === "number"
-                                ? column.format(value)
-                                : createElement(column.component, { value })}
-                            </TableCell>
-                          );
-                        })}
-                        {handlePayment && row.originalAmount !== "0" && (
-                          <TableCell align="right" style={{ minWidth: 5 }}>
-                              <div onClick={() => handlePayment(row)}>
-                                <img src={logo} alt="example image" style={{ cursor: 'pointer' }} width="35" height="25" />
-                              </div>
-                          </TableCell>
-                          )}
-                          {handleSwitch && (
-                          <TableCell style={{ minWidth: 5, fontSize }}>
-                            <GreenSwitch
-                              checked={handleConditionSwitch(row)}
-                              onChange={() => handleSwitch(row)}
-                            />
-                          </TableCell>
-                        )}
-                        <TableCell align="right" style={{ minWidth: 7, display: !handleView && !handleEdit && !handleDelete ? 'none' : 'table-cell' }}>
-                          {handleView && (
-                            <IconButton
-                              aria-label="delete"
-                              size="small"
-                              color="primary"
-                              onClick={() => handleView(row.id)}
-                            >
-                              <VisibilityIcon fontSize="inherit" />
-                            </IconButton>
-                          )}
-                          {handleEdit && (
-                            <IconButton
-                              aria-label="delete"
-                              size="small"
-                              color="primary"
-                              onClick={() => handleEdit(row.id)}
-                            >
-                              <EditIcon fontSize="inherit" />
-                            </IconButton>
-                          )}
-                          {handleDelete && (
-                            <IconButton
-                              aria-label="delete"
-                              size="small"
-                              color="secondary"
-                              onClick={() => handleDelete(row.id)}
-                            >
-                              <DeleteIcon fontSize="inherit" />
-                            </IconButton>
-                          )}
-                        </TableCell>
-                      </TableRow>
-                      {row.share_movements && row.share_movements.length > 0 && renderSubRow && selectedRow === row.id &&
-                        <TableRow><TableCell colSpan={10}>{renderSubRow(row.share_movements)}</TableCell></TableRow>
-                      }
-                    </React.Fragment>
-                  );
-                })
-              )}
+            ) : renderBody()}
             {aditionalColumn && (
               <TableRow>
                 <TableCell

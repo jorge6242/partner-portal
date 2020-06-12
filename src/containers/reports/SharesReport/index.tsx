@@ -462,7 +462,6 @@ export default function SharesReport() {
               loading={loading}
               onChangePage={handleChangePage}
               onChangePerPage={handlePerPage}
-              renderSubRow={renderShareMovements}
             />
           </Grid>
         </Grid>

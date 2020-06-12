@@ -13,6 +13,12 @@ const API = {
         headers: headers() 
     });
   },
+  getUnpaidInvoicesByShare(share: string) {
+    return AXIOS.get(`${Prefix.api}/get-unpaid-invoices-by-share`, { 
+        params: { share },
+        headers: headers() 
+    });
+  },
   getReportedPayments() {
     return AXIOS.get(`${Prefix.api}/get-reported-payments`, { 
         headers: headers() 
@@ -25,6 +31,14 @@ const API = {
   },
   setOrder(data: object) {
     return AXIOS.get(`${Prefix.api}/set-order`, {
+        params: {
+          ...data
+        },
+        headers: headers() 
+    });
+  },
+  setInvoicePayment(data: object) {
+    return AXIOS.get(`${Prefix.api}/set-invoice-payment`, {
         params: {
           ...data
         },
