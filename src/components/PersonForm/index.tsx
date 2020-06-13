@@ -469,6 +469,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 type FormData = {
   name: string;
   last_name: string;
+  name2: string;
+  last_name2: string;
   rif_ci: string;
   primary_email: string;
   secondary_email: string;
@@ -653,6 +655,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         const {
           name,
           last_name,
+          name2,
+          last_name2,
           rif_ci,
           primary_email,
           secondary_email,
@@ -696,6 +700,8 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         }
         setValue("name", name);
         setValue("last_name", last_name);
+        setValue("name2", name2);
+        setValue("last_name2", last_name2);
         setValue("rif_ci", rif_ci);
         setValue("primary_email", primary_email);
         setValue("secondary_email", secondary_email);
@@ -908,6 +914,25 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
           />
         </Grid>
         <Grid item xs={3}>
+          <CustomSelect
+            label="Estatus"
+            selectionMessage="Seleccione"
+            field="status_person_id"
+            register={register}
+            errorsMessageField={
+              errors.status_person_id && errors.status_person_id.message
+            }
+            disabled
+          >
+            {statusPersonList.map((item: any) => (
+              <option key={item.id} value={item.id}>
+                {item.description}
+              </option>
+            ))}
+          </CustomSelect>
+        </Grid>
+        <Grid item xs={3}></Grid>
+        <Grid item xs={3}>
           <CustomTextField
             placeholder="Nombre"
             field="name"
@@ -920,12 +945,32 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
         </Grid>
         <Grid item xs={3}>
           <CustomTextField
+            placeholder="Segundo Nombre"
+            field="name2"
+            register={register}
+            errorsField={errors.name2}
+            errorsMessageField={errors.name2 && errors.name2.message}
+            disable={disableField}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <CustomTextField
             placeholder="Apellido"
             field="last_name"
             required
             register={register}
             errorsField={errors.last_name}
             errorsMessageField={errors.last_name && errors.last_name.message}
+            disable={disableField}
+          />
+        </Grid>
+        <Grid item xs={3}>
+          <CustomTextField
+            placeholder="Segundo Apellido"
+            field="last_name2"
+            register={register}
+            errorsField={errors.last_name2}
+            errorsMessageField={errors.last_name2 && errors.last_name2.message}
             disable={disableField}
           />
         </Grid>
@@ -1029,27 +1074,6 @@ const PersonForm: FunctionComponent<PersonFormProps> = ({ id }) => {
             disable
           /> */}
         </Grid>
-
-        <Grid item xs={3}></Grid>
-        <Grid item xs={3}>
-          <CustomSelect
-            label="Estatus"
-            selectionMessage="Seleccione"
-            field="status_person_id"
-            register={register}
-            errorsMessageField={
-              errors.status_person_id && errors.status_person_id.message
-            }
-            disabled
-          >
-            {statusPersonList.map((item: any) => (
-              <option key={item.id} value={item.id}>
-                {item.description}
-              </option>
-            ))}
-          </CustomSelect>
-        </Grid>
-
       </Grid>
     );
   };
