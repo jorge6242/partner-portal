@@ -12,9 +12,9 @@ import Columns from '../../interfaces/widgetColumns';
 import CustomSearch from '../../components/FormElements/CustomSearch';
 
 const columns: Columns[] = [
-  { 
-    id: "id", 
-    label: "Id", 
+  {
+    id: "id",
+    label: "Id",
     minWidth: 10,
     component: (value: any) => <span>{value.value}</span>
   },
@@ -39,12 +39,24 @@ const columns: Columns[] = [
     align: "right",
     component: (value: any) => <span>{value.value}</span>
   },
-    {
+  {
     id: "order",
     label: "Orden",
     minWidth: 30,
     align: "right",
     component: (value: any) => <span>{value.value}</span>
+  },
+  {
+    id: "show_mobile",
+    label: "Mobile",
+    minWidth: 30,
+    align: "right",
+    component: (value: any) => {
+      let status = "";
+      if (value.value === "0") status = "NO";
+      if (value.value === "1") status = "SI";
+      return <span>{status}</span>;
+    }
   },
 ];
 

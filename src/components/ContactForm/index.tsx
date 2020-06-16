@@ -96,7 +96,7 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
     const currentDepartment: any = departments.find((e:any) => e.id == departamento);
     const sContenido = `Enviado por: ${user.name} <br> ${descripcion}`;
     const body = {
-      sFuente: 'partnerControl_contacto', 
+      sFuente: 'PARTNERPORTAL_CONTACTO', 
       sCorreo: currentDepartment.email, 
       sAsunto: asunto,
       sDestinatario: currentDepartment.description,
