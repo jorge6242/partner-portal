@@ -104,6 +104,8 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
       nStatus: 0,
       nTipo: 1,
       sContenido,
+      dFecha: null,
+      dFechaProgramada: null,
     }
     if(captcha) {
       await dispatch(create(body));

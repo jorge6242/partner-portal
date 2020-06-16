@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch, useSelector } from 'react-redux';
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { getAll, remove, search } from "../../actions/parameterActions";
 import { updateModal } from "../../actions/modalActions";
