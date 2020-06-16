@@ -186,7 +186,7 @@ export default function PaymentsManagement() {
             component: (value: any) => <span>{value.value}</span>,
         },
         {
-            id: "dFechaProceso",
+            id: "dFechaPago",
             label: "Fecha",
             minWidth: 10,
             align: "left",
@@ -288,9 +288,9 @@ export default function PaymentsManagement() {
             component: (value: any) => {
                 const selected = renderPaymentStatus(value.value);
                 const pattern = [
-                    { status: 0, color: "#2980b9" },
-                    { status: 1, color: "#2ecc71" },
-                    { status: -1, color: "#e74c3c" },
+                    { status: 0, color: "#2980b9", toolTip: 'En proceso' },
+                    { status: 1, color: "#2ecc71", toolTip: 'Procesado'},
+                    { status: -1, color: "#e74c3c", toolTip: 'Rechazado' },
                 ]
                 return <MultipleSwitch pattern={pattern} selected={selected} handleClick={handleSwitchStatus} />
             },
@@ -491,13 +491,13 @@ export default function PaymentsManagement() {
         }
     }
 
-    useEffect(() => {
-        async function fetchData() {
-            const form = getValues();
-            dispatch(filter(form));
-        }
-        fetchData();
-    }, [dispatch]);
+    // useEffect(() => {
+    //     async function fetchData() {
+    //         const form = getValues();
+    //         dispatch(filter(form));
+    //     }
+    //     fetchData();
+    // }, [dispatch]);
 
     const handleSearch = (event: any) => {
         if (event.value.trim() === "") {

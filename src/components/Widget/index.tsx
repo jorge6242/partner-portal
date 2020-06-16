@@ -58,7 +58,7 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
   if (type === 'Saldo' && amount <= 0) statusAmount = false;
 
   const renderTitle = () => {
-    if(title === "Golf" || title === "Tennis") {
+    if(title === "Golf" || title === "Tenis") {
       return !statusAmount ? true : false;
     }
     return true;

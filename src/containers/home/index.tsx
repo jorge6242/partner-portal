@@ -114,7 +114,7 @@ export default function Home() {
   let tennisLink = null;
   if (validateWidget('PARTNERPORTAL_tennis')) {
     const parameter = Helper.getParameter(parameterList, 'LINK_TENNIS');
-    tennisLink = parameter.value;
+    tennisLink = `${parameter.value}?doc_id=${user.doc_id}&token=${user.token}`
   }
 
   return (
@@ -215,7 +215,7 @@ export default function Home() {
                 <Paper>
                   <Widgtet
                     Icon={EventAvailableIcon}
-                    title="Tennis"
+                    title="Tenis"
                     type="Saldo"
                     amount={clientBalance.saldo}
                     link={tennisLink}
