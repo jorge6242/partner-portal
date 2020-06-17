@@ -332,8 +332,8 @@ export default function PaymentsManagement() {
     ];
 
     const handleConditionSwitch = (row: any) => {
-        if (row.status == "0") return false;
-        if (row.status == "1") return true;
+        if (row.status == "0") return true;
+        if (row.status == "1") return false;
         if (row.status == "-1") return false;
     }
 
@@ -435,14 +435,13 @@ export default function PaymentsManagement() {
                 align: "right",
                 component: (value: any) => {
                     const selected = getSelectedRow(value.value);
-                    console.log('selected ', selected);
                     let status = '';
                     let backgroundColor = '';
-                    if (selected.status == "0") {
+                    if (selected.status == "1") {
                         status = "Pendiente";
                         backgroundColor = '#e74c3c';
                     }
-                    if (selected.status == "1") {
+                    if (selected.status == "0") {
                         status = "Pagado";
                         backgroundColor = '#2ecc71';
                     }
