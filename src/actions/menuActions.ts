@@ -2,8 +2,6 @@ import API from "../api/Menu";
 import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from '../interfaces/actionTypes/menuTypes';
-import { mainStatusLoading } from '../actions/loadingMainActions';
-import SecureStorage from "../config/SecureStorage";
 
 const attempts = window.attempts;
 

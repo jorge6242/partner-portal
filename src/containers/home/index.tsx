@@ -117,9 +117,27 @@ export default function Home() {
     tennisLink = `${parameter.value}?doc_id=${user.doc_id}&token=${user.token}`
   }
 
+  let textInfo = null;
+  if (validateWidget('PARTNERPORTAL_info')) {
+    const parameter = Helper.getParameter(parameterList, 'INFO');
+    textInfo = parameter.value;
+  }
+
   return (
     <div className="home-container">
       <Grid container spacing={3} className={classes.widgetContainer}>
+
+      {validateWidget('PARTNERPORTAL_info') &&
+          <Grid item sm={12} xs={12} md={12}>
+            <Paper>
+              <Widgtet
+                title={textInfo}
+              />
+            </Paper>
+          </Grid>
+        }
+
+
         {validateWidget('PARTNERPORTAL_saldo') &&
           <Grid item sm={12} xs={12} md={3}>
             {setBalanceLoading ? (
@@ -201,6 +219,7 @@ export default function Home() {
                     type="Saldo"
                     amount={clientBalance.saldo}
                     link={reservacionesLink}
+                    paramText="SHOW_GOLF"
                   />
                 </Paper>
               )}
@@ -219,6 +238,7 @@ export default function Home() {
                     type="Saldo"
                     amount={clientBalance.saldo}
                     link={tennisLink}
+                    paramText="SHOW_TENIS"
                   />
                 </Paper>
               )}
@@ -232,6 +252,7 @@ export default function Home() {
                 Icon={ScheduleIcon}
                 title="Eventos"
                 link={torneosLink}
+                paramText="SHOW_TOURNAMENT"
               />
             </Paper>
           </Grid>
