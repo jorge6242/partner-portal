@@ -12,6 +12,7 @@ import TransferList from "../TransferList";
 import CustomTextField from "../FormElements/CustomTextField";
 import { update, create, get } from "../../actions/userActions";
 import { getAll as getAllRoles } from "../../actions/roleActions";
+import snackBarUpdate from "../../actions/snackBarActions";
 
 const useStyles = makeStyles(theme => ({
   rootUserForm: {
@@ -49,6 +50,7 @@ type FormData = {
   email: string;
   username: string;
   password: string;
+  password2: string;
   roles: string;
 };
 
@@ -59,6 +61,7 @@ type FormComponentProps = {
 const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
   const classes = useStyles();
   const [selectedData, setSelectedData] = useState<any>([]);
+  const [currentUsername, setCurrentUsername] = useState<boolean>(false);
   const { handleSubmit, register, errors, reset, setValue } = useForm<
     FormData
   >();
@@ -74,6 +77,11 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
         setValue("username", username);
         setValue("name", name);
         setValue("email", email);
+        if(username !== null || username !== '') {
+          setCurrentUsername(true);
+        } else {
+          setCurrentUsername(false);
+        }
         if (roles.length > 0) {
           const list = roles.map((element: any) => element.id);
           setValue("roles", JSON.stringify(list));
@@ -92,12 +100,29 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     };
   }, [reset]);
 
-  const handleForm = (form: object) => {
-    if (id) {
-      dispatch(update({ id, ...form }));
+  const handleForm = (form: FormData) => {
+
+    let data = {
+      ...form,
+    };
+
+    if (form.password2 !== '' && form.password !== form.password2) {
+      dispatch(snackBarUpdate({
+        payload: {
+          message: 'Las claves no coinciden',
+          type: "error",
+          status: true
+        }
+      }));
     } else {
-      dispatch(create({ ...form, password: '123456' }));
+      if (form.password2 === '') delete data.password;
+      if (id) {
+        dispatch(update({ id, ...data }));
+      } else {
+        dispatch(create({ ...data }));
+      }
     }
+
   };
 
   const onPermissionsChange = (event: any) => {
@@ -116,7 +141,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
           noValidate
         >
           <Grid container spacing={2}>
-          <Grid item xs={6}>
+            <Grid item xs={4}>
               <CustomTextField
                 placeholder="Usuario"
                 field="username"
@@ -124,9 +149,10 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 register={register}
                 errorsField={errors.username}
                 errorsMessageField={errors.username && errors.username.message}
+                disable={currentUsername}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <CustomTextField
                 placeholder="Nombre"
                 field="name"
@@ -136,7 +162,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 errorsMessageField={errors.name && errors.name.message}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <CustomTextField
                 placeholder="Correo"
                 field="email"
@@ -144,6 +170,30 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 register={register}
                 errorsField={errors.email}
                 errorsMessageField={errors.email && errors.email.message}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <CustomTextField
+                placeholder="Clave"
+                field="password"
+                register={register}
+                errorsField={errors.password}
+                errorsMessageField={
+                  errors.password && errors.password.message
+                }
+                type="password"
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <CustomTextField
+                placeholder="Confirmar Clave"
+                field="password2"
+                register={register}
+                errorsField={errors.password2}
+                errorsMessageField={
+                  errors.password2 && errors.password2.message
+                }
+                type="password"
               />
             </Grid>
             <Grid item xs={12}>
