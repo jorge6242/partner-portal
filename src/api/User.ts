@@ -33,6 +33,15 @@ const API = {
   search(term: string) {
     return AXIOS.get(`${Prefix.api}/user-search?term=${term}`, { headers: headers() });
   },
+  updatePassword(data: object) {
+    return AXIOS.post(
+      `${Prefix.api}/user-update-password`,
+      {
+        ...data
+      },
+      { headers: headers() }
+    );
+  },
 };
 
 export default API;

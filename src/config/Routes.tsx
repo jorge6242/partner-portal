@@ -33,6 +33,7 @@ import PaymentsManagement from "../containers/paymentsManagement";
 import UnpaidInvoices from "../containers/unpaidInvoices";
 import ReportedPayments from "../containers/reportedPayments";
 import Contact from "../containers/contact";
+import RegisterPassword from "../containers/registerPassword";
 
 export default function Routes() {
   const dispatch = useDispatch();
@@ -76,6 +77,7 @@ export default function Routes() {
                       <Route path="/dashboard/unpaid-invoices" exact component={UnpaidInvoices} />
                       <Route path="/dashboard/reported-payments" exact component={ReportedPayments} />
                       <Route path="/dashboard/contact" exact component={Contact} />
+                      <Route path="/dashboard/update-password" exact component={RegisterPassword} />
                     </Dashboard>
                   </Switch>
                 );

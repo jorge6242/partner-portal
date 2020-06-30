@@ -10,6 +10,7 @@ import Container from "@material-ui/core/Container";
 import { useForm } from "react-hook-form";
 
 import Logo from "../Logo";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -39,8 +40,7 @@ const useStyles = makeStyles(theme => ({
     marginLeft: -9
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
-    width: '50%',
+    margin: theme.spacing(1, 0, 2),
   },
 }));
 
@@ -56,6 +56,7 @@ type LoginFormProps = {
 
 const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) => {
   const classes = useStyles();
+  const history = useHistory();
   const { handleSubmit, register, errors } = useForm<FormData>();
 
   return (
@@ -118,6 +119,20 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
             className={classes.submit}
           >
             Iniciar Sesion
+          </Button>
+        {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+      </div>
+      <div className={classes.wrapper}>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            color="primary"
+            disabled={loading}
+            className={classes.submit}
+            onClick={() => history.push('/update-password')}
+          >
+          Cambio de Contraseña
           </Button>
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
       </div>

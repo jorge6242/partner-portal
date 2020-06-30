@@ -2,6 +2,7 @@ import API from "../api/User";
 import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from '../interfaces/actionTypes/userTypes';
+import Message from '../helpers/message';
 
 export const getAll = () => async (dispatch: Function) => {
   dispatch({
@@ -228,5 +229,40 @@ export const remove = (id: number) => async (dispatch: Function) => {
       }
     })(dispatch);
     return error;
+  }
+};
+
+export const updatePassword = (body: object) => async (dispatch: Function) => {
+  try {
+    const { data, status } = await API.updatePassword(body);
+    let response: any = [];
+    if (status === 200) {
+      response = {
+        data,
+        status
+      };
+      snackBarUpdate({
+        payload: {
+          message: "Contrasena actualizada exitosamente",
+          type: "success",
+          status: true
+        }
+      })(dispatch);
+    }
+    return response;
+  } catch (error) {
+    const message = Message.exception(error);
+    snackBarUpdate({
+      payload: {
+        message,
+        type: "error",
+        status: true
+      }
+    })(dispatch);
+    dispatch({
+      type: ACTIONS.SET_LOADING,
+      payload: false
+    });
+    throw error;
   }
 };
