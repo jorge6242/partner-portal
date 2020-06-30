@@ -99,7 +99,7 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
   }
 
   return (
-    <Card className="widget-container__card" onClick={() => handleLink()} style={{ cursor: link ? 'pointer' : '' }} >
+    <Card className="widget-container__card" onClick={() => link ? handleLink() : {}} style={{ cursor: link ? 'pointer' : '' }} >
       <div className={`widget-container__widget ${statusAmount ? 'widget-container__widget--red' : ''}`}>
         {
           Icon && (
