@@ -190,7 +190,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                                 }
                             />
                         </Grid>
-                        <Grid item sm={12} xs={12} md={12}>
+                        <Grid item sm={3} xs={3} md={3}>
                             <CustomTextField
                                 placeholder="Fecha"
                                 field="dFechaPago"

@@ -14,6 +14,7 @@ import { Grid } from "@material-ui/core";
 import CustomSelect from "../FormElements/CustomSelect";
 import ReCaptcha from "../common/ReCaptcha";
 import snackBarUpdate from "../../actions/snackBarActions";
+import Helper from '../../helpers/utilities';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -68,14 +69,15 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
   id
 }) => {
   const classes = useStyles();
-  const [ captcha, setCaptcha ] = useState<boolean>(false);
+  const [captcha, setCaptcha] = useState<boolean>(false);
   const { handleSubmit, register, errors, reset, setValue } = useForm<
     FormData
   >();
   const {
     notificacionReducer: { loading },
     departmentReducer: { listData: departments, loading: departmentsLoading },
-    loginReducer: { user }
+    loginReducer: { user },
+    parameterReducer: { listData: parameterList } ,
   } = useSelector((state: any) => state);
   const dispatch = useDispatch();
 
@@ -93,11 +95,11 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
 
   const handleForm = async (form: FormData) => {
     const { asunto, descripcion, departamento } = form;
-    const currentDepartment: any = departments.find((e:any) => e.id == departamento);
+    const currentDepartment: any = departments.find((e: any) => e.id == departamento);
     const sContenido = `Enviado por: ${user.name} <br> ${descripcion}`;
     const body = {
-      sFuente: 'PARTNERPORTAL_CONTACTO', 
-      sCorreo: currentDepartment.email, 
+      sFuente: 'PARTNERPORTAL_CONTACTO',
+      sCorreo: currentDepartment.email,
       sAsunto: asunto,
       sDestinatario: currentDepartment.description,
       sAccion: user.username,
@@ -107,7 +109,7 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
       dFecha: null,
       dFechaProgramada: null,
     }
-    if(captcha) {
+    if (captcha) {
       await dispatch(create(body));
       reset();
     } else {
@@ -119,8 +121,9 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
         }
       }))
     }
-    
+
   };
+
 
   return (
     <Container component="main">
@@ -175,9 +178,13 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
                 }
               />
             </Grid>
-            <Grid item xs={12}>
-              <ReCaptcha isValid={checkCaptcha} />
-            </Grid>
+            {
+              Helper.checkParameter(parameterList, "SHOW_CAPTCHA_CONTACT") && (
+                <Grid item xs={12}>
+                  <ReCaptcha isValid={checkCaptcha} />
+                </Grid>
+              )
+            }
             <Grid item xs={12}>
               <div className={classes.wrapper}>
                 <Button

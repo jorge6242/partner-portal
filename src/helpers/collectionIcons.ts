@@ -29,6 +29,13 @@ import ViewListIcon from "@material-ui/icons/ViewList";
 import CakeIcon from "@material-ui/icons/Cake";
 import CategoryIcon from "@material-ui/icons/Category";
 import DescriptionIcon from "@material-ui/icons/Description";
+import MailRoundedIcon from '@material-ui/icons/MailRounded'; 
+import InfoRoundedIcon from '@material-ui/icons/InfoRounded';
+import CreditCardRoundedIcon from '@material-ui/icons/CreditCardRounded';
+import PlaylistAddRoundedIcon from '@material-ui/icons/PlaylistAddRounded';
+import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
+import ReceiptIcon from '@material-ui/icons/Receipt';
+
 
 const icons = [
   {
@@ -216,6 +223,42 @@ const icons = [
     slug: "DescriptionIcon",
     description: "DescriptionIcon",
     import: "@material-ui/icons/Description",
+  },
+  {
+    name: MailRoundedIcon,
+    slug: "MailRoundedIcon",
+    description: "MailRoundedIcon",
+    import: "",
+  },
+  {
+    name: InfoRoundedIcon,
+    slug: "InfoRoundedIcon",
+    description: "InfoRoundedIcon",
+    import: "",
+  },
+  {
+    name: CreditCardRoundedIcon,
+    slug: "CreditCardRoundedIcon",
+    description: "CreditCardRoundedIcon",
+    import: "",
+  },
+  {
+    name: PlaylistAddRoundedIcon,
+    slug: "PlaylistAddRoundedIcon",
+    description: "PlaylistAddRoundedIcon",
+    import: "",
+  },
+  {
+    name: PlaylistAddCheckRoundedIcon,
+    slug: "PlaylistAddCheckRoundedIcon",
+    description: "PlaylistAddCheckRoundedIcon",
+    import: "",
+  },
+  {
+    name: ReceiptIcon,
+    slug: "ReceiptIcon",
+    description: "ReceiptIcon",
+    import: "",
   },
 ];
 

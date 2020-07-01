@@ -25,6 +25,9 @@ import { getReportedPayments, getUnpaidInvoices } from "../../actions/webService
 import { getClient } from "../../actions/personActions";
 import Paypal from "../../components/Paypal";
 import Helper from '../../helpers/utilities';
+import ContactForm from "../../components/ContactForm";
+import { updatePassword } from "../../actions/userActions";
+import RegisterPasswordForm from "../../components/RegisterPasswordForm";
 
 const ExpansionPanelSummary = withStyles({
     root: {
@@ -90,31 +93,31 @@ const columns: reportePagosColumns[] = [
         component: (value: any) => {
             let status = '';
             let backgroundColor = '';
-            if(value.value == "0") {
-              status = "En Proceso";
-              backgroundColor = '#2980b9';
+            if (value.value == "0") {
+                status = "En Proceso";
+                backgroundColor = '#2980b9';
             }
-            if(value.value == "1") {
-              status = "Procesado";
-              backgroundColor = '#2ecc71';
+            if (value.value == "1") {
+                status = "Procesado";
+                backgroundColor = '#2ecc71';
             }
-            if(value.value == "-1") {
-              status = "Rechazado";
-              backgroundColor = '#e74c3c';
+            if (value.value == "-1") {
+                status = "Rechazado";
+                backgroundColor = '#e74c3c';
             }
             return (
-              <Chip
-                label={status}
-                style={{
-                  backgroundColor,
-                  color: "white",
-                  fontWeight: "bold",
-                  fontSize: "10px"
-                }}
-                size="small"
-              />
+                <Chip
+                    label={status}
+                    style={{
+                        backgroundColor,
+                        color: "white",
+                        fontWeight: "bold",
+                        fontSize: "10px"
+                    }}
+                    size="small"
+                />
             )
-          }
+        }
     },
 ];
 
@@ -190,15 +193,15 @@ export default function ReportePagos() {
         setReportedPaymentsLoading
     } = useSelector((state: any) => state.webServiceReducer);
 
-    const { 
+    const {
         personReducer: { client },
         loginReducer: { user },
         parameterReducer: { listData: parameterList },
-     } = useSelector((state: any) => state); 
+    } = useSelector((state: any) => state);
 
     const paypalParameter = Helper.getParameter(parameterList, 'PAYPAL_CLIENT_ID');
     const habilitarPagoParameter = Helper.getParameter(parameterList, 'HABILITAR_PAGO');
-    const paypalClientId =  !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) && paypalParameter.value !== '' ? paypalParameter.value : null;
+    const paypalClientId = !_.isEmpty(paypalParameter) && habilitarPagoParameter.value == 1 && !_.isEmpty(paypalParameter) && paypalParameter.value !== '' ? paypalParameter.value : null;
 
     useEffect(() => {
         // dispatch(getUnpaidInvoices());
@@ -220,14 +223,14 @@ export default function ReportePagos() {
             updateModal({
                 payload: {
                     status: true,
-                    element: <Paypal 
-                        description={row.descrip} 
-                        invoiceId={row.fact_num} 
-                        customId={user.username} 
+                    element: <Paypal
+                        description={row.descrip}
+                        invoiceId={row.fact_num}
+                        customId={user.username}
                         amountDetail={monto.toFixed(2)}
                         amount={monto.toFixed(2)}
                         client={paypalClientId}
-                        />,
+                    />,
                 }
             })
         );
@@ -296,7 +299,8 @@ export default function ReportePagos() {
                 </ExpansionPanel>
             </Grid> */}
             <Grid item xs={12} sm={12} md={12}>
-            <ExpansionPanel
+
+                <ExpansionPanel
                     expanded={expanded === "panel-reportar-pago"}
                     onChange={handleExpandedPanel("panel-reportar-pago")}
                 >
@@ -310,14 +314,60 @@ export default function ReportePagos() {
                             </Typography>
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
-                    <Grid container>
-                        <Grid item sm={12} xs={12} md={6}>
-                            <ReportePagosForm />
+                        <Grid container>
+                            <Grid item sm={12} xs={12} md={6}>
+                                <ReportePagosForm />
+                            </Grid>
                         </Grid>
-                    </Grid>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>
-                
+
+            </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+                <ExpansionPanel
+                    expanded={expanded === "panel-change-password"}
+                    onChange={handleExpandedPanel("panel-change-password")}
+                >
+                    <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel-change-password-content"
+                        id="panel-change-password-header"
+                    >
+                        <Typography className={classes.heading}>
+                            Cambio de clave
+                            </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <Grid container>
+                            <Grid item sm={12} xs={12} md={6}>
+                                <RegisterPasswordForm />
+                            </Grid>
+                        </Grid>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
+            </Grid>
+            <Grid item xs={12} sm={12} md={12}>
+                <ExpansionPanel
+                    expanded={expanded === "panel-contacto"}
+                    onChange={handleExpandedPanel("panel-contacto")}
+                >
+                    <ExpansionPanelSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls="panel-contacto-content"
+                        id="panel-contacto-header"
+                    >
+                        <Typography className={classes.heading}>
+                            Contacto
+                            </Typography>
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                        <Grid container>
+                            <Grid item sm={12} xs={12} md={6}>
+                                <ContactForm />
+                            </Grid>
+                        </Grid>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>
             </Grid>
         </Grid>
     );

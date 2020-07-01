@@ -6,6 +6,9 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import ScheduleIcon from '@material-ui/icons/Schedule';
+import CreditCardRoundedIcon from '@material-ui/icons/CreditCardRounded';
+import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import { useDispatch, useSelector } from "react-redux";
 import _ from 'lodash';
 
@@ -172,8 +175,8 @@ export default function Home() {
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
               <Widgtet
-                Icon={AccountBoxIcon}
-                title="Facturas"
+                Icon={CreditCardRoundedIcon}
+                title="Paga tu Factura"
                 link="/dashboard/unpaid-invoices"
                 internal
               />
@@ -185,8 +188,8 @@ export default function Home() {
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
               <Widgtet
-                Icon={PaymentIcon}
-                title="Reporte de Pagos"
+                Icon={PlaylistAddCheckRoundedIcon}
+                title="Pagos Reportados"
                 link={reportePagosLink}
                 internal
               />
@@ -275,8 +278,8 @@ export default function Home() {
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
               <Widgtet
-                Icon={AccountBoxIcon}
-                title="Mi Acceso"
+                Icon={AccessTimeIcon}
+                title="Mi QR"
                 link={miAccesoLink}
                 internal
               />

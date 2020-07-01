@@ -122,7 +122,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
           </Button>
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
       </div>
-      <div className={classes.wrapper}>
+      {/* <div className={classes.wrapper}>
           <Button
             type="button"
             fullWidth
@@ -135,7 +135,7 @@ const LoginForm: FunctionComponent<LoginFormProps> = ({ handleForm, loading }) =
           Cambio de Contraseña
           </Button>
         {loading && <CircularProgress size={24} className={classes.buttonProgress} />}
-      </div>
+      </div> */}
         </form>
       </div>
     </Container>

@@ -4,19 +4,25 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import _ from 'lodash';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import ListItem from "@material-ui/core/ListItem";
+import FormControl from '@material-ui/core/FormControl';
 
 import CustomTextField from "../FormElements/CustomTextField";
 import { update, create, get, getList } from "../../actions/menuItemActions";
-import { Grid } from "@material-ui/core";
+import { Grid, FormHelperText, ListItemIcon, ListItemText, Input } from "@material-ui/core";
 
 import CustomSelect from "../FormElements/CustomSelect";
 import { getAll as getAllRoles } from "../../actions/roleActions";
 import { getMenuList } from "../../actions/menuActions";
 import TransferList from "../TransferList";
 import { getList as getIconList } from "../../actions/menuItemIconActions";
+import icons from "../../helpers/collectionIcons";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -76,8 +82,9 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
     id
 }) => {
     const [selectedData, setSelectedData] = useState<any>([]);
+    const [selectedMenuItemIcon, setSelectedMenuItemIcon] = useState<string>("");
     const classes = useStyles();
-    const { handleSubmit, register, errors, reset, setValue } = useForm<
+    const { handleSubmit, register, errors, reset, setValue, getValues, control } = useForm<
         FormData
     >();
     const {
@@ -93,6 +100,10 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
     const dispatch = useDispatch();
 
     useEffect(() => {
+        register({ name: 'menu_item_icon_id' }, { required: true });
+    }, [register])
+
+    useEffect(() => {
         dispatch(getList());
         const selected = selectedRoles;
         selected.itemsToAdd.length = 0;
@@ -104,7 +115,7 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
         async function fetch() {
             if (id) {
                 const response: any = await dispatch(get(id));
-                const { name, slug, description, route, menu_id, parent , menu_item_icon_id, roles, order, show_mobile } = response;
+                const { name, slug, description, route, menu_id, parent, menu_item_icon_id, roles, order, show_mobile } = response;
                 setValue("name", name);
                 setValue("slug", slug);
                 setValue("description", description);
@@ -114,6 +125,11 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
                 setValue("order", order);
                 setValue("menu_item_icon_id", menu_item_icon_id);
                 setValue("show_mobile", show_mobile);
+                if (menu_item_icon_id) {
+                    setSelectedMenuItemIcon(menu_item_icon_id);
+                } else {
+                    setSelectedMenuItemIcon("");
+                }
                 if (roles && roles.length > 0) {
                     setSelectedData(roles);
                     roles.forEach((element: any) => {
@@ -178,7 +194,7 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
 
         setSelectedRoles(roleList);
     };
-    console.log('menuList ', menuList);
+
     return (
         <Container component="main">
             <div className={classes.paper}>
@@ -193,22 +209,22 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
 
                     <Grid container spacing={3}>
                         <Grid item xs={6}>
-                                <CustomSelect
-                                    label="Menu"
-                                    selectionMessage="Seleccione"
-                                    field="menu_id"
-                                    register={register}
-                                    errorsMessageField={
-                                        errors.menu_id && errors.menu_id.message
-                                    }
-                                >
-                                    {menuList.length > 0 && menuList.map((item: any) => (
-                                        <option key={item.id} value={item.id}>
-                                            {item.description}
-                                        </option>
-                                    ))}
-                                </CustomSelect>
-                            </Grid>
+                            <CustomSelect
+                                label="Menu"
+                                selectionMessage="Seleccione"
+                                field="menu_id"
+                                register={register}
+                                errorsMessageField={
+                                    errors.menu_id && errors.menu_id.message
+                                }
+                            >
+                                {menuList.length > 0 && menuList.map((item: any) => (
+                                    <option key={item.id} value={item.id}>
+                                        {item.description}
+                                    </option>
+                                ))}
+                            </CustomSelect>
+                        </Grid>
                         <Grid item xs={6}>
                             <CustomSelect
                                 label="Menu Padre"
@@ -280,28 +296,41 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
                             />
                         </Grid>
                         <Grid item xs={6}>
-                            <CustomSelect
-                                label="Icono"
-                                selectionMessage="Seleccione"
-                                field="menu_item_icon_id"
-                                register={register}
-                                errorsMessageField={
-                                    errors.menu_item_icon_id && errors.menu_item_icon_id.message
+
+                            <Controller
+                                defaultValue={selectedMenuItemIcon}
+                                as={
+                                    <Select
+                                        label="Icono"
+                                        labelId="menu_item_icon_id"
+                                        name="menu_item_icon_id"
+                                        id="menu_item_icon_id"
+                                        style={{ width: '100%' }}
+                                        onChange={(e: any) => setValue('menu_item_icon_id', e.target.value)}
+                                        
+                                    >
+                                        {iconList.length > 0 && iconList.map((item: any) => {
+                                            let Icon = DashboardIcon;
+                                            const current = icons.find((e: any) => e.slug === item.slug);
+                                            if (current) {
+                                                Icon = current.name;
+                                            }
+                                            return (
+                                                <MenuItem key={item.id} value={item.id} >
+                                                    <ListItem>
+                                                        <ListItemIcon>
+                                                            <Icon />
+                                                        </ListItemIcon>
+                                                        <ListItemText primary={item.description} />
+                                                    </ListItem>
+                                                </MenuItem>
+                                            )
+                                        })}
+                                    </Select>
                                 }
-                            >
-                                {iconList.length > 0 && iconList.map((item: any) => {
-                                    // let Icon = SettingsIcon;
-                                    // const current = icons.find((e: any) => e.slug === item.slug);
-                                    // if(current) {
-                                    //     Icon = current.name;
-                                    // }
-                                    return (
-                                        <option key={item.id} value={item.id}>
-                                            {item.description}
-                                        </option>
-                                    )
-                                })}
-                            </CustomSelect>
+                                name="menu_item_icon_id"
+                                control={control}
+                            />
                         </Grid>
                         <Grid item xs={6}>
                             <CustomSelect
@@ -319,15 +348,15 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
                             </CustomSelect>
                         </Grid>
                         <Grid item xs={12}>
-                                {list.length > 0 && (
-                                    <TransferList
-                                        data={list}
-                                        selectedData={selectedData}
-                                        leftTitle="Roles"
-                                        onSelectedList={onRolesChange}
-                                    />
-                                )}
-                            </Grid>
+                            {list.length > 0 && (
+                                <TransferList
+                                    data={list}
+                                    selectedData={selectedData}
+                                    leftTitle="Roles"
+                                    onSelectedList={onRolesChange}
+                                />
+                            )}
+                        </Grid>
                     </Grid>
 
                     <div className={classes.wrapper}>

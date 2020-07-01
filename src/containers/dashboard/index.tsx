@@ -28,6 +28,10 @@ import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import IconExpandLess from '@material-ui/icons/ExpandLess'
 import IconExpandMore from '@material-ui/icons/ExpandMore'
+import LockIcon from "@material-ui/icons/Lock";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import _ from 'lodash';
 
 import queryString from "query-string";
@@ -511,6 +515,7 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
     )
   };
   // const nameRole: any = !_.isEmpty(user) ? user.role.name : '';
+  const currentRole = userRoles.find((e: any) => e.slug === 'socio');
   const parameter = Helper.getParameter(parameterList, 'CLIENT_NAME')
   return (
     <div className={classes.root}>
@@ -556,9 +561,15 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      <MenuItem>Usuario: {!loading && user.name}</MenuItem>
-                      <MenuItem>Role: {userRoles.length > 0 && userRoles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
-                      <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+                      <MenuItem><AccountCircleIcon /> Usuario: {!loading && user.name}</MenuItem>
+                      {
+                        !currentRole && (
+                          <MenuItem><AssignmentIndIcon />Rol: {userRoles.length > 0 && userRoles.map((element: any) => (<Chip label={element.name} color="primary" size="small" />))}</MenuItem>
+                        )
+                      }
+                      <MenuItem onClick={() => history.push('/dashboard/update-password')} ><LockIcon /> Cambio de Clave</MenuItem>
+                      <MenuItem onClick={() => history.push('/dashboard/my-access')}><AccessTimeIcon /> Mi QR</MenuItem>
+                      <MenuItem onClick={() => handleLogout()}><ExitToAppIcon /> Logout</MenuItem>
                     </Menu>
                   </div>
                 </Typography>
