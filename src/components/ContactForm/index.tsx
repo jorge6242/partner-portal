@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
-    width: '30%',
+    width: '40%',
   },
   select: {
     padding: "10px 0px 10px 0px",

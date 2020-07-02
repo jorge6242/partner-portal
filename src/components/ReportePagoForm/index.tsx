@@ -59,7 +59,7 @@ const useStyles = makeStyles(theme => ({
     },
     submit: {
         margin: theme.spacing(3, 0, 2),
-        width: '30%',
+        width: '40%',
     },
     select: {
         padding: '10px 0px 10px 0px',
@@ -190,7 +190,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                                 }
                             />
                         </Grid>
-                        <Grid item sm={3} xs={3} md={3}>
+                        <Grid item sm={6} xs={6} md={3}>
                             <CustomTextField
                                 placeholder="Fecha"
                                 field="dFechaPago"

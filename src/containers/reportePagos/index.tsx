@@ -299,7 +299,6 @@ export default function ReportePagos() {
                 </ExpansionPanel>
             </Grid> */}
             <Grid item xs={12} sm={12} md={12}>
-
                 <ExpansionPanel
                     expanded={expanded === "panel-reportar-pago"}
                     onChange={handleExpandedPanel("panel-reportar-pago")}
@@ -317,53 +316,6 @@ export default function ReportePagos() {
                         <Grid container>
                             <Grid item sm={12} xs={12} md={6}>
                                 <ReportePagosForm />
-                            </Grid>
-                        </Grid>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-                <ExpansionPanel
-                    expanded={expanded === "panel-change-password"}
-                    onChange={handleExpandedPanel("panel-change-password")}
-                >
-                    <ExpansionPanelSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel-change-password-content"
-                        id="panel-change-password-header"
-                    >
-                        <Typography className={classes.heading}>
-                            Cambio de clave
-                            </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <Grid container>
-                            <Grid item sm={12} xs={12} md={6}>
-                                <RegisterPasswordForm />
-                            </Grid>
-                        </Grid>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12}>
-                <ExpansionPanel
-                    expanded={expanded === "panel-contacto"}
-                    onChange={handleExpandedPanel("panel-contacto")}
-                >
-                    <ExpansionPanelSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel-contacto-content"
-                        id="panel-contacto-header"
-                    >
-                        <Typography className={classes.heading}>
-                            Contacto
-                            </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <Grid container>
-                            <Grid item sm={12} xs={12} md={6}>
-                                <ContactForm />
                             </Grid>
                         </Grid>
                     </ExpansionPanelDetails>
