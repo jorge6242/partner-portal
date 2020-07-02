@@ -189,7 +189,7 @@ export default function Home() {
             <Paper>
               <Widgtet
                 Icon={PlaylistAddCheckRoundedIcon}
-                title="Pagos Reportados"
+                title="Notifica tu Pago"
                 link={reportePagosLink}
                 internal
               />
