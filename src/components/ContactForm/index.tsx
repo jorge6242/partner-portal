@@ -77,7 +77,7 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
     notificacionReducer: { loading },
     departmentReducer: { listData: departments, loading: departmentsLoading },
     loginReducer: { user },
-    parameterReducer: { listData: parameterList } ,
+    parameterReducer: { listData: parameterList },
   } = useSelector((state: any) => state);
   const dispatch = useDispatch();
 
@@ -97,6 +97,7 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
     const { asunto, descripcion, departamento } = form;
     const currentDepartment: any = departments.find((e: any) => e.id == departamento);
     const sContenido = `Enviado por: ${user.name} <br> ${descripcion}`;
+    const activeCaptcha = Helper.checkParameter(parameterList, "SHOW_CAPTCHA_CONTACT");
     const body = {
       sFuente: 'PARTNERPORTAL_CONTACTO',
       sCorreo: currentDepartment.email,
@@ -109,19 +110,23 @@ const ContactForm: FunctionComponent<ContactFormProps> = ({
       dFecha: null,
       dFechaProgramada: null,
     }
-    if (captcha) {
-      await dispatch(create(body));
-      reset();
-    } else {
-      dispatch(snackBarUpdate({
-        payload: {
-          message: 'Error en el captcha',
-          type: "error",
-          status: true
-        }
-      }))
-    }
 
+    if (activeCaptcha) {
+      if (captcha) {
+        await dispatch(create(body));
+        reset();
+      } else {
+        dispatch(snackBarUpdate({
+          payload: {
+            message: 'Error en el captcha',
+            type: "error",
+            status: true
+          }
+        }))
+      }
+    } else {
+      await dispatch(create(body));
+    }
   };
 
 
