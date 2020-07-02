@@ -7,7 +7,7 @@ import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import CreditCardRoundedIcon from '@material-ui/icons/CreditCardRounded';
-import PlaylistAddCheckRoundedIcon from '@material-ui/icons/PlaylistAddCheckRounded';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import { useDispatch, useSelector } from "react-redux";
 import _ from 'lodash';
@@ -188,7 +188,7 @@ export default function Home() {
           <Grid item sm={12} xs={12} md={3}>
             <Paper>
               <Widgtet
-                Icon={PlaylistAddCheckRoundedIcon}
+                Icon={PlaylistAddIcon}
                 title="Notifica tu Pago"
                 link={reportePagosLink}
                 internal
