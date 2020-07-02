@@ -40,6 +40,7 @@ type FormComponentProps = {
   title?: any;
   subTitle?: string;
   amount?: any;
+  statusSaldo?: any;
   Icon?: any;
   type?: string;
   link?: any;
@@ -55,7 +56,8 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
   type = "",
   link,
   internal,
-  paramText
+  paramText,
+  statusSaldo
 }) => {
   const classes = useStyles();
   const history = useHistory();
@@ -65,8 +67,8 @@ const Widgtet: FunctionComponent<FormComponentProps> = ({
   } = useSelector((state: any) => state);
 
   let statusAmount = false;
-  if (type === 'Saldo' && amount > 0) statusAmount = true;
-  if (type === 'Saldo' && amount <= 0) statusAmount = false;
+  if (type === 'Saldo' && statusSaldo === "1") statusAmount = true;
+  if (type === 'Saldo' && statusSaldo === "0") statusAmount = false;
 
   const renderTitle = () => {
     if (title === "Golf" || title === "Tenis") {

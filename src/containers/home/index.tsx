@@ -125,7 +125,7 @@ export default function Home() {
     const parameter = Helper.getParameter(parameterList, 'INFO');
     textInfo = parameter.value;
   }
-
+  console.log('saldo ', clientBalance.saldo);
   return (
     <div className="home-container">
       <Grid container spacing={3} className={classes.widgetContainer}>
@@ -149,8 +149,9 @@ export default function Home() {
                 <Paper>
                   <Widgtet
                     Icon={AccountBalanceIcon}
-                    title={clientBalance.saldo > 0 ? 'Saldo Deudor' : 'Saldo a Favor'}
+                    title={clientBalance.status === "1" ? 'Saldo Deudor' : 'Saldo a Favor'}
                     amount={clientBalance.saldo}
+                    statusSaldo={clientBalance.status}
                     type="Saldo"
                   />
                 </Paper>
@@ -221,6 +222,7 @@ export default function Home() {
                     title="Golf"
                     type="Saldo"
                     amount={clientBalance.saldo}
+                    statusSaldo={clientBalance.status}
                     link={reservacionesLink}
                     paramText="SHOW_GOLF"
                   />
@@ -240,6 +242,7 @@ export default function Home() {
                     title="Tenis"
                     type="Saldo"
                     amount={clientBalance.saldo}
+                    statusSaldo={clientBalance.status}
                     link={tennisLink}
                     paramText="SHOW_TENIS"
                   />
