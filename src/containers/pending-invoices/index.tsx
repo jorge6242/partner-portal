@@ -236,8 +236,8 @@ export default function PendingInvoices() {
                                     errors.status && errors.status.message
                                 }
                             >
-                                <option value={0}> Inactivo </option>
-                                <option value={1}> Activo </option>
+                                <option value={0}> Pendiente </option>
+                                <option value={1}> Aprobado </option>
                             </CustomSelect>
                         </Grid>
                         <Grid item xs={2}>
