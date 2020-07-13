@@ -115,11 +115,11 @@ const columns: Columns[] = [
         component: (value: any) => {
             let status = '';
             let backgroundColor = '';
-            if (value.value == "1") {
+            if (value.value == "0") {
                 status = "Aprobado";
                 backgroundColor = '#2ecc71';
             }
-            if (value.value == "0") {
+            if (value.value == "1") {
                 status = "Pendiente";
                 backgroundColor = '#e74c3c';
             }
@@ -236,8 +236,8 @@ export default function PendingInvoices() {
                                     errors.status && errors.status.message
                                 }
                             >
-                                <option value={0}> Pendiente </option>
-                                <option value={1}> Aprobado </option>
+                                <option value={1}> Pendiente </option>
+                                <option value={0}> Aprobado </option>
                             </CustomSelect>
                         </Grid>
                         <Grid item xs={2}>
