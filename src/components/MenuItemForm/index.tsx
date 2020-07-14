@@ -153,6 +153,7 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
             ...form,
             name: form.description,
             roles: selectedRoles,
+            slug: form.slug.toLowerCase(),
         }
         if (id) {
             dispatch(update({ id, ...body }));

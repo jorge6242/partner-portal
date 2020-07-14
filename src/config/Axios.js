@@ -21,7 +21,7 @@ const AXIOS = axios.create({
     'Content-Type': 'application/json',
     'Partners-Application': 'portal'
   },
-  timeout: 100000,
+  timeout: 500000,
 });
 
 export default AXIOS;

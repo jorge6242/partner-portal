@@ -35,6 +35,7 @@ import ReportedPayments from "../containers/reportedPayments";
 import Contact from "../containers/contact";
 import RegisterPassword from "../containers/registerPassword";
 import PendingInvoices from "../containers/pending-invoices";
+import SinglePaymentsManagement from "../containers/singlePaymentsManagement";
 
 export default function Routes() {
   const dispatch = useDispatch();
@@ -75,6 +76,7 @@ export default function Routes() {
                       <Route path="/dashboard/help" exact component={Help} />
                       <Route path="/dashboard/my-access" exact component={MyAccess} />
                       <Route path="/dashboard/payments-management" exact component={PaymentsManagement} />
+                      <Route path="/dashboard/single-payments-management" exact component={SinglePaymentsManagement} />
                       <Route path="/dashboard/unpaid-invoices" exact component={UnpaidInvoices} />
                       <Route path="/dashboard/reported-payments" exact component={ReportedPayments} />
                       <Route path="/dashboard/contact" exact component={Contact} />

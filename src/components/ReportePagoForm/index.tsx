@@ -132,7 +132,7 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
 
     const handleForm = async (form: any) => {
         const { NroReferencia } = getValues();
-        const monto = form.nMonto.replace(',', '');
+        const monto = form.nMonto.replace(/[,]/g, '');
         const body = {
             ...form,
             dFechaProceso: null,
@@ -171,8 +171,8 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                                     errors.codBancoOrigen.message
                                 }
                             >
-                                {bancoEmisorList.map((item: any) => (
-                                    <option key={item.cCodBanco} value={item.cCodBanco}>
+                                {bancoEmisorList.map((item: any, i: number) => (
+                                    <option key={i} value={item.cCodBanco}>
                                         {item.cNombreBanco}
                                     </option>
                                 ))}

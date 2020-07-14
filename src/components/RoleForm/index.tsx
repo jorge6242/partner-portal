@@ -91,11 +91,16 @@ const RoleForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     };
   }, [reset]);
 
-  const handleForm = (form: object) => {
+  const handleForm = (form: FormData) => {
+    const body = {
+      ...form,
+      slug: form.slug.toLowerCase(),
+    };
+    
     if (id) {
-    dispatch(update({ id, ...form }));
+    dispatch(update({ id, ...body }));
     } else {
-    dispatch(create(form));
+    dispatch(create(body));
     }
   };
 
