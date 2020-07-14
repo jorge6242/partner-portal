@@ -62,6 +62,7 @@ type FormData = {
     menu_id: string;
     menu_item_icon_id: string;
     show_mobile: string;
+    show_desk: string;
 };
 
 type ComponentProps = {
@@ -115,7 +116,7 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
         async function fetch() {
             if (id) {
                 const response: any = await dispatch(get(id));
-                const { name, slug, description, route, menu_id, parent, menu_item_icon_id, roles, order, show_mobile } = response;
+                const { name, slug, description, route, menu_id, parent, menu_item_icon_id, roles, order, show_mobile, show_desk } = response;
                 setValue("name", name);
                 setValue("slug", slug);
                 setValue("description", description);
@@ -125,6 +126,7 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
                 setValue("order", order);
                 setValue("menu_item_icon_id", menu_item_icon_id);
                 setValue("show_mobile", show_mobile);
+                setValue("show_desk", show_desk);
                 if (menu_item_icon_id) {
                     setSelectedMenuItemIcon(menu_item_icon_id);
                 } else {
@@ -335,11 +337,24 @@ const MenuItemForm: FunctionComponent<ComponentProps> = ({
                         </Grid>
                         <Grid item xs={6}>
                             <CustomSelect
+                                label="Mostrar en Escritorio"
+                                selectionMessage="Seleccione"
+                                field="show_desk"
+                                register={register}
+                                errorsMessageField={
+                                    errors.show_desk && errors.show_desk.message
+                                }
+                            >
+                                <option value={1}> SI </option>
+                                <option value={0}> NO </option>
+                            </CustomSelect>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <CustomSelect
                                 label="Mostrar Mobile"
                                 selectionMessage="Seleccione"
                                 field="show_mobile"
                                 register={register}
-                                required
                                 errorsMessageField={
                                     errors.show_mobile && errors.show_mobile.message
                                 }

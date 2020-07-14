@@ -101,8 +101,13 @@ const useStyles = makeStyles((theme: Theme) =>
     profileButton: {
       background: 'white'
     },
-    hideMenu: {
-      [theme.breakpoints.down('xs')]: {
+    hideMobileMenu: {
+      [theme.breakpoints.down('sm')]: {
+        display: 'none'
+      },
+    },
+    hideDeskMenu: {
+      [theme.breakpoints.up('sm')]: {
         display: 'none'
       },
     }
@@ -144,10 +149,11 @@ const SubMenu: FunctionComponent<SubMenuProps> = ({ menu, item }) => {
   },
     [item, findChildrens],
   );
-
+  const mobile = item.show_mobile !== null && item.show_mobile === "0" ? classes.hideMobileMenu : '';
+  const desk = item.show_desk !== null && item.show_desk === "0" ? classes.hideDeskMenu : '';
   return (
     <React.Fragment key={item.id}>
-      <ListItem button onClick={handleSubMenuOrRoute} className={`${item.show_mobile !== null && item.show_mobile == 0 ? classes.hideMenu : ''}`}>
+      <ListItem button onClick={handleSubMenuOrRoute} className={`${mobile} ${desk}`}>
         <ListItemIcon >
           <Icon />
         </ListItemIcon>
@@ -370,11 +376,14 @@ export default function Dashboard(props: ResponsiveDrawerProps) {
             Icon = currenMenutIcon.name;
           }
         }
+        const mobile = item.show_mobile !== null && item.show_mobile == "0" ? classes.hideMobileMenu : '';
+        const desk = item.show_desk !== null && item.show_desk == "0" ? classes.hideDeskMenu : '';
+
         return (
           <React.Fragment key={i}>
             <ListItem 
               button onClick={() => findChildrens.length > 0 ? setSubMenu(item.id) : handeClick(item.route ? item.route : '/dashboard/main')}
-              className={`${item.show_mobile !== null && item.show_mobile == 0 ? classes.hideMenu : ''}`}
+              className={`${desk} ${mobile}`}
               >
               <ListItemIcon >
                 <Icon />
