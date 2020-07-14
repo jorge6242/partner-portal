@@ -36,6 +36,7 @@ import Contact from "../containers/contact";
 import RegisterPassword from "../containers/registerPassword";
 import PendingInvoices from "../containers/pending-invoices";
 import SinglePaymentsManagement from "../containers/singlePaymentsManagement";
+import PersonMobile from "../containers/personMobile";
 
 export default function Routes() {
   const dispatch = useDispatch();
@@ -64,6 +65,7 @@ export default function Routes() {
                       <Route path="/dashboard/reports" component={Reports} />
                       <Route path="/dashboard/user" component={User} />
                       <Route path="/dashboard/actualizacion-datos" component={Person} />
+                      <Route path="/dashboard/actualizacion-datos-mobile" component={PersonMobile} />
                       <Route path="/dashboard/partner" component={Partners} />
                       <Route path="/dashboard/reporte-pagos" component={ReportePagos} />
                       <Route path="/dashboard/status-account" component={StatusAccount} />

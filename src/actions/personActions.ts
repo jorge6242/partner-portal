@@ -23,7 +23,6 @@ export const getAll = (share: any) => async (
     let response = [];
     if (status === 200) {
       response = data;
-      console.log('data ', data);
       dispatch({
         type: ACTIONS.GET_ALL,
         payload: response
