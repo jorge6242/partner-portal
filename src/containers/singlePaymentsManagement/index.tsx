@@ -236,7 +236,7 @@ export default function SinglePaymentsManagement() {
             id: "nMonto",
             label: "Monto",
             minWidth: 10,
-            align: "left",
+            align: "right",
             component: (value: any) => <span>{value.value}</span>,
         },
         {

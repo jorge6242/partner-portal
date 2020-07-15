@@ -90,6 +90,18 @@ const columns: Columns[] = [
       return <span>{status}</span>;
     }
   },
+  {
+    id: "show_desk",
+    label: "Escritorio",
+    minWidth: 30,
+    align: "right",
+    component: (value: any) => {
+      let status = "";
+      if (value.value === "0") status = "NO";
+      if (value.value === "1") status = "SI";
+      return <span>{status}</span>;
+    }
+  },
 ];
 
 const useStyles = makeStyles(() => ({
