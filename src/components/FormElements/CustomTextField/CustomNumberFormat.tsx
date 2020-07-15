@@ -12,7 +12,8 @@ export default function NumberFormatCustom(props: NumberFormatCustomProps) {
   return (
     <NumberFormat
       {...other}
-      thousandSeparator={true}
+      thousandSeparator={'.'}
+      decimalSeparator={','}
       getInputRef={inputRef}
       onValueChange={values => {
         onChange({

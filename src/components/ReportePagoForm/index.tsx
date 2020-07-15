@@ -132,7 +132,8 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
 
     const handleForm = async (form: any) => {
         const { NroReferencia } = getValues();
-        const monto = form.nMonto.replace(/[,]/g, '');
+        let monto = form.nMonto.replace(/[.]/g, '');
+        monto = monto.replace(',', '.');
         const body = {
             ...form,
             dFechaProceso: null,
@@ -143,10 +144,9 @@ const ReportePagosForm: FunctionComponent<FormComponentProps> = ({ id }) => {
             NroReferencia2: NroReferencia,
             nMonto: monto,
             Moneda: 'USD',
-        }
+        };
         await dispatch(create(body));
         reset();
-        dispatch(getReportedPayments());
     };
     //substring(12, 16)
     return (
