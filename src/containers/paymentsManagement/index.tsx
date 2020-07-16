@@ -264,6 +264,7 @@ export default function PaymentsManagement() {
             minWidth: 10,
             align: "center",
             component: (value: any) => {
+                console.log('value.value ', value.value);
                 if (value.value) {
                     return (
                         <a target="_blank" href={value.value} title="comprobante" >
