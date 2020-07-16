@@ -15,7 +15,7 @@ const API = {
   },
   create(data: any) {
     return AXIOS.post(
-      `${Prefix.api}/reporte-pagos`,
+      `${Prefix.api}/store-payment-report`,
       {
         ...data,
       },
