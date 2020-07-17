@@ -6,7 +6,7 @@ function exception(err: any) {
     }
     if(typeof err === 'object') {
       if(err.response && err.response.status === 500) {
-        return 'Error interno del Servidor';
+        return 'Error de Servidor';
       }
       if(err.response && err.response.data) {
         return err.response.data.message;

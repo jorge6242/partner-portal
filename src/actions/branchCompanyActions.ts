@@ -1,15 +1,22 @@
 import API from "../api/BranchCompany";
 import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
-import { ACTIONS } from '../interfaces/actionTypes/branchCompanyTypes';
+import { ACTIONS } from "../interfaces/actionTypes/branchCompanyTypes";
 
-export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch: Function) => {
+const attempts = window.attempts;
+
+export const getAll = (page: number = 1, perPage: number = 8) => async (
+  dispatch: Function
+) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
-    const { data: { data }, status } = await API.getAll(page, perPage);
+    const {
+      data: { data },
+      status,
+    } = await API.getAll(page, perPage);
     let response = [];
     if (status === 200) {
       const pagination = {
@@ -23,15 +30,15 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch
       response = data.data;
       dispatch({
         type: ACTIONS.GET_ALL,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PAGINATION,
-        payload: pagination
+        payload: pagination,
       });
       dispatch({
         type: ACTIONS.SET_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
@@ -40,63 +47,82 @@ export const getAll = (page: number = 1, perPage: number = 8) => async (dispatch
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
 };
 
-export const getList = () => async (dispatch: Function) => {
-  dispatch(updateModal({
-    payload: {
-      isLoader: true,
-    }
-  }));
+export const getList = (count: number = 0) => async (dispatch: Function) => {
+  dispatch(
+    updateModal({
+      payload: {
+        isLoader: true,
+      },
+    })
+  );
   try {
-    const { data: { data }, status } = await API.getList();
+    const {
+      data: { data },
+      status,
+    } = await API.getList();
     let response = [];
     if (status === 200) {
       response = data;
       dispatch({
         type: ACTIONS.GET_LIST,
-        payload: response
+        payload: response,
       });
-      dispatch(updateModal({
-        payload: {
-          isLoader: false,
-        }
-      }));
+      dispatch(
+        updateModal({
+          payload: {
+            isLoader: false,
+          },
+        })
+      );
     }
     return response;
   } catch (error) {
-    dispatch(updateModal({
-      payload: {
-        isLoader: false,
-      }
-    }));
-    snackBarUpdate({
-      payload: {
-        message: error.message,
-        status: true,
-        type: "error"
-      }
-    })(dispatch);
+    if (count <= attempts) {
+      let counter = count + 1;
+      dispatch(getList(counter));
+    } else {
+      dispatch(
+        updateModal({
+          payload: {
+            isLoader: false,
+          },
+        })
+      );
+      snackBarUpdate({
+        payload: {
+          message: error.message,
+          status: true,
+          type: "error",
+        },
+      })(dispatch);
+    }
     return error;
   }
 };
 
-export const search = (term: string, perPage: number = 8) => async (dispatch: Function) => {
+export const search = (term: string, perPage: number = 8) => async (
+  dispatch: Function
+) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
-    const { data: { data }, status } = await API.search(term, perPage);
+    const {
+      data: { data },
+      status,
+    } = await API.search(term, perPage);
     let response = [];
     if (status === 200) {
       response = data;
@@ -111,16 +137,16 @@ export const search = (term: string, perPage: number = 8) => async (dispatch: Fu
       response = data.data;
       dispatch({
         type: ACTIONS.GET_ALL,
-        payload: response
+        payload: response,
       });
       dispatch({
         type: ACTIONS.SET_PAGINATION,
-        payload: pagination
+        payload: pagination,
       });
     }
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return response;
   } catch (error) {
@@ -128,12 +154,12 @@ export const search = (term: string, perPage: number = 8) => async (dispatch: Fu
       payload: {
         message: error.message,
         status: true,
-        type: "error"
-      }
+        type: "error",
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -142,7 +168,7 @@ export const search = (term: string, perPage: number = 8) => async (dispatch: Fu
 export const create = (body: object) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const response = await API.create(body);
@@ -154,40 +180,42 @@ export const create = (body: object) => async (dispatch: Function) => {
         payload: {
           message: "Tipo de Compañia ha sido Registrado!",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
       dispatch(getAll());
       dispatch(
         updateModal({
           payload: {
             status: false,
-            element: null
-          }
+            element: null,
+          },
         })
       );
       dispatch({
         type: ACTIONS.SET_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return createresponse;
   } catch (error) {
-    let message = 'General Error';
+    let message = "General Error";
     if (error && error.response) {
-      const { data: { message: msg } } = error.response; 
-      message = msg
+      const {
+        data: { message: msg },
+      } = error.response;
+      message = msg;
     }
     snackBarUpdate({
       payload: {
         message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -195,7 +223,10 @@ export const create = (body: object) => async (dispatch: Function) => {
 
 export const get = (id: number) => async (dispatch: Function) => {
   try {
-    const { data: { data }, status } = await API.get(id);
+    const {
+      data: { data },
+      status,
+    } = await API.get(id);
     let response = [];
     if (status === 200) {
       response = data;
@@ -206,8 +237,8 @@ export const get = (id: number) => async (dispatch: Function) => {
       payload: {
         message: error.message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     return error;
   }
@@ -216,7 +247,7 @@ export const get = (id: number) => async (dispatch: Function) => {
 export const update = (body: object) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_LOADING,
-    payload: true
+    payload: true,
   });
   try {
     const { data, status } = await API.update(body);
@@ -224,46 +255,48 @@ export const update = (body: object) => async (dispatch: Function) => {
     if (status === 200) {
       response = {
         data,
-        status
+        status,
       };
       snackBarUpdate({
         payload: {
           message: "Marca de Compañia ha sido Actualizado!",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
       dispatch(
         updateModal({
           payload: {
             status: false,
-            element: null
-          }
+            element: null,
+          },
         })
       );
       dispatch(getAll());
       dispatch({
         type: ACTIONS.SET_LOADING,
-        payload: false
+        payload: false,
       });
     }
     return response;
   } catch (error) {
-    let message = 'General Error';
+    let message = "General Error";
     if (error && error.response) {
-      const { data: { message: msg } } = error.response; 
-      message = msg
+      const {
+        data: { message: msg },
+      } = error.response;
+      message = msg;
     }
     snackBarUpdate({
       payload: {
         message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     dispatch({
       type: ACTIONS.SET_LOADING,
-      payload: false
+      payload: false,
     });
     return error;
   }
@@ -276,14 +309,14 @@ export const remove = (id: number) => async (dispatch: Function) => {
     if (status === 200) {
       response = {
         data,
-        status
+        status,
       };
       snackBarUpdate({
         payload: {
           message: "Marca de Compañia ha sido Elmiminado!",
           type: "success",
-          status: true
-        }
+          status: true,
+        },
       })(dispatch);
       dispatch(getAll());
     }
@@ -293,8 +326,8 @@ export const remove = (id: number) => async (dispatch: Function) => {
       payload: {
         message: error.message,
         type: "error",
-        status: true
-      }
+        status: true,
+      },
     })(dispatch);
     return error;
   }

@@ -8,7 +8,9 @@ import headers from "../helpers/headers";
 
 import Prefix from "../config/ApiPrefix";
 
-export const getAll = (share: any) => async (
+const attempts = window.attempts;
+
+export const getAll = (share: any, count: number = 0) => async (
   dispatch: Function
 ) => {
   dispatch({
@@ -34,6 +36,10 @@ export const getAll = (share: any) => async (
     }
     return response;
   } catch (error) {
+    if (count <= attempts) {
+      let counter = count + 1;
+      dispatch(getAll(share, counter));
+    }
     snackBarUpdate({
       payload: {
         message: error.message,

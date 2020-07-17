@@ -5,8 +5,11 @@ import AXIOS from "../config/Axios";
 import SecureStorage from "../config/SecureStorage";
 import snackBarUpdate from "../actions/snackBarActions";
 import { ACTIONS } from "../interfaces/actionTypes/loginTypes";
-import { mainStatusLoading } from '../actions/loadingMainActions';
+import { mainStatusLoading } from "../actions/loadingMainActions";
+import Message from "../helpers/message";
 // import history from '../config/History';
+
+const attempts = window.attempts;
 
 export const login = (body: object) => async (dispatch: Function) => {
   dispatch({ type: ACTIONS.SET_LOADING, payload: true });
@@ -57,7 +60,7 @@ export const logout = () => (dispatch: Function) => {
   dispatch({ type: ACTIONS.LOGOUT });
 };
 
-export const checkLogin = () => async (dispatch: Function) => {
+export const checkLogin = (count: number = 0) => async (dispatch: Function) => {
   dispatch(mainStatusLoading(true));
   dispatch({ type: ACTIONS.SET_LOADING, payload: true });
   try {
@@ -73,8 +76,14 @@ export const checkLogin = () => async (dispatch: Function) => {
     }
     return checkLoginResponse;
   } catch (error) {
-    dispatch({ type: ACTIONS.SET_LOADING, payload: false });
-     dispatch(mainStatusLoading(false));
+    const message = Message.exception(error);
+    if (message === "Error de Servidor" && count <= attempts) {
+      let counter = count + 1;
+      dispatch(checkLogin(counter));
+    } else {
+      dispatch({ type: ACTIONS.SET_LOADING, payload: false });
+      dispatch(mainStatusLoading(false));
+    }
     return error;
   }
 };
