@@ -34,6 +34,6 @@ export default interface PersonColumn {
     | "relationship";
   label: string;
   minWidth?: number;
-  align?: "right";
+  align?: "right" | "left" | "center";
   component?: any;
 }

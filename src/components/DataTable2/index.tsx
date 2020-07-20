@@ -40,6 +40,7 @@ interface DataTableProps {
   handleSwitch?: any;
   loading?: boolean;
   fontSize?: string;
+  handleRowEdit?: any;
 }
 
 const GreenSwitch = withStyles({
@@ -64,7 +65,8 @@ const DataTable2: FunctionComponent<DataTableProps> = ({
   handleEdit,
   handleDelete,
   loading,
-  fontSize = "14px"
+  fontSize = "14px",
+  handleRowEdit
 }) => {
   const classes = useStyles();
   return (
@@ -103,6 +105,7 @@ const DataTable2: FunctionComponent<DataTableProps> = ({
                           key={column.id}
                           align={column.align}
                           style={{ fontSize }}
+                          onClick={ () => handleRowEdit ? handleRowEdit(row) : {} }
                         >
                           {column.format && typeof value === "number"
                             ? column.format(value)

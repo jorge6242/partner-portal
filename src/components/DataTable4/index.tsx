@@ -85,6 +85,7 @@ interface DataTableProps {
   handleSwitch?: Function;
   getSelectRow?: any;
   colorColumn?: string;
+  handleRowEdit?: any;
 }
 
 const DataTable4: FunctionComponent<DataTableProps> = ({
@@ -106,7 +107,8 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
   handlePayment,
   handleSwitch,
   getSelectRow,
-  colorColumn
+  colorColumn,
+  handleRowEdit
 }) => {
   const classes = useStyles();
   const [selectedRow, setSelectedRow] = useState(0);
@@ -150,8 +152,16 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
             hover
             role="checkbox"
             tabIndex={-1} key={row.id}
-            style={{ cursor: getSelectRow ? 'pointer' : 'auto' }}
-            onClick={() => getSelectRow ? handleSelect(getSelectRow(row)) : {}}
+            style={{ cursor: getSelectRow || handleRowEdit ? 'pointer' : 'auto' }}
+            onClick={() => {
+              if (handleRowEdit) {
+                return handleRowEdit(row);
+              }
+              if (getSelectRow) {
+                return handleSelect(getSelectRow(row));
+              }
+              return {};
+            }}
           >
             {columns.map((column: any) => {
               const value = row[column.id];

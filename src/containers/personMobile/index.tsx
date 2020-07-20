@@ -51,62 +51,6 @@ function TabPanel(props: TabPanelProps) {
 }
 
 
-const columns: PersonColumn[] = [
-  {
-    id: "id",
-    label: "Id", minWidth: 20,
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "rif_ci",
-    label: "RIF/CI",
-    minWidth: 170,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "relation",
-    label: "Parentesco",
-    minWidth: 170,
-    align: "right",
-    component: (value: any) => {
-      return (
-        <Chip
-          label={value.value}
-          style={{
-            backgroundColor: value.value === 'SOCIO' ? "#2ecc71" : "#f1c40f",
-            color: "white",
-            fontWeight: "bold",
-            fontSize: "10px"
-          }}
-          size="small"
-        />
-      )
-    }
-  },
-  {
-    id: "name",
-    label: "Nombre",
-    minWidth: 170,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "last_name",
-    label: "Apellido",
-    minWidth: 170,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>,
-  },
-  {
-    id: "primary_email",
-    label: "Correo Primario",
-    minWidth: 170,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>,
-  },
-];
-
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper
@@ -134,10 +78,53 @@ export default function PersonMobile() {
   const classes = useStyles();
   const theme = useTheme();
 
+  const handleEdit = (row: any) => {
+    setElement(<PersonFormMobile id={row.id} />)
+    setTabValue(1);
+    setDisableTab(false);
+  };
+
+  const getRow = (row: any) => persons.find((element: any) => element.id == row);
+
+  const columns: PersonColumn[] = [
+    {
+      id: "relation",
+      label: "Parentesco",
+      minWidth: 20,
+      align: "left",
+      component: (value: any) => {
+        return (
+          <Chip
+            label={value.value}
+            style={{
+              backgroundColor: value.value === 'SOCIO' ? "#2ecc71" : "#f1c40f",
+              color: "white",
+              fontWeight: "bold",
+              fontSize: "10px"
+            }}
+            size="small"
+          />
+        )
+      }
+    },
+    {
+      id: "id",
+      label: "Nombre",
+      minWidth: 20,
+      align: "left",
+      component: (value: any) => {
+        const row = getRow(value.value);
+        if(row) return <span>{row.name} <br /> {row.last_name}</span>
+        return <span></span>
+      },
+    },
+  ];
+
   const handleChange = (event: React.ChangeEvent<{}>, tabValue: number) => {
     setTabValue(tabValue);
     if(tabValue == 0) {
       setDisableTab(true);
+      setElement(null)
     }
   };
 
@@ -145,6 +132,7 @@ export default function PersonMobile() {
     setTabValue(index);
     if(index == 0) {
       setDisableTab(true);
+      setElement(null)
     }
   };
 
@@ -161,12 +149,6 @@ export default function PersonMobile() {
 
     fetchData();
   }, [dispatch]);
-
-  const handleEdit = (id: number) => {
-    setElement(<PersonFormMobile id={id} />)
-    setTabValue(1);
-    setDisableTab(false);
-  };
 
   //replace(/[0-9]/g, "X")
   // var str = "1234123412341234";
@@ -200,7 +182,7 @@ export default function PersonMobile() {
               rows={persons}
               columns={columns}
               loading={loading}
-              handleEdit={handleEdit}
+              handleRowEdit={handleEdit}
             />
           </TabPanel>
           <TabPanel value={tabValue} index={1} dir={theme.direction}>

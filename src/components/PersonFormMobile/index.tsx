@@ -172,72 +172,6 @@ const cardPersonColumns: CardPersonColumns[] = [
   }
 ];
 
-const FamilysColumns: FamilyPersonColumns[] = [
-  {
-    id: "id",
-    label: "ID",
-    minWidth: 30,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>
-  },
-  {
-    id: "rif_ci",
-    label: "RIF/CI",
-    minWidth: 30,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>
-  },
-  {
-    id: "description",
-    label: "Parentesco",
-    minWidth: 30,
-    align: "right",
-    component: (value: any) => (<Chip
-      label={value.value}
-      style={{
-        backgroundColor: "#f1c40f",
-        color: "white",
-        fontWeight: "bold",
-        fontSize: "10px"
-      }}
-      size="small"
-    />
-    )
-  },
-  {
-    id: "name",
-    label: "Nombre",
-    minWidth: 30,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>
-  },
-  {
-    id: "last_name",
-    label: "Apellido",
-    minWidth: 30,
-    align: "right",
-    component: (value: any) => <span>{value.value}</span>
-  },
-  {
-    id: "status",
-    label: "",
-    minWidth: 30,
-    align: "right",
-    component: (value: any) => (
-      <Chip
-        label={value.value === "1" ? "Activo" : "Inactivo"}
-        style={{
-          backgroundColor: value.value == "1" ? "#2ecc71" : "#e74c3c",
-          color: "white",
-          fontWeight: "bold",
-          fontSize: "10px"
-        }}
-        size="small"
-      />
-    )
-  }
-];
-
 const recordColumns: RecordColumns[] = [
   {
     id: "id",
@@ -647,128 +581,130 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  useEffect(() => {
-    setSelectedProff([]);
-    async function fetch() {
-      if (id) {
-        const response: any = await dispatch(get(id));
-        dispatch(searchFamilyByPerson(id));
-        // dispatch(getCardPerson(id));
-        // dispatch(getLockersByPartner(id));
-        // dispatch(getRecordsByPerson({ id }));
-        // dispatch(getNotesByPerson({ id }));
-        const {
-          name,
-          last_name,
-          name2,
-          last_name2,
-          rif_ci,
-          primary_email,
-          secondary_email,
-          passport,
-          card_number,
-          birth_date,
-          expiration_date,
-          gender_id,
-          representante,
-          picture,
-          id_card_picture,
-          address,
-          telephone1,
-          telephone2,
-          phone_mobile1,
-          phone_mobile2,
-          fax,
-          city,
-          state,
-          type_person,
-          postal_code,
-          status_person_id,
-          marital_statuses_id,
-          countries_id,
-          professions,
-          countries,
-          sports,
-          lockers,
-          isPartner,
-          company_person,
-          relation,
-          branch_company_id,
-          company
-        } = response;
-        if (isPartner === "1") {
-          const shareResponse: any = await dispatch(getSharesByPartner(id));
-          if (shareResponse.length > 0) {
-            const currentShare = shareResponse.find((e: any, i: any) => i === 0);
-            setValue("payment_method_id", currentShare.payment_method_id);
-          }
-        }
-        setValue("name", name);
-        setValue("last_name", last_name);
-        setValue("name2", name2);
-        setValue("last_name2", last_name2);
-        setValue("rif_ci", rif_ci);
-        setValue("primary_email", primary_email);
-        setValue("secondary_email", secondary_email);
-        setValue("passport", passport);
-        setValue("card_number", card_number);
-        setValue("birth_date", birth_date);
-        setValue("expiration_date", expiration_date);
-        setValue("gender_id", gender_id);
-        setValue("representante", representante);
-        setValue("picture", picture);
-        setValue("id_card_picture", id_card_picture);
-        setValue("address", address);
-        setValue("telephone1", telephone1);
-        setValue("telephone2", telephone2);
-        setValue("phone_mobile1", phone_mobile1);
-        setValue("phone_mobile2", phone_mobile2);
-        setValue("fax", fax);
-        setValue("city", city);
-        setValue("state", state);
-        setValue("postal_code", postal_code);
-        setValue("type_person", type_person);
-        setValue("status_person_id", status_person_id);
-        setValue("marital_statuses_id", marital_statuses_id);
-        setValue("countries_id", countries_id);
-        setValue("branch_company_id", branch_company_id);
-        setValue("company", company);
-        setImage({ ...image, preview: picture });
-        setRelation(relation);
-        if (company_person) {
-          setSelectedCompany(company_person);
-        }
-        if (isPartner === "2") {
-          setIsFamily(true);
-        } else {
-          setIsFamily(false);
-        }
-        if (countries.length > 0) {
-          const list = countries.map((element: any) => element.id);
-          setValue("country_list", JSON.stringify(list));
-          setSelectedCountries(countries);
-        } else {
-          setSelectedCountries([]);
-        }
-        if (sports.length > 0) {
-          const list = sports.map((element: any) => element.id);
-          setValue("sport_list", JSON.stringify(list));
-          setSelectedSports(sports);
-        } else {
-          setSelectedSports([]);
-        }
-        if (professions) {
-          const list = professions.map((element: any) => element.id);
-          setValue("profession_list", JSON.stringify(list));
-          setSelectedProff(professions);
-        } else {
-          setSelectedProff([]);
-        }
-        setTempPersonId(id);
+  const initPerson = async (id: any) => {
+    const response: any = await dispatch(get(id));
+    dispatch(searchFamilyByPerson(id));
+    // dispatch(getCardPerson(id));
+    // dispatch(getLockersByPartner(id));
+    // dispatch(getRecordsByPerson({ id }));
+    // dispatch(getNotesByPerson({ id }));
+    const {
+      name,
+      last_name,
+      name2,
+      last_name2,
+      rif_ci,
+      primary_email,
+      secondary_email,
+      passport,
+      card_number,
+      birth_date,
+      expiration_date,
+      gender_id,
+      representante,
+      picture,
+      id_card_picture,
+      address,
+      telephone1,
+      telephone2,
+      phone_mobile1,
+      phone_mobile2,
+      fax,
+      city,
+      state,
+      type_person,
+      postal_code,
+      status_person_id,
+      marital_statuses_id,
+      countries_id,
+      professions,
+      countries,
+      sports,
+      lockers,
+      isPartner,
+      company_person,
+      relation,
+      branch_company_id,
+      company
+    } = response;
+    if (isPartner === "1") {
+      const shareResponse: any = await dispatch(getSharesByPartner(id));
+      if (shareResponse.length > 0) {
+        const currentShare = shareResponse.find((e: any, i: any) => i === 0);
+        setValue("payment_method_id", currentShare.payment_method_id);
       }
     }
-    fetch();
-  }, [id, dispatch, setValue, user, setRelation]);
+    setValue("name", name);
+    setValue("last_name", last_name);
+    setValue("name2", name2);
+    setValue("last_name2", last_name2);
+    setValue("rif_ci", rif_ci);
+    setValue("primary_email", primary_email);
+    setValue("secondary_email", secondary_email);
+    setValue("passport", passport);
+    setValue("card_number", card_number);
+    setValue("birth_date", birth_date);
+    setValue("expiration_date", expiration_date);
+    setValue("gender_id", gender_id);
+    setValue("representante", representante);
+    setValue("picture", picture);
+    setValue("id_card_picture", id_card_picture);
+    setValue("address", address);
+    setValue("telephone1", telephone1);
+    setValue("telephone2", telephone2);
+    setValue("phone_mobile1", phone_mobile1);
+    setValue("phone_mobile2", phone_mobile2);
+    setValue("fax", fax);
+    setValue("city", city);
+    setValue("state", state);
+    setValue("postal_code", postal_code);
+    setValue("type_person", type_person);
+    setValue("status_person_id", status_person_id);
+    setValue("marital_statuses_id", marital_statuses_id);
+    setValue("countries_id", countries_id);
+    setValue("branch_company_id", branch_company_id);
+    setValue("company", company);
+    setImage({ ...image, preview: picture });
+    setRelation(relation);
+    if (company_person) {
+      setSelectedCompany(company_person);
+    }
+    if (isPartner === "2") {
+      setIsFamily(true);
+    } else {
+      setIsFamily(false);
+    }
+    if (countries.length > 0) {
+      const list = countries.map((element: any) => element.id);
+      setValue("country_list", JSON.stringify(list));
+      setSelectedCountries(countries);
+    } else {
+      setSelectedCountries([]);
+    }
+    if (sports.length > 0) {
+      const list = sports.map((element: any) => element.id);
+      setValue("sport_list", JSON.stringify(list));
+      setSelectedSports(sports);
+    } else {
+      setSelectedSports([]);
+    }
+    if (professions) {
+      const list = professions.map((element: any) => element.id);
+      setValue("profession_list", JSON.stringify(list));
+      setSelectedProff(professions);
+    } else {
+      setSelectedProff([]);
+    }
+    setTempPersonId(id);
+  }
+
+
+  useEffect(() => {
+    setSelectedProff([]);
+    if (id) {
+      initPerson(id);
+    }
+  }, [id]);
 
 
   useEffect(() => {
@@ -834,6 +770,68 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
     };
     reader.readAsDataURL(e.target.files[0]);
   };
+
+  const handleEdit = (row: any) => initPerson(row.related_id);
+
+  const FamilysColumns: FamilyPersonColumns[] = [
+    {
+      id: "rif_ci",
+      label: "RIF/CI",
+      minWidth: 30,
+      align: "left",
+      component: (value: any) => <span>{value.value}</span>
+    },
+    {
+      id: "description",
+      label: "Parentesco",
+      minWidth: 30,
+      align: "left",
+      component: (value: any) => (<Chip
+        label={value.value}
+        style={{
+          backgroundColor: "#f1c40f",
+          color: "white",
+          fontWeight: "bold",
+          fontSize: "10px"
+        }}
+        size="small"
+      />
+      )
+    },
+    {
+      id: "name",
+      label: "Nombre",
+      minWidth: 30,
+      align: "left",
+      component: (value: any) => <span>{value.value}</span>
+    },
+    {
+      id: "last_name",
+      label: "Apellido",
+      minWidth: 30,
+      align: "left",
+      component: (value: any) => <span>{value.value}</span>
+    },
+    {
+      id: "status",
+      label: "",
+      minWidth: 30,
+      align: "left",
+      component: (value: any) => (
+        <Chip
+          label={value.value === "1" ? "Activo" : "Inactivo"}
+          style={{
+            backgroundColor: value.value == "1" ? "#2ecc71" : "#e74c3c",
+            color: "white",
+            fontWeight: "bold",
+            fontSize: "10px"
+          }}
+          size="small"
+        />
+      )
+    }
+  ];
+
 
   const onProfessionsChange = (event: any) => {
     setValue("profession_list", JSON.stringify(event));
@@ -1643,6 +1641,7 @@ const PersonFormMobile: FunctionComponent<PersonFormMobileProps> = ({ id }) => {
                       columns={FamilysColumns}
                       loading={relationLoading}
                       fontSize="12px"
+                      handleRowEdit={handleEdit}
                     />
                   </Grid>
                 </Grid>
