@@ -2,6 +2,7 @@ import API from "../api/WebService";
 import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from "../interfaces/actionTypes/webServiceTypes";
+import Message from '../helpers/message';
 
 const attempts = window.attempts;
 
@@ -127,13 +128,14 @@ export const getUnpaidInvoicesbyShare = (share:string ,count: number = 0) => asy
     }
     return response;
   } catch (error) {
-    if(count <= attempts) {
+    if(error.response && error.response.status === 500 && count <= attempts) {
       let counter = count + 1;
       dispatch(getUnpaidInvoicesbyShare(share ,counter));
     } else {
+      const message = Message.exception(error);
       snackBarUpdate({
         payload: {
-          message: error.message,
+          message,
           status: true,
           type: "error",
         },
