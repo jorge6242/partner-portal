@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Chip, makeStyles, Button, withStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import SearchIcon from "@material-ui/icons/Search";
@@ -96,10 +96,13 @@ type FormData = {
     bancoDestino: string;
     referencia: string;
     accion: string;
+    dFechaRegistro: string;
+    noInvoice: string; 
 };
 
 
 export default function SinglePaymentsManagement() {
+    const [disableStatus, setDisableStatus] = useState<boolean>(false);
     const dispatch = useDispatch();
     const classes = useStyles();
 
@@ -114,7 +117,8 @@ export default function SinglePaymentsManagement() {
         register,
         errors,
         reset,
-        getValues
+        getValues,
+        setValue
     } = useForm<FormData>();
 
     const {
@@ -192,7 +196,7 @@ export default function SinglePaymentsManagement() {
             align: "left",
             component: (value: any) => {
                 if (value.value) {
-                    return <span>{value.value && moment(value.value).format('YYYY-MM-DD')} <br /> {moment(value.value).format('hh:mm:ss A')}</span>
+                    return <span>{value.value && moment(value.value).format('YYYY-MM-DD')}</span>
                 }
                 return <div />
             },
@@ -281,6 +285,10 @@ export default function SinglePaymentsManagement() {
                     status = "Rechazado";
                     backgroundColor = '#e74c3c';
                 }
+                if (value.value == "4") {
+                    status = "Facturado";
+                    backgroundColor = '#f39c12';
+                }
                 return (
                     <Chip
                         label={status}
@@ -346,6 +354,15 @@ export default function SinglePaymentsManagement() {
         return 0;
     }
 
+    const onSelectNoInvoice = (event: any) => {
+        if (event.target.value === "1") {
+            setDisableStatus(true);
+            setValue('status', '');
+        } else {
+            setDisableStatus(false);
+        }
+    }
+
     return (
         <Grid container spacing={3}>
             <form
@@ -379,6 +396,7 @@ export default function SinglePaymentsManagement() {
                                         errorsMessageField={
                                             errors.status && errors.status.message
                                         }
+                                        disabled={disableStatus}
                                     >
                                         <option value={0}> En Proceso </option>
                                         <option value={1}> Procesado </option>
@@ -432,6 +450,33 @@ export default function SinglePaymentsManagement() {
                                         {`${item.cNombreBanco} - ${item.cNumCuenta.substring(12, 16)}`}
                                     </option>
                                 ))}
+                            </CustomSelect>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <CustomTextField
+                                placeholder="Fecha"
+                                field="dFechaRegistro"
+                                register={register}
+                                errorsField={errors.dFechaRegistro}
+                                errorsMessageField={
+                                    errors.dFechaRegistro && errors.dFechaRegistro.message
+                                }
+                                type="date"
+                            />
+                        </Grid>
+                        <Grid item xs={3}>
+                            <CustomSelect
+                                label="No Facturado"
+                                selectionMessage="Seleccione"
+                                field="noInvoice"
+                                register={register}
+                                errorsMessageField={
+                                    errors.noInvoice && errors.noInvoice.message
+                                }
+                                onChange={onSelectNoInvoice}
+                            >
+                                <option value={1}> SI </option>
+                                <option value={0}> NO </option>
                             </CustomSelect>
                         </Grid>
                     </Grid>
