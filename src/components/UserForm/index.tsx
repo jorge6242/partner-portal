@@ -13,6 +13,7 @@ import CustomTextField from "../FormElements/CustomTextField";
 import { update, create, get } from "../../actions/userActions";
 import { getAll as getAllRoles } from "../../actions/roleActions";
 import snackBarUpdate from "../../actions/snackBarActions";
+import RangeAge from "../FormElements/RangeAge";
 
 const useStyles = makeStyles(theme => ({
   rootUserForm: {
@@ -52,6 +53,8 @@ type FormData = {
   password: string;
   password2: string;
   roles: string;
+  share_from: string;
+  share_to: string;
 };
 
 type FormComponentProps = {
@@ -62,7 +65,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
   const classes = useStyles();
   const [selectedData, setSelectedData] = useState<any>([]);
   const [currentUsername, setCurrentUsername] = useState<boolean>(false);
-  const { handleSubmit, register, errors, reset, setValue } = useForm<
+  const { handleSubmit, register, errors, reset, setValue, watch } = useForm<
     FormData
   >();
   const loading = useSelector((state: any) => state.userReducer.loading);
@@ -73,10 +76,12 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     async function fetch() {
       if (id) {
         const response: any = await dispatch(get(id));
-        const { name, email, roles, username } = response;
+        const { name, email, roles, username, share_from, share_to } = response;
         setValue("username", username);
         setValue("name", name);
         setValue("email", email);
+        setValue("share_from", share_from);
+        setValue("share_to", share_to);
         if(username !== null || username !== '') {
           setCurrentUsername(true);
         } else {
@@ -194,6 +199,17 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                   errors.password2 && errors.password2.message
                 }
                 type="password"
+              />
+            </Grid>
+            <Grid item xs={4}>
+            <RangeAge
+                label="Accion"
+                startField="share_from"
+                endField="share_to"
+                register={register}
+                watch={watch}
+                startMsgErr={errors.share_from && errors.share_from.message}
+                endMsgErr={errors.share_to && errors.share_to.message}
               />
             </Grid>
             <Grid item xs={12}>

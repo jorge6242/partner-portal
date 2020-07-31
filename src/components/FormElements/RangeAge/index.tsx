@@ -4,9 +4,9 @@ import TextField from '@material-ui/core/TextField';
 import Grid from "@material-ui/core/Grid";
 
 const numbers = {
-    value : new RegExp('^[0-9]+$'),
+    value: new RegExp('^[0-9]+$'),
     message: "Solo numeros"
-  }
+}
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme: Theme) =>
         label: {
             padding: '0px !important',
             fontWeight: 'bold',
+            fontSize: 13,
+            color: 'rgba(0, 0, 0, 0.54)',
+            marginBottom: '-4px',
         },
         fieldContainer: {
             paddingTop: '0px !important',
@@ -59,10 +62,10 @@ const RangeAge: FunctionComponent<ComponentProps> = ({
         let start = watch(startField);
         let end = watch(endField);
         if (parseInt(start) > parseInt(end)) {
-            return "Edad inicio debe ser menor";
+            return `${label} inicio debe ser menor`;
         }
         return true;
-      }
+    }
 
     return (
         <Grid container spacing={2}>
@@ -72,12 +75,15 @@ const RangeAge: FunctionComponent<ComponentProps> = ({
                     label="Desde"
                     name={startField}
                     fullWidth
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                     inputRef={register({
                         validate,
                         pattern: numbers,
-                      })}
+                    })}
                     className={classes.field}
-                    error={startMsgErr ? true : false }
+                    error={startMsgErr ? true : false}
                 />
             </Grid>
             <Grid item xs={6} className={classes.fieldContainer}>
@@ -85,14 +91,17 @@ const RangeAge: FunctionComponent<ComponentProps> = ({
                     label="Hasta"
                     name={endField}
                     fullWidth
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
                     className={classes.field}
                     inputRef={register({
                         pattern: numbers,
                         validate
-                      })}
+                    })}
                 />
             </Grid>
-                    <div className={classes.error}>{startMsgErr || endMsgErr}</div>
+            <div className={classes.error}>{startMsgErr || endMsgErr}</div>
         </Grid>
     );
 }

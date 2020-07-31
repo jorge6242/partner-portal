@@ -6,6 +6,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MessageIcon from '@material-ui/icons/Message';
 import { green } from "@material-ui/core/colors";
 import Switch from "@material-ui/core/Switch";
+import _ from 'lodash';
 
 import { getAll, update, filter } from "../../actions/reportePagosActions";
 import DataTable4 from "../../components/DataTable4";
@@ -109,7 +110,8 @@ export default function PaymentsManagement() {
 
     const {
         reportePagosReducer: { list, loading, pagination },
-        webServiceReducer: { unpaidInvoices, setUnpaidInvoicestLoading, }
+        webServiceReducer: { unpaidInvoices, setUnpaidInvoicestLoading, },
+        loginReducer: { user },
     } = useSelector((state: any) => state);
 
     const {
@@ -651,7 +653,7 @@ export default function PaymentsManagement() {
                         </Grid>
                         <Grid item xs={3}>
                             <CustomSelect
-                                label="No Facturado"
+                                label="Facturado"
                                 selectionMessage="Seleccione"
                                 field="noInvoice"
                                 register={register}
@@ -666,6 +668,13 @@ export default function PaymentsManagement() {
                         </Grid>
                     </Grid>
                 </Grid>
+                {
+                    !_.isEmpty(user) && user.share_from !== null && user.share_to !== null &&  (
+                        <Grid item xs={12} style={{ marginTop: 20, fontWeight: 'bold' }}>
+                            {`Acciones asignadas ${user.share_from} hasta ${user.share_to}`}
+                        </Grid>
+                    )
+                }
                 <Grid item xs={12} style={{ marginTop: 20 }}>
                     <DataTable4
                         rows={list}
