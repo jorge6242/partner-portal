@@ -125,7 +125,7 @@ export default function Home() {
     const parameter = Helper.getParameter(parameterList, 'INFO');
     textInfo = parameter.value;
   }
-  console.log('saldo ', clientBalance.saldo);
+  
   return (
     <div className="home-container">
       <Grid container spacing={3} className={classes.widgetContainer}>

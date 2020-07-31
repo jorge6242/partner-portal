@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FunctionComponent, useEffect, useState } from "react";
 import { Grid, Chip, makeStyles, Button, withStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import SearchIcon from "@material-ui/icons/Search";
@@ -22,6 +22,157 @@ import { getList as getBancoReceptorList } from "../../actions/bancoReceptorActi
 import MultipleSwitch from "../../components/common/MultipleSwitch";
 import UnpaidInvoicesColumns from '../../interfaces/UnpaidInvoicesColumns';
 import { getUnpaidInvoicesbyShare, setInvoicePayment } from "../../actions/webServiceActions";
+
+
+const useStyles = makeStyles(theme => ({
+    title: {
+        fontSize: '16px',
+        fontWeight: 'bold',
+    },
+    printButtonContainer: {
+        textAlign: "left",
+    },
+    form: {
+        width: "100%", // Fix IE 11 issue.
+        marginTop: theme.spacing(1)
+    },
+    rangleTitle: {
+        lineHeight: 3,
+        fontWeight: 'bold'
+    },
+    filtersContainer: {
+        marginBottom: 10
+    },
+    subtitleRow: {
+        textAlign: 'center',
+    },
+    personSearchTitle: {
+        lineHeight: 4
+    },
+    submit: {
+
+    }
+}));
+
+
+type InvoiceFormData = {
+    invoice: string;
+};
+
+type InvoiceFormComponentProps = {
+    handle: Function;
+};
+
+const InvoiceForm: FunctionComponent<InvoiceFormComponentProps> = ({
+    handle
+}) => {
+    const [confirm, setConfirm] = useState<boolean>(false)
+    const classes = useStyles()
+    const {
+        handleSubmit,
+        register,
+        errors,
+        reset,
+        getValues,
+    } = useForm<InvoiceFormData>();
+    const handleForm = (form: InvoiceFormData) => {
+        setConfirm(true)
+    }
+
+    const handleConfirmationForm = () => {
+        const form = getValues();
+        handle(form.invoice);
+    }
+
+    const renderConfirmation = () => (
+        <Grid container spacing={3} justify="center">
+            <Grid item xs={4}>
+                <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={() => handleConfirmationForm()}
+                >
+                    Confirmar
+                </Button>
+            </Grid>
+            <Grid item xs={4}>
+                <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    className={classes.submit}
+                    onClick={() => setConfirm(false)}
+                >
+                    Regresar
+                </Button>
+            </Grid>
+        </Grid>
+    )
+
+    return (
+        <Grid container spacing={1} justify="center">
+            <form
+                className={classes.form}
+                onSubmit={handleSubmit(handleForm)}
+                noValidate
+            >
+                <Grid item xs={12}>Incluir N° Factura</Grid>
+                <Grid item xs={12}>
+                    <CustomTextField
+                        placeholder="Factura"
+                        field="invoice"
+                        register={register}
+                        errorsField={errors.invoice}
+                        errorsMessageField={
+                            errors.invoice && errors.invoice.message
+                        }
+                        required
+                    />
+                </Grid>
+                <Grid item xs={12} style={{ marginTop: 20 }} >
+                    {
+                        confirm ? renderConfirmation()
+                            :
+                            (
+                                <Grid container spacing={3} justify="center">
+                                    <Grid item xs={4}>
+                                        <Button
+                                            type="submit"
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.submit}
+                                        >
+                                            Aceptar
+                                        </Button>
+                                    </Grid>
+                                    <Grid item xs={4}>
+                                        <Button
+                                            type="button"
+                                            fullWidth
+                                            variant="contained"
+                                            color="primary"
+                                            className={classes.submit}
+                                        >
+                                            Cancelar
+                                        </Button>
+                                    </Grid>
+                                </Grid>
+                            )
+
+
+                    }
+                </Grid>
+
+            </form>
+        </Grid >
+    )
+}
+
 
 const GreenSwitch = withStyles({
     switchBase: {
@@ -62,34 +213,6 @@ interface Columns {
     align?: "left" | "right" | "center";
     component?: any;
 }
-
-
-const useStyles = makeStyles(theme => ({
-    title: {
-        fontSize: '16px',
-        fontWeight: 'bold',
-    },
-    printButtonContainer: {
-        textAlign: "left",
-    },
-    form: {
-        width: "100%", // Fix IE 11 issue.
-        marginTop: theme.spacing(1)
-    },
-    rangleTitle: {
-        lineHeight: 3,
-        fontWeight: 'bold'
-    },
-    filtersContainer: {
-        marginBottom: 10
-    },
-    subtitleRow: {
-        textAlign: 'center',
-    },
-    personSearchTitle: {
-        lineHeight: 4
-    }
-}));
 
 type FormData = {
     status: string;
@@ -163,12 +286,30 @@ export default function PaymentsManagement() {
         return null;
     }
 
+    const updateInvoiceConfirmation = (invoice: string, row: any, status: any) => {
+        const form = getValues();
+        dispatch(update(row.idPago, { status, fact_num: invoice, fact_date: null }, { query: form, page: pagination.currentPage, perPage: pagination.perPage }));
+    }
+
     const handleSwitchStatus = (currentStatus: string, row: any) => {
         const form = getValues();
-        let status = '';
+        let status: any = '';
         status = currentStatus;
         if (currentStatus !== row.status) {
-            dispatch(update(row.idPago, { status }, { query: form, page: pagination.currentPage, perPage: pagination.perPage }));
+            if (status === 4) {
+                dispatch(
+                    updateModal({
+                        payload: {
+                            status: true,
+                            element: <InvoiceForm handle={(invoice: string) => updateInvoiceConfirmation(invoice, row, status)} />,
+                            customSize: 'small',
+                        }
+                    })
+                );
+            } else {
+                dispatch(update(row.idPago, { status, fact_num: null, fact_date: null }, { query: form, page: pagination.currentPage, perPage: pagination.perPage }));
+            }
+            
         }
     };
 
@@ -669,7 +810,7 @@ export default function PaymentsManagement() {
                     </Grid>
                 </Grid>
                 {
-                    !_.isEmpty(user) && user.share_from !== null && user.share_to !== null &&  (
+                    !_.isEmpty(user) && user.share_from !== null && user.share_to !== null && (
                         <Grid item xs={12} style={{ marginTop: 20, fontWeight: 'bold' }}>
                             {`Acciones asignadas ${user.share_from} hasta ${user.share_to}`}
                         </Grid>
