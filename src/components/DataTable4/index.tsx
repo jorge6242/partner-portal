@@ -152,19 +152,18 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
             hover
             role="checkbox"
             tabIndex={-1} key={row.id}
-            style={{ cursor: getSelectRow || handleRowEdit ? 'pointer' : 'auto' }}
+            style={{ cursor: handleRowEdit ? 'pointer' : 'auto' }}
             onClick={() => {
               if (handleRowEdit) {
                 return handleRowEdit(row);
-              }
-              if (getSelectRow) {
-                return handleSelect(getSelectRow(row));
               }
               return {};
             }}
           >
             {columns.map((column: any) => {
               const value = row[column.id];
+              const isHandleSubRow = row[column.isHandleSubRow];
+              console.log('isHandleSubRow ', column.isHandleSubRow); 
               return (
                 <TableCell
                   key={column.id}
@@ -172,8 +171,14 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
                   className={classes.tableCellHeader}
                   style={{
                     fontSize,
+                    cursor: column.isHandleSubRow && getSelectRow ? 'pointer' : 'auto'
                   }}
-                  onClick={() => handleSubRowComponent ? handleSubRowComponent() : {}}
+                  onClick={() => {
+                    if (column.isHandleSubRow && getSelectRow) {
+                      return handleSelect(getSelectRow(row));
+                    }
+                    return {};
+                  }}
                 >
                   {column.format && typeof value === "number"
                     ? column.format(value)

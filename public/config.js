@@ -6,7 +6,7 @@
 
 // Prod: http://190.216.224.53:9001
 
-var BASE_URL = "http://portal.api.com";
+var BASE_URL = "http://localhost:8000";
 
 var TEMPLATE_INFO = `
 <b>Texto de demo a mostrar </b>

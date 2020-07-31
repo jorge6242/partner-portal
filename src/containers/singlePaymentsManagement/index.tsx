@@ -279,7 +279,7 @@ export default function SinglePaymentsManagement() {
                     status = "En proceso";
                     backgroundColor = '#2980b9';
                 }
-                if (value.value == "1") {
+                if (value.value == "2") {
                     status = "Procesado";
                     backgroundColor = '#2ecc71';
                 }
@@ -401,7 +401,7 @@ export default function SinglePaymentsManagement() {
                                         disabled={disableStatus}
                                     >
                                         <option value={0}> En Proceso </option>
-                                        <option value={1}> Procesado </option>
+                                        <option value={2}> Procesado </option>
                                         <option value={-1}> Rechazado </option>
                                     </CustomSelect>
                                 </Grid>

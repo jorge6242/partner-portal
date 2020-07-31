@@ -212,6 +212,7 @@ interface Columns {
     minWidth?: number;
     align?: "left" | "right" | "center";
     component?: any;
+    isHandleSubRow?: boolean;
 }
 
 type FormData = {
@@ -330,6 +331,7 @@ export default function PaymentsManagement() {
             label: "Accion",
             minWidth: 10,
             align: "left",
+            isHandleSubRow: true,
             component: (value: any) => <span>{value.value}</span>,
         },
         {
@@ -337,6 +339,7 @@ export default function PaymentsManagement() {
             label: "Fecha",
             minWidth: 10,
             align: "left",
+            isHandleSubRow: true,
             component: (value: any) => {
                 if (value.value) {
                     return <span>{value.value && moment(value.value).format('YYYY-MM-DD')}</span>
@@ -349,6 +352,7 @@ export default function PaymentsManagement() {
             label: "Referencia",
             minWidth: 10,
             align: "left",
+            isHandleSubRow: true,
             component: (value: any) => <span>{value.value}</span>,
         },
         {
@@ -356,6 +360,7 @@ export default function PaymentsManagement() {
             label: "Descripcion",
             minWidth: 10,
             align: "left",
+            isHandleSubRow: true,
             component: (value: any) => <span>{value.value}</span>,
         },
         {
@@ -363,6 +368,7 @@ export default function PaymentsManagement() {
             label: "Banco Origen",
             minWidth: 10,
             align: "left",
+            isHandleSubRow: true,
             component: (value: any) => <span>{value.value && value.value.cNombreBanco}</span>,
         },
         {
@@ -370,6 +376,7 @@ export default function PaymentsManagement() {
             label: "Cuenta",
             minWidth: 10,
             align: "left",
+            isHandleSubRow: true,
             component: (value: any) => <span>{value.value && value.value.cNumCuenta}</span>,
         },
         {
@@ -377,6 +384,7 @@ export default function PaymentsManagement() {
             label: "Moneda",
             minWidth: 10,
             align: "left",
+            isHandleSubRow: true,
             component: (value: any) => <span>{value.value}</span>,
         },
         {
@@ -384,6 +392,7 @@ export default function PaymentsManagement() {
             label: "Monto",
             minWidth: 10,
             align: "right",
+            isHandleSubRow: true,
             component: (value: any) => <span>{value.value}</span>,
         },
         {
@@ -437,7 +446,7 @@ export default function PaymentsManagement() {
                 const selected = renderPaymentStatus(value.value);
                 const pattern = [
                     { status: 0, color: "#2980b9", toolTip: 'En proceso' },
-                    { status: 1, color: "#2ecc71", toolTip: 'Procesado' },
+                    { status: 2, color: "#2ecc71", toolTip: 'Procesado' },
                     { status: -1, color: "#e74c3c", toolTip: 'Rechazado' },
                     { status: 4, color: "#f39c12", toolTip: 'Facturado' },
                 ]
@@ -456,7 +465,7 @@ export default function PaymentsManagement() {
                     status = "En proceso";
                     backgroundColor = '#2980b9';
                 }
-                if (value.value == "1") {
+                if (value.value == "2") {
                     status = "Procesado";
                     backgroundColor = '#2ecc71';
                 }
@@ -727,7 +736,7 @@ export default function PaymentsManagement() {
                                         disabled={disableStatus}
                                     >
                                         <option value={0}> En Proceso </option>
-                                        <option value={1}> Procesado </option>
+                                        <option value={2}> Procesado </option>
                                         <option value={-1}> Rechazado </option>
                                     </CustomSelect>
                                 </Grid>
