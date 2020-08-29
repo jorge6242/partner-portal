@@ -163,7 +163,6 @@ const DataTable4: FunctionComponent<DataTableProps> = ({
             {columns.map((column: any) => {
               const value = row[column.id];
               const isHandleSubRow = row[column.isHandleSubRow];
-              console.log('isHandleSubRow ', column.isHandleSubRow); 
               return (
                 <TableCell
                   key={column.id}

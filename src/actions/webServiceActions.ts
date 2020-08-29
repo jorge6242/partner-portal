@@ -2,11 +2,13 @@ import API from "../api/WebService";
 import snackBarUpdate from "../actions/snackBarActions";
 import { updateModal } from "../actions/modalActions";
 import { ACTIONS } from "../interfaces/actionTypes/webServiceTypes";
-import Message from '../helpers/message';
+import Message from "../helpers/message";
 
 const attempts = window.attempts;
 
-export const getStatusAccount = (count: number = 0) => async (dispatch: Function) => {
+export const getStatusAccount = (count: number = 0) => async (
+  dispatch: Function
+) => {
   dispatch({
     type: ACTIONS.SET_STATUS_ACCOUNT_LOADING,
     payload: true,
@@ -33,19 +35,19 @@ export const getStatusAccount = (count: number = 0) => async (dispatch: Function
     }
     return response;
   } catch (error) {
-      if(count <= attempts) {
-        let counter = count + 1;
-        dispatch(getStatusAccount(counter));
-      } else {
-        snackBarUpdate({
-          payload: {
-            message: error.message,
-            status: true,
-            type: "error",
-          },
-        })(dispatch);
-      }
-    
+    if (count <= attempts) {
+      let counter = count + 1;
+      dispatch(getStatusAccount(counter));
+    } else {
+      snackBarUpdate({
+        payload: {
+          message: error.message,
+          status: true,
+          type: "error",
+        },
+      })(dispatch);
+    }
+
     dispatch({
       type: ACTIONS.SET_STATUS_ACCOUNT_LOADING,
       payload: false,
@@ -54,13 +56,17 @@ export const getStatusAccount = (count: number = 0) => async (dispatch: Function
   }
 };
 
-export const getUnpaidInvoices = (count: number = 0) => async (dispatch: Function) => {
+export const getUnpaidInvoices = (
+  conditionCount: number,
+  count: number = 0,
+  isCache: boolean = false
+) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
     payload: true,
   });
   try {
-    const { data, status } = await API.getUnpaidInvoices();
+    const { data, status } = await API.getUnpaidInvoices(isCache);
     let response = [];
     if (status === 200) {
       response = data;
@@ -75,23 +81,43 @@ export const getUnpaidInvoices = (count: number = 0) => async (dispatch: Functio
         payload: response,
       });
       dispatch({
+        type: ACTIONS.SET_CACHE,
+        payload: data.cache,
+      });
+      dispatch({
         type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
         payload: false,
       });
     }
     return response;
   } catch (error) {
-    if(count <= attempts) {
-      let counter = count + 1;
-      dispatch(getUnpaidInvoices(counter));
+    let counter = count + 1;
+    if (
+      error.response &&
+      error.response.status === 500 &&
+      Number(count) <= Number(conditionCount)
+    ) {
+      //console.log(`${Number(counter)} <= ${Number(conditionCount)}`);
+      dispatch(getUnpaidInvoices(conditionCount, counter, false));
     } else {
-      snackBarUpdate({
-        payload: {
-          message: error.message,
-          status: true,
-          type: "error",
-        },
-      })(dispatch);
+      const indicator = count - 1;
+      if (
+        error.response &&
+        error.response.status === 500 &&
+        Number(indicator) === Number(conditionCount)
+      ) {
+        dispatch(getUnpaidInvoices(conditionCount, counter, true));
+      }
+      if (error.response && error.response.status !== 500) {
+        const message = Message.exception(error);
+        snackBarUpdate({
+          payload: {
+            message,
+            status: true,
+            type: "error",
+          },
+        })(dispatch);
+      }
     }
     dispatch({
       type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
@@ -101,7 +127,10 @@ export const getUnpaidInvoices = (count: number = 0) => async (dispatch: Functio
   }
 };
 
-export const getUnpaidInvoicesbyShare = (share:string ,count: number = 0) => async (dispatch: Function) => {
+export const getUnpaidInvoicesbyShare = (
+  share: string,
+  count: number = 0
+) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_UNPAID_INVOICES_LOADING,
     payload: true,
@@ -128,9 +157,9 @@ export const getUnpaidInvoicesbyShare = (share:string ,count: number = 0) => asy
     }
     return response;
   } catch (error) {
-    if(error.response && error.response.status === 500 && count <= attempts) {
+    if (error.response && error.response.status === 500 && count <= attempts) {
       let counter = count + 1;
-      dispatch(getUnpaidInvoicesbyShare(share ,counter));
+      dispatch(getUnpaidInvoicesbyShare(share, counter));
     } else {
       const message = Message.exception(error);
       snackBarUpdate({
@@ -149,7 +178,9 @@ export const getUnpaidInvoicesbyShare = (share:string ,count: number = 0) => asy
   }
 };
 
-export const getReportedPayments = (count: number = 0) => async (dispatch: Function) => {
+export const getReportedPayments = (count: number = 0) => async (
+  dispatch: Function
+) => {
   dispatch({
     type: ACTIONS.SET_REPORTED_PAYMENTS_LOADING,
     payload: true,
@@ -179,7 +210,7 @@ export const getReportedPayments = (count: number = 0) => async (dispatch: Funct
     }
     return response;
   } catch (error) {
-    if(count <= attempts) {
+    if (count <= attempts) {
       let counter = count + 1;
       dispatch(getReportedPayments(counter));
     } else {
@@ -199,9 +230,7 @@ export const getReportedPayments = (count: number = 0) => async (dispatch: Funct
   }
 };
 
-export const getBalance = (count: number = 0) => async (
-  dispatch: Function
-) => {
+export const getBalance = (count: number = 0) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_BALANCE_LOADING,
     payload: true,
@@ -227,7 +256,7 @@ export const getBalance = (count: number = 0) => async (
     }
     return response;
   } catch (error) {
-    if(count <= attempts) {
+    if (count <= attempts) {
       let counter = count + 1;
       dispatch(getBalance(counter));
     } else {
@@ -265,8 +294,8 @@ export const setOrder = (order: object) => async (dispatch: Function) => {
           payload: {
             message: "Su pago ha sido Procesado",
             type: "success",
-            status: true
-          }
+            status: true,
+          },
         })(dispatch);
       }
     }
@@ -310,8 +339,8 @@ export const setInvoicePayment = (body: any) => async (dispatch: Function) => {
           payload: {
             message: "Su pago ha sido Procesado",
             type: "success",
-            status: true
-          }
+            status: true,
+          },
         })(dispatch);
         dispatch(getUnpaidInvoicesbyShare(body.share));
       }

@@ -216,25 +216,25 @@ export default function ReportePagos() {
         setExpanded(isExpanded ? panel : false);
     };
 
-    const handlePayment = (row: any) => {
-        // console.log('row', row);
-        const monto = Number(row.saldo);
-        dispatch(
-            updateModal({
-                payload: {
-                    status: true,
-                    element: <Paypal
-                        description={row.descrip}
-                        invoiceId={row.fact_num}
-                        customId={user.username}
-                        amountDetail={monto.toFixed(2)}
-                        amount={monto.toFixed(2)}
-                        client={paypalClientId}
-                    />,
-                }
-            })
-        );
-    }
+    // const handlePayment = (row: any) => {
+    //     // console.log('row', row);
+    //     const monto = Number(row.saldo);
+    //     dispatch(
+    //         updateModal({
+    //             payload: {
+    //                 status: true,
+    //                 element: <Paypal
+    //                     description={row.descrip}
+    //                     invoiceId={row.fact_num}
+    //                     customId={user.username}
+    //                     amountDetail={monto.toFixed(2)}
+    //                     amount={monto.toFixed(2)}
+    //                     client={paypalClientId}
+    //                 />,
+    //             }
+    //         })
+    //     );
+    // }
 
     return (
         <Grid container spacing={3}>

@@ -1,6 +1,6 @@
 import {
   ACTIONS,
-  ActionTypes
+  ActionTypes,
 } from "../interfaces/actionTypes/webServiceTypes";
 
 type InitState = {
@@ -13,9 +13,10 @@ type InitState = {
   unpaidInvoices: Array<string | number>;
   clientBalance: Array<string | number>;
   reportedPayments: any;
-  setUnpaidInvoicestLoading: false;
-  setReportedPaymentsLoading: false;
-  setBalanceLoading: false;
+  setUnpaidInvoicestLoading: boolean;
+  setReportedPaymentsLoading: boolean;
+  setBalanceLoading: boolean;
+  cache: boolean;
 };
 
 const initialState: InitState = {
@@ -25,7 +26,7 @@ const initialState: InitState = {
     total: 0,
     perPage: 0,
     prevPageUrl: null,
-    currentPage: 0
+    currentPage: 0,
   },
   listData: [],
   statusAccountList: [],
@@ -36,6 +37,7 @@ const initialState: InitState = {
   setReportedPaymentsLoading: false,
   setBalanceLoading: false,
   clientBalance: [],
+  cache: false,
 };
 
 const webServiceReducer = (state = initialState, action: ActionTypes) => {
@@ -43,67 +45,72 @@ const webServiceReducer = (state = initialState, action: ActionTypes) => {
     case ACTIONS.GET_ALL:
       return {
         ...state,
-        list: action.payload
+        list: action.payload,
+      };
+    case ACTIONS.SET_CACHE:
+      return {
+        ...state,
+        cache: action.payload,
       };
     case ACTIONS.GET_BALANCE:
       return {
         ...state,
-        clientBalance: action.payload
+        clientBalance: action.payload,
       };
     case ACTIONS.GET_UNPAID_INVOICES:
       return {
         ...state,
-        unpaidInvoices: action.payload
+        unpaidInvoices: action.payload,
       };
     case ACTIONS.GET_REPORTED_PAYMENTS:
       return {
         ...state,
-        reportedPayments: action.payload
+        reportedPayments: action.payload,
       };
     case ACTIONS.GET_STATUS_ACCOUNT:
       return {
         ...state,
-        statusAccountList: action.payload
+        statusAccountList: action.payload,
       };
     case ACTIONS.GET_LIST:
       return {
         ...state,
-        listData: action.payload
+        listData: action.payload,
       };
     case ACTIONS.SET_PAGINATION:
       return {
         ...state,
-        pagination: action.payload
+        pagination: action.payload,
       };
     case ACTIONS.SET_LOADING:
       return {
         ...state,
-        loading: action.payload
+        loading: action.payload,
       };
     case ACTIONS.SET_STATUS_ACCOUNT_LOADING:
       return {
         ...state,
-        setStatusAccountLoading: action.payload
+        setStatusAccountLoading: action.payload,
       };
     case ACTIONS.SET_UNPAID_INVOICES_LOADING:
       return {
         ...state,
-        setUnpaidInvoicestLoading: action.payload
+        setUnpaidInvoicestLoading: action.payload,
       };
     case ACTIONS.SET_REPORTED_PAYMENTS_LOADING:
       return {
         ...state,
-        setReportedPaymentsLoading: action.payload
+        setReportedPaymentsLoading: action.payload,
       };
     case ACTIONS.SET_BALANCE_LOADING:
       return {
         ...state,
-        setBalanceLoading: action.payload
+        setBalanceLoading: action.payload,
       };
     case ACTIONS.CLEAR_LIST:
       return {
         ...state,
-        listData: initialState.listData
+        listData: initialState.listData,
       };
     default:
       return state;

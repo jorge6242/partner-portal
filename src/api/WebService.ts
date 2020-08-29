@@ -8,8 +8,9 @@ const API = {
         headers: headers() 
     });
   },
-  getUnpaidInvoices() {
+  getUnpaidInvoices(isCache: boolean) {
     return AXIOS.get(`${Prefix.api}/get-unpaid-invoices`, { 
+        params: { isCache },
         headers: headers() 
     });
   },

@@ -13,12 +13,18 @@ export const ACTIONS = {
     SET_BALANCE_LOADING: "web-service/set__balance_loading",
     SET_PAYPAL_ORDER_LOADING: "web-service/set_paypal_order_loading",
     SET_PAGINATION: "web-service/set_pagination",
-    CLEAR_LIST: "web-service/clear_list"
+    CLEAR_LIST: "web-service/clear_list",
+    SET_CACHE: "web-service/set_cache"
   };
   
   interface Get {
     type: typeof ACTIONS.GET;
     payload: Array<string | number>;
+  }
+
+  interface Cache {
+    type: typeof ACTIONS.SET_CACHE;
+    payload: boolean;
   }
 
   interface GetBalance {
@@ -102,5 +108,6 @@ export const ACTIONS = {
     | ClearList
     | SetBalanceLoading
     | GetBalance
-    | SetPaypalOrderLoading;
+    | SetPaypalOrderLoading
+    | Cache;
   
