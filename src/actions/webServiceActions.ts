@@ -6,15 +6,17 @@ import Message from "../helpers/message";
 
 const attempts = window.attempts;
 
-export const getStatusAccount = (count: number = 0) => async (
-  dispatch: Function
-) => {
+export const getStatusAccount = (
+  conditionCount: number,
+  count: number = 0,
+  isCache = false
+) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_STATUS_ACCOUNT_LOADING,
     payload: true,
   });
   try {
-    const { data, status } = await API.getStatusAccount();
+    const { data, status } = await API.getStatusAccount(isCache);
     let response = [];
     if (status === 200) {
       response = data;
@@ -35,17 +37,33 @@ export const getStatusAccount = (count: number = 0) => async (
     }
     return response;
   } catch (error) {
-    if (count <= attempts) {
-      let counter = count + 1;
-      dispatch(getStatusAccount(counter));
+    let counter = count + 1;
+    if (
+      error.response &&
+      error.response.status === 500 &&
+      Number(counter) <= Number(conditionCount)
+    ) {
+      //console.log(`${Number(counter)} <= ${Number(conditionCount)}`);
+      dispatch(getStatusAccount(conditionCount, counter, false));
     } else {
-      snackBarUpdate({
-        payload: {
-          message: error.message,
-          status: true,
-          type: "error",
-        },
-      })(dispatch);
+      const indicator = counter - 1;
+      if (
+        error.response &&
+        error.response.status === 500 &&
+        Number(indicator) === Number(conditionCount)
+      ) {
+        dispatch(getStatusAccount(conditionCount, 10, true));
+      }
+      if (error.response && error.response.status !== 500) {
+        const message = Message.exception(error);
+        snackBarUpdate({
+          payload: {
+            message,
+            status: true,
+            type: "error",
+          },
+        })(dispatch);
+      }
     }
 
     dispatch({
@@ -95,12 +113,12 @@ export const getUnpaidInvoices = (
     if (
       error.response &&
       error.response.status === 500 &&
-      Number(count) <= Number(conditionCount)
+      Number(counter) <= Number(conditionCount)
     ) {
       //console.log(`${Number(counter)} <= ${Number(conditionCount)}`);
       dispatch(getUnpaidInvoices(conditionCount, counter, false));
     } else {
-      const indicator = count - 1;
+      const indicator = counter - 1;
       if (
         error.response &&
         error.response.status === 500 &&
@@ -230,7 +248,11 @@ export const getReportedPayments = (count: number = 0) => async (
   }
 };
 
-export const getBalance = (count: number = 0) => async (dispatch: Function) => {
+export const getBalance = (
+  conditionCount: number,
+  count: number = 0,
+  isCache: boolean = false
+) => async (dispatch: Function) => {
   dispatch({
     type: ACTIONS.SET_BALANCE_LOADING,
     payload: true,
@@ -239,7 +261,7 @@ export const getBalance = (count: number = 0) => async (dispatch: Function) => {
     const {
       data: { data },
       status,
-    } = await API.getBalance();
+    } = await API.getBalance(isCache);
     let response = [];
     if (status === 200) {
       if (data) {
@@ -256,17 +278,33 @@ export const getBalance = (count: number = 0) => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
-    if (count <= attempts) {
-      let counter = count + 1;
-      dispatch(getBalance(counter));
+    let counter = count + 1;
+    if (
+      error.response &&
+      error.response.status === 500 &&
+      Number(counter) <= Number(conditionCount)
+    ) {
+      //console.log(`${Number(counter)} <= ${Number(conditionCount)}`);
+      dispatch(getBalance(conditionCount, counter, false));
     } else {
-      snackBarUpdate({
-        payload: {
-          message: error.message,
-          status: true,
-          type: "error",
-        },
-      })(dispatch);
+      const indicator = counter - 1;
+      if (
+        error.response &&
+        error.response.status === 500 &&
+        Number(indicator) === Number(conditionCount)
+      ) {
+        dispatch(getBalance(conditionCount, counter, true));
+      }
+      if (error.response && error.response.status !== 500) {
+        const message = Message.exception(error);
+        snackBarUpdate({
+          payload: {
+            message,
+            status: true,
+            type: "error",
+          },
+        })(dispatch);
+      }
     }
     dispatch({
       type: ACTIONS.SET_BALANCE_LOADING,

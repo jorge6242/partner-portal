@@ -194,17 +194,17 @@ export default function UnpaidInvoices() {
   ];
 
   useEffect(() => {
-    async function fetchData() {
-      if (parameterList.length > 0) {
-        dispatch(getUnpaidInvoices(wsAttemps.value));
-      }
-
-      if (cache) {
-        setIsCache(true);
-      }
+    if (cache) {
+      setIsCache(true);
     }
-    fetchData();
-  }, [dispatch, parameterList, cache, setIsCache]);
+  }, [cache, setIsCache]);
+
+  useEffect(() => {
+    if (parameterList.length > 0) {
+      dispatch(getUnpaidInvoices(wsAttemps.value));
+    }
+
+  }, [dispatch, parameterList, wsAttemps]);
 
   return (
     <div>

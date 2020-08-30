@@ -3,8 +3,11 @@ import headers from "../helpers/headers";
 import Prefix from "../config/ApiPrefix";
 
 const API = {
-  getStatusAccount() {
+  getStatusAccount(isCache: boolean) {
     return AXIOS.get(`${Prefix.api}/status-account`, { 
+        params: {
+          isCache,
+        },
         headers: headers() 
     });
   },
@@ -25,8 +28,9 @@ const API = {
         headers: headers() 
     });
   },
-  getBalance() {
-    return AXIOS.get(`${Prefix.api}/get-balance`, { 
+  getBalance(isCache: boolean) {
+    return AXIOS.get(`${Prefix.api}/get-balance`, {
+        params: { isCache }, 
         headers: headers() 
     });
   },

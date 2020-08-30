@@ -57,6 +57,8 @@ export default function Home() {
   } = useSelector((state: any) => state);
   const dispatch = useDispatch();
 
+  const wsAttemps = Helper.getParameter(parameterList, "WS_INTENTOS");
+
   const validateWidget = (value: string) => {
     const isValid = widgetList.find((e: any) => e.slug === value);
     if (isValid) {
@@ -74,10 +76,12 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (validateWidget('PARTNERPORTAL_saldo')) {
-      dispatch(getBalance());
+    if (parameterList.length > 0 && validateWidget('PARTNERPORTAL_saldo')) {
+      dispatch(getBalance(wsAttemps.value));
     }
-  }, [dispatch, widgetList]);
+  }, [dispatch, widgetList, parameterList, wsAttemps.value]);
+
+
   let reservacionesLink = null;
   if (validateWidget('PARTNERPORTAL_reservaciones')) {
     const parameter = Helper.getParameter(parameterList, 'LINK_RESERVACIONES');
