@@ -186,9 +186,10 @@ export const update = (body: object) => async (dispatch: Function) => {
     }
     return response;
   } catch (error) {
+    const message = Message.exception(error);
     snackBarUpdate({
       payload: {
-        message: error.message,
+        message,
         type: "error",
         status: true
       }

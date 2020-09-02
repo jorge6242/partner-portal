@@ -50,6 +50,7 @@ type FormData = {
   name: string;
   email: string;
   username: string;
+  username_legacy: string | null;
   password: string;
   password2: string;
   roles: string;
@@ -65,6 +66,7 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
   const classes = useStyles();
   const [selectedData, setSelectedData] = useState<any>([]);
   const [currentUsername, setCurrentUsername] = useState<boolean>(false);
+  const [currentUsernameLegacy, setCurrentUsernameLegacy] = useState<boolean>(false);
   const { handleSubmit, register, errors, reset, setValue, watch } = useForm<
     FormData
   >();
@@ -76,8 +78,9 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
     async function fetch() {
       if (id) {
         const response: any = await dispatch(get(id));
-        const { name, email, roles, username, share_from, share_to } = response;
+        const { name, email, roles, username, share_from, share_to, username_legacy } = response;
         setValue("username", username);
+        setValue("username_legacy", username_legacy);
         setValue("name", name);
         setValue("email", email);
         setValue("share_from", share_from);
@@ -86,6 +89,11 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
           setCurrentUsername(true);
         } else {
           setCurrentUsername(false);
+        }
+        if(typeof username_legacy == 'string' && username_legacy !== '' ) {
+          setCurrentUsernameLegacy(true);
+        } else {
+          setCurrentUsernameLegacy(false);
         }
         if (roles.length > 0) {
           const list = roles.map((element: any) => element.id);
@@ -133,7 +141,6 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
   const onPermissionsChange = (event: any) => {
     setValue("roles", JSON.stringify(event));
   };
-
   return (
     <Container component="main" className={classes.rootUserForm}>
       <div className={classes.paper}>
@@ -155,6 +162,17 @@ const UserForm: FunctionComponent<FormComponentProps> = ({ id }) => {
                 errorsField={errors.username}
                 errorsMessageField={errors.username && errors.username.message}
                 disable={currentUsername}
+              />
+            </Grid>
+            <Grid item xs={4}>
+              <CustomTextField
+                placeholder="Usuario Legacy"
+                field="username_legacy"
+                required
+                register={register}
+                errorsField={errors.username_legacy}
+                errorsMessageField={errors.username_legacy && errors.username_legacy.message}
+                disable={currentUsernameLegacy}
               />
             </Grid>
             <Grid item xs={4}>

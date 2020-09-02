@@ -26,6 +26,12 @@ const columns: UserColumns[] = [
     component: (value: any) => <span>{value.value}</span>
   },
   {
+    id: "username_legacy",
+    label: "Usuario",
+    minWidth: 30,
+    component: (value: any) => <span>{value.value}</span>
+  },
+  {
     id: "name",
     label: "Nombre",
     minWidth: 30,
